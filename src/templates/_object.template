@@ -1,0 +1,13 @@
+{
+    {{#each properties}}
+        {{this.name}}:  {{#if this.func}}
+                            {{> api_function this.func}}
+                        {{else}}
+                            {{#if this.value}}
+                                {{{this.value}}}
+                            {{else}}
+                                {{> object this.obj}}
+                            {{/if}}
+                        {{/if}},
+    {{/each}}
+}

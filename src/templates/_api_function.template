@@ -1,0 +1,8 @@
+{{#if deprecated}}
+/**
+* @deprecated
+*/
+{{/if}}
+function ({{functionParams}}){
+    return makeRequest<{{returnType}}>({{{requestParams}}})
+}
