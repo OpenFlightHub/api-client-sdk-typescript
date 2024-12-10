@@ -319,7 +319,7 @@ const liveUpdatelisteners = new Map<string, Map<number, Function[]>>()
 let socketLiveUpdate: ReconnectingWebSocket
 function setupLiveUpdate() {
     socketLiveUpdate = new ReconnectingWebSocket(
-        document.location.hostname === 'localhost' ? 'ws://localhost:81/live-update' : ('wss://' + document.location.hostname + '/api/live-update')
+        document.location.hostname === 'localhost' ? 'ws://localhost:9001/live' : ('wss://' + document.location.hostname + '/api/live')
     )
 
     const setup = () => {
@@ -339,25 +339,25 @@ function setupLiveUpdate() {
     }
 
     socketLiveUpdate.addListener("open", ()=>{
-        console.log('live-update', 'socket open')
+        console.log('live', 'socket open')
         setup()
     })
     socketLiveUpdate.addListener("reconnected", ()=>{
-        console.log('live-update', 'socket reconnected')
+        console.log('live', 'socket reconnected')
         setup()
     })
 
     socketLiveUpdate.addListener("message", msg => {
 
         if (typeof msg !== 'string') {
-            throw new Error('live-update: invalid message data type: ' + typeof msg)
+            throw new Error('live: invalid message data type: ' + typeof msg)
         }
 
         let parsed
         try {
             parsed = JSON.parse(msg)
         } catch (ex) {
-            throw new Error('live-update: failed to parse message: ' + ex)
+            throw new Error('live: failed to parse message: ' + ex)
         }
 
         switch (parsed.type) {
@@ -400,17 +400,17 @@ function setupLiveUpdate() {
             } break
 
             case 'error': {
-                console.error('live-update', 'server reported error', parsed.data)
+                console.error('live', 'server reported error', parsed.data)
             } break
 
             default: {
-                throw new Error('live-update: unsupported message type: ' + parsed.type)
+                throw new Error('live: unsupported message type: ' + parsed.type)
             }
         }
     })
 
     socketLiveUpdate.addListener('lost', () => {
-        console.log('live-update', 'socket lost')
+        console.log('live', 'socket lost')
     })
 }
 
@@ -460,7 +460,7 @@ function registerListen(tableName: string, id: number) {
         table: tableName,
         id: id
     }).catch(err => {
-        console.error('live-update', 'failed to listen', err)
+        console.error('live', 'failed to listen', err)
     })
 }
 
