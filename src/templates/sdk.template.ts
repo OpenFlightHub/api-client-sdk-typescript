@@ -32,91 +32,136 @@ type method = 'get' |'post' | 'patch' | 'delete'
 
 let apiAuth: String
 
-async function makeRequest<T>(url: string, method: method, isFormData: boolean, params?: object, data?: object) : Promise<T>{
+async function makeRequest<T>(url: string, method: method, isFormData: boolean, params?: object, data?: object): Promise<T> {
+    return new Promise((resolve, reject)=>{
 
-    if(url.startsWith('/')){
-        url = url.substring(1)
-    }
-
-    const urlWithParams = url.replace(/\{([^\}]+)\}/g, (match, p1)=>{
-        if(!params){
-            throw new Error('url contains param "' + p1 + '" but no params are defined')
+        if (url.startsWith('/')) {
+            url = url.substring(1)
         }
 
-        if(typeof params[p1] !== 'string' && typeof params[p1] !== 'number'){
-            throw new Error('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
-        }
-
-        return '' + params[p1]
-    })
-
-    if(method === 'patch' && data instanceof Object && Object.keys(data).length === 0){
-        throw new Error('you can not perform a patch operation with empty data')
-    }
-
-
-    if(isFormData && data instanceof Object){//convert data object to form data
-        const form = new FormData()
-        for(const key of Object.keys(data)){
-            if(data[key] === undefined){
-                continue
+        const urlWithParams = url.replace(/\{([^\}]+)\}/g, (match, p1) => {
+            if (!params) {
+                reject('url contains param "' + p1 + '" but no params are defined')
+                return
             }
 
-            if(data[key] instanceof Array){
-                for(const entry of data[key]){
-                    form.append(key, entry)
+            if (typeof params[p1] !== 'string' && typeof params[p1] !== 'number') {
+               reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
+               return
+            }
+
+            return '' + params[p1]
+        })
+
+        if (method === 'patch' && data instanceof Object && Object.keys(data).length === 0) {
+            reject('you can not perform a patch operation with empty data')
+            return
+        }
+
+
+        if (isFormData && data instanceof Object) {//convert data object to form data
+            const form = new FormData()
+            for (const key of Object.keys(data)) {
+                if (data[key] === undefined) {
+                    continue
+                }
+
+                if (data[key] instanceof Array) {
+                    for (const entry of data[key]) {
+                        form.append(key, entry)
+                    }
+                } else {
+                    form.set(key, data[key])
+                }
+            }
+
+            data = form
+        }
+
+        const headers: {[key: string]: string}= {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+
+        if(apiAuth){
+            headers.Cookie = 'user-auth=' + apiAuth
+        }
+
+        const abortController = new AbortController()
+
+        const request = new Request(apiBaseUrl + urlWithParams, {
+            signal: abortController.signal,
+            body: data === undefined ? undefined : JSON.stringify(data),
+            method,
+            cache: 'no-store',
+            headers,
+            credentials: 'same-origin'
+        })
+
+        let fetchIsDone = false
+
+        let rejectedDueToTimeout = false
+
+        setTimeout(()=>{
+            if(fetchIsDone){
+                return
+            }
+            rejectedDueToTimeout = true
+
+            abortController.abort('Fatal: timeout when trying to make api call')
+
+            reject('Fatal: timeout when trying to make api call')
+
+        }, 1000 * 3)
+
+        fetch(request).then(response => {
+            fetchIsDone = true
+
+            if (response.headers['set-cookie']) {
+                const authValue = (response.headers['set-cookie'] as string[])
+                    .find(cookie => cookie.includes('user-auth'))
+                    ?.match(new RegExp(`^user-auth=(.+?);`))
+                    ?.[1]
+
+                if (authValue) {
+                    apiAuth = authValue
+                    console.info('api is now authenticated:', authValue)
+                }
+            }
+
+            if (response.ok) {
+                if (response.body) {
+                    response.json().then(resolve).catch(reject)
+                } else {
+                    resolve(undefined)
+                    return
                 }
             } else {
-                form.set(key, data[key])
+                if (('' + response.status).startsWith('5')) {
+
+                    //the magic word "Fatal" must be at the begining of the error message, to tell the webapp it is a general unrecoverable server error
+
+                    if (response.body) {
+                        response.text().then(body => {
+                            reject(`Fatal OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.statusText} ${body}`)
+                        }).catch(reject)
+                    } else {
+                        reject(`Fatal OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.statusText}`)
+                    }
+
+
+                } else {
+                    reject(`OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.status} ${response.statusText}`)
+                }
             }
-        }
-
-        data = form
-    }
-
-    const request = new Request(apiBaseUrl + urlWithParams, {
-        body: data === undefined ? undefined : JSON.stringify(data),
-        method,
-        cache: 'no-store',
-        headers: apiAuth ? {'Cookie': 'user-auth=' + apiAuth} : undefined,
-        credentials: 'same-origin'
+        }).catch(reason => {
+            if(rejectedDueToTimeout){
+                return
+            } else {
+                reject(reason)
+            }
+        })
     })
-
-    const response = await fetch(request)
-
-    if(response.headers['set-cookie']){
-        const authValue = (response.headers['set-cookie'] as string[])
-            .find(cookie => cookie.includes('user-auth'))
-            ?.match(new RegExp(`^user-auth=(.+?);`))
-            ?.[1]
-
-        if(authValue){
-            apiAuth = authValue
-            console.info('api is now authenticated:', authValue)
-        }
-    }
-
-    if(response.ok){
-        if(response.body){
-            return await response.json()
-        }
-
-        //@ts-ignore
-        return
-    } else {
-        if(('' + response.status).startsWith('5')){
-            //the magic word "Fatal" must be at the begining of the error message, to tell the webapp it is a general unrecoverable server error
-
-            let body = ''
-            if(response.body){
-                body = await response.text()
-            }
-
-            throw new Error(`Fatal OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.statusText} ${body}`)
-        } else {
-            throw new Error(`OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.status} ${response.statusText}`)
-        }
-    }
 }
 
 
@@ -189,6 +234,13 @@ export class ReconnectingWebSocket extends EventManager<ReconnectingWebSocketEve
     private createSocket() {
 
         this.socket = new WebSocket(this.url)
+
+        setTimeout(()=>{
+            if(this.firstOpenEvent && !this.isOpen()){
+                console.warn('fatal: connecting to websocket timed out')
+                this.socket.close()
+            }
+        }, 1000 * 3)
 
         if(this.keepAliveInterval !== undefined){
             clearInterval(this.keepAliveInterval)
