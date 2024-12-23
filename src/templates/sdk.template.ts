@@ -46,8 +46,8 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
             }
 
             if (typeof params[p1] !== 'string' && typeof params[p1] !== 'number') {
-               reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
-               return
+            reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
+            return
             }
 
             return '' + params[p1]
@@ -131,9 +131,24 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
             if (response.ok) {
                 if (response.body) {
-                    response.json().then(resolve).catch(reject)
+                    response.text().then(text => {
+                        if(text.length === 0){
+                            resolve(undefined as T)
+                        } else {
+                            try {
+                                const parsed = JSON.parse(text)
+                                resolve(parsed)
+                            } catch(err){
+                                reject(err)
+                            }
+                        }
+
+                    }).catch(err => {
+                        console.error('error while response.text()', err)
+                        reject(err)
+                    })
                 } else {
-                    resolve(undefined)
+                    resolve(undefined as T)
                     return
                 }
             } else {
@@ -484,7 +499,7 @@ export function makeLiveSessionSocket(sessionId: number) {
 
 
 
-interface ApiStatusEvents {
+export interface ApiStatusEvents {
     connected: undefined
     disconnected: 'logout' | 'tcp_reset' | null
 }
