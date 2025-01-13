@@ -80,7 +80,10 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
         const headers: {[key: string]: string}= {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
         }
 
         if(apiAuth){
