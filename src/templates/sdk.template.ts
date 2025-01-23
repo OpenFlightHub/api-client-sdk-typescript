@@ -42,12 +42,12 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
         const urlWithParams = url.replace(/\{([^\}]+)\}/g, (match, p1) => {
             if (!params) {
                 reject('url contains param "' + p1 + '" but no params are defined')
-                return
+                return ''
             }
 
             if (typeof params[p1] !== 'string' && typeof params[p1] !== 'number') {
-            reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
-            return
+                reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
+                return ''
             }
 
             return '' + params[p1]
@@ -55,7 +55,7 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
         if (method === 'patch' && data instanceof Object && Object.keys(data).length === 0) {
             reject('you can not perform a patch operation with empty data')
-            return
+            return ''
         }
 
 
