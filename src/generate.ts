@@ -116,6 +116,9 @@ export function generate(){
             name: 'listenToLiveUpdate',
             value: 'listenTo'
         },{
+            name: 'listenToLiveDrone',
+            value: 'listenToLiveDrone'
+        },{
             name: 'status',
             value: 'apiStatus'
         }]
