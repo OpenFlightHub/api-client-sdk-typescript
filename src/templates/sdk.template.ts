@@ -3,7 +3,7 @@ let apiBaseUrl = ''
 function OpenFlightHubApi(baseURL?: string){
 
     if(!baseURL){
-        baseURL = document.location.hostname === 'localhost' ? 'http://localhost:81' : (document.location.protocol + '//' + document.location.hostname + '/api')
+        baseURL = document.location.hostname === 'localhost' ? 'http://localhost:6001' : (document.location.protocol + '//' + document.location.hostname + '/api')
     }
 
     if(!baseURL.endsWith('/')){
