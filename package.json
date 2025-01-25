@@ -2,17 +2,30 @@
   "name": "openflighthub-api-client-sdk",
   "version": "0.1.0",
   "author": "OpenFlightHub <mail@openflighthub.org> (https://openflighthub.org)",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "https://github.com/openflighthub/api-client-sdk-typescript.git"
   },
-  "keywords": ["flight", "hub", "drone", "dji"],
+  "keywords": [
+    "flight",
+    "hub",
+    "drone",
+    "dji"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/openflighthub/api-client-sdk-typescript/issues"
   },
   "homepage": "https://openflighthub.org",
+  "scripts": {
+    "build": "tsup"
+  },
   "devDependencies": {
+    "tsup": "^8.3.5",
     "typescript": "^5.4.2"
   }
 }
