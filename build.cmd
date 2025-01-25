@@ -1,4 +1,3 @@
-rmdir /q/s build
-mkdir build
-robocopy "src/templates" "build/templates" /E
+rmdir /q/s dist
+mkdir dist
 npx tsc --build --force --verbose

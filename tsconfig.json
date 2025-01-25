@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "es2021",
     "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "build"
+    "declaration": true,
+    "outDir": "dist"
   },
   "files": [
-    "src/app.ts"
+    "src/index.ts"
   ]
 }

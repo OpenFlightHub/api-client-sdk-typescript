@@ -1,4 +1,3 @@
-rm -rf build
-mkdir -p build
-cp -R src/templates build/templates
+rm -rf dist
+mkdir -p dist
 npx tsc --build --force --verbose
