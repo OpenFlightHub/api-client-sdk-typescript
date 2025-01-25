@@ -10,6 +10,10 @@ This is a typescript sdk made to talk to the [OpenFlightHub Api](https://hub.ope
 
 ## Usage
 
+[install via npm](https://www.npmjs.com/package/openflighthub-api-client-sdk):
+```npm i openflighthub-api-client-sdk```
+
+
 ```typescript
 import OpenFlightHubApi from "openflighthub-api-client-sdk"
 
