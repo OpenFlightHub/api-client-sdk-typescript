@@ -18,7 +18,12 @@ The api version is automatically fetched from the openapi spec file in the api r
 ### Option B: command line
 * run (in the `dev` folder) `bash build.sh && node build/generate.js`
 
+## Run Tests
+
+* in the main repo (not the `dev` folder) run: `npm run test`
+
 ## Generate distributable js code
 
 * in the main repo (not the `dev` folder) run: `npm run build`
+
 
