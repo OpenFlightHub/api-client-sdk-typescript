@@ -2,4 +2,5 @@
 /dist
 /dev/node_modules
 /dev/build
+/dev/package-lock.json
 /package-lock.json
