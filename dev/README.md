@@ -26,4 +26,8 @@ The api version is automatically fetched from the openapi spec file in the api r
 
 * in the main repo (not the `dev` folder) run: `npm run build`
 
+## Publish to npm
 
+* Make sure your version in the package.json has been changed
+next step requires successfull login via `npm login`
+* run `npm publish` (might require `--otp`)
