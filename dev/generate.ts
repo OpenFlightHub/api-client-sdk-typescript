@@ -9,24 +9,34 @@ import * as path from 'path'
 import * as handlebars from 'handlebars'
 import { execSync } from 'child_process'
 
+
+const PACKAGE_JSON_PATH = path.join(__dirname, '../../package.json')
+const TEMPLATES_PATH = path.join(__dirname, './templates')
+const LOG_FOLDER_PATH = path.join(__dirname, './log')
+const API_SPEC_PATH = path.resolve('../../api/openapi_spec.yaml')
+const CLIENT_SDK_VERSION_PATH = path.join(__dirname, '..', 'client_sdk.version')
+const GENERATED_FOLDER_PATH = path.join(__dirname, '../../src/generated')
+const DIST_FOLDER_PATH = path.join(__dirname, '../dist')
+
+
 export function generate(){
     const start = Date.now()
     handlebars.registerHelper("raw-helper", function(options) {
         return options.fn()
     })
 
-    const templateFiles = fs.readdirSync(path.join(__dirname, './templates'))
+    const templateFiles = fs.readdirSync(TEMPLATES_PATH)
 
     if(templateFiles){
         templateFiles.filter(val => val.startsWith('_')).forEach(val => {
-            handlebars.registerPartial(val.substring(1).replace(/\.template/, ''), fs.readFileSync(path.join(__dirname, './templates', val), {
+            handlebars.registerPartial(val.replace(/\.template(.ts)?/, ''), fs.readFileSync(path.join(TEMPLATES_PATH, val), {
                 encoding: 'utf-8'
             }))
         })
     }
 
     function render(templateName: string, config: object, suffix?: string){
-        const templatePath = path.join(__dirname, './templates', templateName + '.template' + (suffix || ''))
+        const templatePath = path.join(TEMPLATES_PATH, templateName + '.template' + (suffix || ''))
 
         return handlebars.compile(fs.readFileSync(templatePath, {
             encoding: 'utf-8'
@@ -89,40 +99,41 @@ export function generate(){
         return ctx
     }
 
-    if(!fs.existsSync(path.join(__dirname, './log'))){
-        fs.mkdirSync(path.join(__dirname, './log'))
+    if(!fs.existsSync(LOG_FOLDER_PATH)){
+        fs.mkdirSync(LOG_FOLDER_PATH)
     }
 
-    if(!fs.existsSync('../api/openapi_spec.yaml')){
-        throw new Error('could not find ../api/openapi_spec.yaml. Did you forget to checkout the "api" repository?')
+    if(!fs.existsSync(API_SPEC_PATH)){
+        throw new Error('could not find ' + API_SPEC_PATH + '. Did you forget to checkout the "api" repository?')
     }
 
     const yaml = require('js-yaml')
-    const openApiSpec = yaml.load(fs.readFileSync('../api/openapi_spec.yaml', 'utf8'))
-    fs.writeFileSync(path.join(__dirname, './log', 'spec_parsed.json'), JSON.stringify(openApiSpec, null, 2))
+    const openApiSpec = yaml.load(fs.readFileSync(API_SPEC_PATH, 'utf8'))
+    fs.writeFileSync(path.join(LOG_FOLDER_PATH, 'spec_parsed.json'), JSON.stringify(openApiSpec, null, 2))
 
 
     const doc = recursivelyDereferenceOpenApiSpec(openApiSpec, openApiSpec)
-    fs.writeFileSync(path.join(__dirname, './log', 'spec_dereferenced.json'), JSON.stringify(doc, null, 2))
+    fs.writeFileSync(path.join(LOG_FOLDER_PATH, 'spec_dereferenced.json'), JSON.stringify(doc, null, 2))
+
+    const clientSdkVersion = fs.readFileSync(CLIENT_SDK_VERSION_PATH, {encoding: 'utf-8'})
+    const apiVersion = openApiSpec.info.version
 
     const api = {
         properties: [{
             name: 'API_VERSION',
-            value: "'" + fs.readFileSync(path.join(__dirname, '..', 'src', 'api.version'), {encoding: 'utf-8'}) + "'"
+            value: "'" + apiVersion + "'"
         },{
             name: 'CLIENT_SDK_VERSION',
-            value: "'" + fs.readFileSync(path.join(__dirname, '..', 'src', 'client_sdk.version'), {encoding: 'utf-8'}) + "'"
-        },{
-            name: 'listenToLiveUpdate',
-            value: 'listenTo'
-        },{
-            name: 'listenToLiveDrone',
-            value: 'listenToLiveDrone'
-        },{
-            name: 'status',
-            value: 'apiStatus'
+            value: "'" + clientSdkVersion + "'"
         }]
     }
+
+
+    console.log('updating package.lock version ...')
+    const packageFileContents = fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8')
+    const packageFileAsObject = JSON.parse(packageFileContents)
+    packageFileAsObject.version = clientSdkVersion
+    fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(packageFileAsObject, null, 2) + '\n', 'utf-8')
 
 
     const allReturnTypeDefinitions: {name: string, typeString: string}[] = []
@@ -228,26 +239,23 @@ export function generate(){
 
     console.info('generating .ts file ...')
 
-    if(!fs.existsSync(path.join(__dirname, '..', 'dist'))){
-        fs.mkdirSync(path.join(__dirname, '..', 'dist'))
+    if(!fs.existsSync(GENERATED_FOLDER_PATH)){
+        fs.mkdirSync(GENERATED_FOLDER_PATH)
     }
 
-    const outputFileName = 'openflighthub-api.ts'
-
-    if(fs.existsSync(path.join(__dirname, '..', 'dist', outputFileName))){
-
-        fs.rmSync(path.join(__dirname, '..', 'dist', outputFileName), {
-            force: true
-        })
-    }
-
-    fs.writeFileSync(path.join(__dirname, '..', 'dist', outputFileName), render('sdk', {api, allTypeDefinitions: allReturnTypeDefinitions}, '.ts'))
+    fs.writeFileSync(path.join(GENERATED_FOLDER_PATH, 'rest_api_structure.ts'), render('rest_api_structure', {api, allTypeDefinitions: allReturnTypeDefinitions}, '.ts'))
+    fs.writeFileSync(path.join(GENERATED_FOLDER_PATH, 'rest_api_types.ts'), render('rest_api_types', {allTypeDefinitions: allReturnTypeDefinitions}, '.ts'))
 
     console.info('beautifying ...')
 
-    execSync('npx tsfmt -r ' + outputFileName, {
+    execSync('npx tsfmt -r ' + path.join(GENERATED_FOLDER_PATH, 'rest_api_structure.ts'), {
         encoding: 'utf-8',
-        cwd: path.join(__dirname, '..', 'dist'),
+        cwd: DIST_FOLDER_PATH,
+    })
+
+    execSync('npx tsfmt -r ' + path.join(GENERATED_FOLDER_PATH, 'rest_api_types.ts'), {
+        encoding: 'utf-8',
+        cwd: DIST_FOLDER_PATH
     })
 
     console.log('done in', Date.now() - start, 'ms')
