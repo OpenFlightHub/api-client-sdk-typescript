@@ -1,6 +1,8 @@
 # [1.0.2](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.0.1...1.0.2) (26. Jan 2025)
 
 * fix client sdk version property
+* **BREAKING** implement live api user friendly
+* update usage example
 
 # [1.0.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.0.0...1.0.1) (26. Jan 2025)
 
