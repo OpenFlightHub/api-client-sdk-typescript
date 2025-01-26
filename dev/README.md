@@ -26,6 +26,13 @@ The api version is automatically fetched from the openapi spec file in the api r
 
 * in the main repo (not the `dev` folder) run: `npm run build`
 
+## Github
+
+* edit CHANGELOG.md and add the new version
+* commit
+* Make sure you pushed git changes to github (so npmjs can cache the latest version of readme etc)
+* create a new tag (version number)
+
 ## Publish to npm
 
 * Make sure your version in the package.json has been changed
