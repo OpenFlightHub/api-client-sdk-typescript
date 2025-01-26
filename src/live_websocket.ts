@@ -34,7 +34,7 @@ export default class LiveWebsocket{
             this.setup()
         })
 
-        this.socket.addListener("message", this.handleMessage)
+        this.socket.addListener("message", this.handleMessage.bind(this))
 
         this.socket.addListener('lost', () => {
             console.log('live', 'socket lost')
