@@ -12,7 +12,7 @@ export class OpenFlightHubApi{
 
     readonly rest: ReturnType<typeof RestApi>
     readonly live: LiveWebsocket
-    readonly version = CLIENT_SDK_VERSION
+    readonly VERSION = CLIENT_SDK_VERSION
 
     constructor(options?: {
         restApiBaseUrl?: string
