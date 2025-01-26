@@ -18,6 +18,10 @@ The socket talk to each other with strings (not binary). The string MUST be a JS
 }
 ```
 
+**When to use "error":**
+This should be used only if a critical error happens. E.g. the JSON can not be parsed, which means we can not read the messageId, which means we can not answer to this message.
+
+
 ### Client to Server
 The client can send following additional messages:
 
@@ -62,5 +66,67 @@ Subscribe to changes of existing database records.
         "filter": "mytable.1" // table: "mytable", rowId: 1
     }
     "messageId": ++messageIdCounter
+}
+```
+
+
+### Server to Client
+The client can receive following additional messages:
+
+#### Event trigger
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "string", // name of the event
+        "filter": "string",
+        "eventData": "?" // depends on the event
+    }
+    "messageId": 42
+}
+```
+
+Following events are supported
+
+##### `drone`
+
+live positions of a drone
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "drone",
+        "filter": "1", // droneId: 1
+        "eventData": {
+            "id": 1,
+            "position": {
+                "latitude": 42.0,
+                "longitude": 10.0,
+                "height": 1234.0, // height above WGS 84 ellipsoid
+                "reported_at": "string" // ISO 8601 encoded timestamp
+            }
+        }
+    }
+    "messageId": 42
+}
+```
+
+##### `db_row_update`
+
+Subscribe to changes of existing database records.
+
+```javascript
+{
+    "type": "subscribe",
+    "data": {
+        "event": "db_row_update",
+        "filter": "mytable.1" // table: "mytable", rowId: 1
+        "eventData": {
+            "table": "mytable",
+            "id": "1"
+        }
+    }
+    "messageId": 42
 }
 ```
