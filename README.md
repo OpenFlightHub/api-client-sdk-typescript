@@ -21,7 +21,8 @@ npm i --save openflighthub-api-client-sdk
 import {OpenFlightHubApi} from 'openflighthub-api-client-sdk'
 
 const api = new OpenFlightHubApi({
-    restApiBaseUrl: '/'
+    restApiBaseUrl: 'https://hub.openflighthub.org/api',
+    liveWebsocketBaseUrl: 'wss://hub.openflighthub.org/api/live'
 })
 
 // Version
