@@ -19,6 +19,7 @@ const GENERATED_FOLDER_PATH = path.join(__dirname, '../../src/generated')
 const DIST_FOLDER_PATH = path.join(__dirname, '../dist')
 const WEBSOCKET_API_DEFINITIONS_PATH = path.resolve('../../api/src/live-websocket/definitions')
 const GENERATED_WEBSOCKET_DEFINITIONS_PATH = path.join(GENERATED_FOLDER_PATH, 'websocket-definitions')
+const GENERATED_CLIENT_SDK_VERSION_PATH = path.join(GENERATED_FOLDER_PATH, 'client_sdk_version.ts')
 
 export function generate(){
     const start = Date.now()
@@ -118,6 +119,15 @@ export function generate(){
         }
     }
 
+    const clientSdkVersion = fs.readFileSync(CLIENT_SDK_VERSION_PATH, {encoding: 'utf-8'})
+
+    fs.writeFileSync(GENERATED_CLIENT_SDK_VERSION_PATH, 'export const CLIENT_SDK_VERSION = "' + clientSdkVersion +'";\n', 'utf-8')
+
+    console.log('updating package.lock version ...')
+    const packageFileContents = fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8')
+    const packageFileAsObject = JSON.parse(packageFileContents)
+    packageFileAsObject.version = clientSdkVersion
+    fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(packageFileAsObject, null, 2) + '\n', 'utf-8')
 
     if(!fs.existsSync(LOG_FOLDER_PATH)){
         fs.mkdirSync(LOG_FOLDER_PATH)
@@ -135,25 +145,14 @@ export function generate(){
     const doc = recursivelyDereferenceOpenApiSpec(openApiSpec, openApiSpec)
     fs.writeFileSync(path.join(LOG_FOLDER_PATH, 'spec_dereferenced.json'), JSON.stringify(doc, null, 2))
 
-    const clientSdkVersion = fs.readFileSync(CLIENT_SDK_VERSION_PATH, {encoding: 'utf-8'})
     const apiVersion = openApiSpec.info.version
 
     const api = {
         properties: [{
             name: 'API_VERSION',
             value: "'" + apiVersion + "'"
-        },{
-            name: 'CLIENT_SDK_VERSION',
-            value: "'" + clientSdkVersion + "'"
         }]
     }
-
-
-    console.log('updating package.lock version ...')
-    const packageFileContents = fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8')
-    const packageFileAsObject = JSON.parse(packageFileContents)
-    packageFileAsObject.version = clientSdkVersion
-    fs.writeFileSync(PACKAGE_JSON_PATH, JSON.stringify(packageFileAsObject, null, 2) + '\n', 'utf-8')
 
 
     const allReturnTypeDefinitions: {name: string, typeString: string}[] = []

@@ -1,6 +1,8 @@
 
-import LiveWebsocket from "./live_websocket";
-import RestApi from "./rest_api";
+import LiveWebsocket from './live_websocket';
+import RestApi from './rest_api';
+import {CLIENT_SDK_VERSION} from './generated/client_sdk_version'
+
 export type * from './generated/rest_api_types';
 export type {ApiStatusEvents} from './live_websocket'
 export type {makeStructure} from './generated/rest_api_structure'
@@ -10,6 +12,7 @@ export class OpenFlightHubApi{
 
     readonly rest: ReturnType<typeof RestApi>
     readonly live: LiveWebsocket
+    readonly version = CLIENT_SDK_VERSION
 
     constructor(options?: {
         restApiBaseUrl?: string
