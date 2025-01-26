@@ -1,12 +1,11 @@
 import { ReconnectingWebSocket } from "./util/reconnecting_websocket"
 import * as client_to_server from './generated/websocket-definitions/client_to_server'
 import * as server_to_client from './generated/websocket-definitions/server_to_client'
-import EventManager from "./util/event_manager"
 
 type EventFilter = string
-type EventCallback<E extends server_to_client.Message_Type_Event_Type> = (event: E, filter: EventFilter, data: server_to_client.Message_Type_Event_Object_Data<E>)=>void
+export type EventCallback<E extends server_to_client.Message_Type_Event_Type> = (event: E, filter: EventFilter, data: server_to_client.Message_Type_Event_Object_Data<E>)=>void
 
-export default class LiveWebsocket{
+export default class LiveWebSocket{
 
     private readonly subscribedEvents = new Map<server_to_client.Message_Type_Event_Type, Map<EventFilter, EventCallback<server_to_client.Message_Type_Event_Type>[]>>()
 
@@ -15,8 +14,6 @@ export default class LiveWebsocket{
     private readonly pendingMessages: { messageId: number, resolve: (message: client_to_server.Message_Type_Answer_Data<any>) => void, reject: (reason: any) => void }[] = []
 
     private messageIdCounter = 0
-
-    readonly status: ApiStatus
 
     constructor(baseUrl?: string){
 
@@ -39,8 +36,6 @@ export default class LiveWebsocket{
         this.socket.addListener('lost', () => {
             console.log('live', 'socket lost')
         })
-
-        this.status = new ApiStatus(this.socket)
     }
 
     private setup(){
@@ -102,7 +97,11 @@ export default class LiveWebsocket{
 
                     if(callbacks){
                         for(const callback of callbacks){
-                            callback(event, filter, message.data.eventData)
+                            try {
+                                callback(event, filter, message.data.eventData)
+                            } catch(err){
+                                console.error('unhandled error when executing LiveWebSocket listener callback:', err)
+                            }
                         }
                     }
                 }
@@ -231,34 +230,8 @@ export default class LiveWebsocket{
             }
         }
     }
-}
 
-
-
-export interface ApiStatusEvents {
-    connected: undefined
-    disconnected: 'logout' | 'tcp_reset' | null
-}
-
-class ApiStatus extends EventManager<ApiStatusEvents> {
-
-    constructor(socket: ReconnectingWebSocket){
-        super()
-
-        socket.addListener('open', ()=>{
-            this.dispatch('connected', undefined)
-        })
-
-        socket.addListener('reconnected', ()=>{
-            this.dispatch('connected', undefined)
-        })
-
-        socket.addListener('lost', data=>{
-            this.dispatch('disconnected', data.code === 4000 && data.reason === 'logout' ? 'logout' : (data.code === 1006 ? 'tcp_reset' : null ))
-        })
-
-        if(socket.isOpen()){
-            this.dispatch('connected', undefined)
-        }
+    getSocket(){
+        return this.socket
     }
 }
