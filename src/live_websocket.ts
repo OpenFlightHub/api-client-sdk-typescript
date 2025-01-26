@@ -1,109 +1,124 @@
 import { ReconnectingWebSocket } from "./util/reconnecting_websocket"
+import * as client_to_server from './generated/websocket-definitions/client_to_server'
+import * as server_to_client from './generated/websocket-definitions/server_to_client'
+import EventManager from "./util/event_manager"
 
-const liveUpdatelisteners = new Map<string, Map<number, Function[]>>()
-const droneListeners = new Map<number, Function[]>()
+type EventFilter = string
+type EventCallback<E extends server_to_client.Message_Type_Event_Type> = (event: E, filter: EventFilter, data: server_to_client.Message_Type_Event_Object_Data<E>)=>void
 
-export type LiveWebsocketType = {
-    getLiveUpdateSocket: () => ReconnectingWebSocket
-}
+export default class LiveWebsocket{
 
-export default function LiveWebsocket(baseUrl?: string){
-    setupLive(baseUrl)
+    private readonly subscribedEvents = new Map<server_to_client.Message_Type_Event_Type, Map<EventFilter, EventCallback<server_to_client.Message_Type_Event_Type>[]>>()
 
-    //TODO expose a nice developer friendly api
+    private readonly socket: ReconnectingWebSocket
 
-    return {
-        getLiveUpdateSocket(){
-            return socketLiveUpdate
-        }
-    } as LiveWebsocketType
-}
+    private readonly pendingMessages: { messageId: number, resolve: (message: client_to_server.Message_Type_Answer_Data<any>) => void, reject: (reason: any) => void }[] = []
 
+    private messageIdCounter = 0
 
-let socketLiveUpdate: ReconnectingWebSocket
-function setupLive(baseUrl?: string) {
-    socketLiveUpdate = new ReconnectingWebSocket(
-        baseUrl ? baseUrl : (document.location.hostname === 'localhost' ? 'ws://localhost:9001/live' : ('wss://' + document.location.hostname + '/api/live'))
-    )
+    readonly status: ApiStatus
 
-    const setup = () => {
+    constructor(baseUrl?: string){
 
-        for (const tableEntry of liveUpdatelisteners) {
-            const tableName = tableEntry[0]
+        this.socket = new ReconnectingWebSocket(
+            baseUrl ? baseUrl : (document.location.hostname === 'localhost' ? 'ws://localhost:9001/live' : ('wss://' + document.location.hostname + '/api/live'))
+        )
 
-            const idEntries = tableEntry[1]
+        this.socket.addListener("open", ()=>{
+            console.log('live', 'socket open')
+            this.setup()
+        })
 
-            for (const idEntry of idEntries) {
-                const id = idEntry[0]
+        this.socket.addListener("reconnected", ()=>{
+            console.log('live', 'socket reconnected')
+            this.setup()
+        })
 
-                registerListen(tableName, id)
+        this.socket.addListener("message", this.handleMessage)
 
+        this.socket.addListener('lost', () => {
+            console.log('live', 'socket lost')
+        })
+
+        this.status = new ApiStatus(this.socket)
+    }
+
+    private setup(){
+        // in case we setup again, we need to resubscribe to all existing events
+        for (const eventEntry of this.subscribedEvents) {
+            const event = eventEntry[0]
+            const filters = eventEntry[1]
+
+            for (const filterEntry of filters) {
+                const filter = filterEntry[0]
+
+                this.subscribeToEvent(event, filter)
             }
-        }
-
-        for(const tableEntry of droneListeners){
-            const droneId = tableEntry[0]
-
-            registerLiveDrone(droneId)
         }
     }
 
-    socketLiveUpdate.addListener("open", ()=>{
-        console.log('live', 'socket open')
-        setup()
-    })
-
-    socketLiveUpdate.addListener("reconnected", ()=>{
-        console.log('live', 'socket reconnected')
-        setup()
-    })
-
-    socketLiveUpdate.addListener("message", msg => {
+    private handleMessage(msg: string){
 
         if (typeof msg !== 'string') {
-            throw new Error('live: invalid message data type: ' + typeof msg)
+            throw new Error('LiveWebsocket: invalid message data type: ' + typeof msg)
         }
 
-        let parsed
+        let messageWithoutType: any
         try {
-            parsed = JSON.parse(msg)
+            messageWithoutType = JSON.parse(msg)
         } catch (ex) {
-            throw new Error('live: failed to parse message: ' + ex)
+            this.sendErrorToServer('can not parse msg JSON: ' + ex)
+            return
         }
 
-        switch (parsed.type) {
-            case 'notify_change': {
 
-                const changedTable: string = parsed.data.table
-                const changedId: number = parseInt(parsed.data.id)
+        if(typeof messageWithoutType !== 'object'){
+            this.sendErrorToServer('invalid message: ' + messageWithoutType)
+            return
+        }
 
-                if (liveUpdatelisteners.has(changedTable) && liveUpdatelisteners.get(changedTable)!.has(changedId)) {
-                    for (const cb of liveUpdatelisteners.get(changedTable)!.get(changedId)!) {
-                        try {
-                            cb(changedTable, changedId)
-                        } catch (err) {
-                            console.error(err)
+        if(typeof messageWithoutType.messageId !== 'number'){
+            this.sendErrorToServer('invalid messageId: ' + messageWithoutType.messageId)
+            return
+        }
+
+        if(typeof messageWithoutType.type !== 'string'){
+            this.sendErrorToServer('invalid type: ' + messageWithoutType.type)
+            return
+        }
+
+        switch((messageWithoutType as server_to_client.Message<server_to_client.Message_Type>).type){
+            case 'event': {
+
+                const message = messageWithoutType as server_to_client.Message<'event'>
+
+                const event = message.data.event
+                const filter = message.data.filter
+
+                const filters = this.subscribedEvents.get(event)
+                if(filters){
+
+                    const callbacks = filters.get(filter)
+
+                    if(callbacks){
+                        for(const callback of callbacks){
+                            callback(event, filter, message.data.eventData)
                         }
                     }
-                } else {
-                    console.warn('unexpectedly received a change notification for something we do not listen to', changedTable, changedId)
                 }
 
             } break
 
             case 'answer': {
+                const message = messageWithoutType as server_to_client.Message<'answer'>
 
-                for (let i = 0; i < pendingMessages.length; i++) {
-                    const msg = pendingMessages[i]
+                for (let i = 0; i < this.pendingMessages.length; i++) {
+                    const pendingMessage = this.pendingMessages[i]
 
-                    if (msg.messageId === parsed.messageId) {
-                        if (parsed.data.success === true) {
-                            msg.resolve(parsed.data.data)
-                        } else {
-                            msg.reject(parsed.data.error)
-                        }
+                    if (pendingMessage.messageId === message.messageId) {
+                        pendingMessage.resolve(message.data.result)
 
-                        pendingMessages.splice(i, 1)
+                        this.pendingMessages.splice(i, 1)
                         break
                     }
                 }
@@ -111,128 +126,139 @@ function setupLive(baseUrl?: string) {
             } break
 
             case 'error': {
-                console.error('live', 'server reported error', parsed.data)
-            } break
-
-
-            case 'live_drone': {
-
-                const droneId: number = parsed.data.id
-                const position: {
-                    reported_at: string
-                    latitude: number
-                    longitude: number
-                    height: number
-                } = parsed.data.position
-
-                if (droneListeners.has(droneId)){
-                    for (const cb of droneListeners.get(droneId)!) {
-                        try {
-                            cb(droneId, position)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                    }
-                }
-
+                console.error('LiveWebsocket', 'server reported error', messageWithoutType.data)
             } break
 
             default: {
-                throw new Error('live: unsupported message type: ' + parsed.type)
+                throw new Error('live: unsupported message type: ' + messageWithoutType.type)
             }
         }
-    })
+    }
 
-    socketLiveUpdate.addListener('lost', () => {
-        console.log('live', 'socket lost')
-    })
-}
+    /**
+     * promise will reject if a system or transmission error happens, the data of the resolving promise will indicate the actually result: {success: false/true}
+     */
+    private sendToServer<T extends client_to_server.Message_Type>(type: T, data: client_to_server.Message_Data<T>, overwriteMessageId?: number){
+        return new Promise<server_to_client.Message_Type_Answer_Data<any>>((resolve, reject)=>{
 
-const pendingMessages: { messageId: number, resolve: (value: unknown) => void, reject: (reason: any) => void }[] = []
+            const messageId = overwriteMessageId ? overwriteMessageId : ++this.messageIdCounter
 
-let messageIdCounter = 1
+            this.socket.send(JSON.stringify({
+                type,
+                data,
+                messageId
+            }))
 
-type WebSocketMessageClientType = 'listen' | 'subscribe-live-drone'
-function sendToWebSocket(type: WebSocketMessageClientType, data: any) {
-
-    return new Promise((resolve, reject) => {
-
-        const messageId = messageIdCounter++
-
-        socketLiveUpdate.send(JSON.stringify({
-            type,
-            data,
-            messageId
-        }))
-
-        pendingMessages.push({
-            messageId,
-            resolve,
-            reject
+            this.pendingMessages.push({
+                messageId,
+                resolve,
+                reject
+            })
         })
-    })
-}
-
-type SupportedListenTables = string
-
-function listenTo(tableName: SupportedListenTables, id: number, changeCallback: (tableName: string, id: number) => void) {
-    if (!liveUpdatelisteners.has(tableName)) {
-        liveUpdatelisteners.set(tableName, new Map<number, Function[]>())
     }
 
-    if (!liveUpdatelisteners.get(tableName)!.has(id)) {
-        liveUpdatelisteners.get(tableName)!.set(id, [])
+    private async sendErrorToServer(error: string){
+        await this.sendToServer('error', error)
     }
 
-    liveUpdatelisteners.get(tableName)!.get(id)?.push(changeCallback)
-
-    registerListen(tableName, id)
-}
-
-function registerListen(tableName: string, id: number) {
-    sendToWebSocket('listen', {
-        table: tableName,
-        id: id
-    }).catch(err => {
-        console.error('live', 'failed to listen', err)
-    })
-}
-
-
-function listenToLiveDrone(droneId: number, callback: (droneId: number, position: {
-    reported_at: string
-    latitude: number
-    longitude: number
-    height: number}
-) => void){
-    if(!droneListeners.has(droneId)){
-        droneListeners.set(droneId, [])
+    private async answerServerMessage<T extends server_to_client.Message_Type>(originalMessage: server_to_client.Message<T>, success: boolean, result?: any){
+        await this.sendToServer('answer', {
+            success,
+            result
+        }, originalMessage.messageId)
     }
 
-    droneListeners.get(droneId)!.push(callback)
+    private resolveServerMessage<T extends server_to_client.Message_Type>(originalMessage: server_to_client.Message<T>, result?: any){
+        this.answerServerMessage(originalMessage, true, result)
+    }
 
-    registerLiveDrone(droneId)
+    private rejectServerMessage<T extends server_to_client.Message_Type>(originalMessage: server_to_client.Message<T>, result?: any){
+        this.answerServerMessage(originalMessage, false, result)
+    }
+
+    private async subscribeToEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
+        await this.sendToServer('subscribe', {
+            event,
+            filter
+        })
+    }
+
+    private async unsubscribeFromEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
+        // currently not implemented
+    }
+
+    //TODO implement typing for specific answers
+    async addEventListener<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
+        let filters = this.subscribedEvents.get(event)
+
+        if(!filters){
+            const n = new Map<string, EventCallback<server_to_client.Message_Type_Event_Type>[]>()
+            this.subscribedEvents.set(event, n)
+            filters = n
+        }
+
+        let callbacks = filters.get(filter)
+        if(!callbacks){
+            const n = []
+            filters.set(filter, n)
+            callbacks = n
+        }
+
+        if(!callbacks.includes(callback)){
+            callbacks.push(callback)
+        }
+
+        await this.subscribeToEvent(event, filter)
+    }
+
+    async removeEventListener<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
+        let filters = this.subscribedEvents.get(event)
+
+        if(filters){
+            let callbacks = filters.get(filter)
+
+            if(callbacks){
+
+                const callbackIndex = callbacks.indexOf(callback)
+
+                if(callbackIndex >= 0){
+                    callbacks.splice(callbackIndex, 1)
+                }
+
+                if(callbacks.length === 0){
+                    this.unsubscribeFromEvent(event, filter)
+                }
+            }
+        }
+    }
 }
 
-async function registerLiveDrone(droneId: number){
-    sendToWebSocket('subscribe-live-drone', {
-        drone_id: droneId
-    })
+
+
+export interface ApiStatusEvents {
+    connected: undefined
+    disconnected: 'logout' | 'tcp_reset' | null
 }
 
+class ApiStatus extends EventManager<ApiStatusEvents> {
 
-// live session
+    constructor(socket: ReconnectingWebSocket){
+        super()
 
-export function makeLiveSessionSocket(sessionId: number) {
-    const socketLiveSession = new ReconnectingWebSocket("wss://" + document.location.host + '/api/live-session/' + sessionId)
+        socket.addListener('open', ()=>{
+            this.dispatch('connected', undefined)
+        })
 
-    socketLiveSession.addListener("open", () => {
-        //console.log('live-session', 'socket open')
-    })
+        socket.addListener('reconnected', ()=>{
+            this.dispatch('connected', undefined)
+        })
 
-    socketLiveSession.addListener('lost', () => {
-        //console.log('live-session', 'socket closed')
-    })
+        socket.addListener('lost', data=>{
+            this.dispatch('disconnected', data.code === 4000 && data.reason === 'logout' ? 'logout' : (data.code === 1006 ? 'tcp_reset' : null ))
+        })
 
-    return socketLiveSession
+        if(socket.isOpen()){
+            this.dispatch('connected', undefined)
+        }
+    }
 }

@@ -1,60 +1,21 @@
 
-import LiveWebsocket, { LiveWebsocketType } from "./live_websocket"
-import RestApi from "./rest_api"
-import EventManager from "./util/event_manager"
+import LiveWebsocket from "./live_websocket";
+import RestApi from "./rest_api";
+export type * from './generated/rest_api_types';
+export type {ApiStatusEvents} from './live_websocket'
+export type {makeStructure} from './generated/rest_api_structure'
+export type {LiveWebsocket}
 
-export default function OpenFlightHubApi(options?: {
-    restApiBaseUrl?: string
-    liveWebsocketBaseUrl?: string
-}){
+export class OpenFlightHubApi{
 
+    readonly rest: ReturnType<typeof RestApi>
+    readonly live: LiveWebsocket
 
-    const liveWebsocket = LiveWebsocket(options?.liveWebsocketBaseUrl)
-
-    return {
-        rest: RestApi(options?.restApiBaseUrl),
-        live: liveWebsocket,
-        apiStatus: new ApiStatus(liveWebsocket)
-    }
-}
-
-
-
-export interface ApiStatusEvents {
-    connected: undefined
-    disconnected: 'logout' | 'tcp_reset' | null
-}
-
-class ApiStatus extends EventManager<ApiStatusEvents> {
-
-    private waitForInit : any
-
-    constructor(liveWebsocket: LiveWebsocketType){
-        super()
-
-        this.waitForInit = setInterval(()=>{
-
-            const liveUpdateSocket = liveWebsocket.getLiveUpdateSocket()
-
-            if(liveUpdateSocket){
-                clearInterval(this.waitForInit)
-
-                liveUpdateSocket.addListener('open', ()=>{
-                    this.dispatch('connected', undefined)
-                })
-
-                liveUpdateSocket.addListener('reconnected', ()=>{
-                    this.dispatch('connected', undefined)
-                })
-
-                liveUpdateSocket.addListener('lost', data=>{
-                    this.dispatch('disconnected', data.code === 4000 && data.reason === 'logout' ? 'logout' : (data.code === 1006 ? 'tcp_reset' : null ))
-                })
-
-                if(liveUpdateSocket.isOpen()){
-                    this.dispatch('connected', undefined)
-                }
-            }
-        }, 10)
+    constructor(options?: {
+        restApiBaseUrl?: string
+        liveWebsocketBaseUrl?: string
+    }){
+        this.rest = RestApi(options?.restApiBaseUrl)
+        this.live = new LiveWebsocket(options?.liveWebsocketBaseUrl)
     }
 }

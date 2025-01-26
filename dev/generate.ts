@@ -17,7 +17,8 @@ const API_SPEC_PATH = path.resolve('../../api/openapi_spec.yaml')
 const CLIENT_SDK_VERSION_PATH = path.join(__dirname, '..', 'client_sdk.version')
 const GENERATED_FOLDER_PATH = path.join(__dirname, '../../src/generated')
 const DIST_FOLDER_PATH = path.join(__dirname, '../dist')
-
+const WEBSOCKET_API_DEFINITIONS_PATH = path.resolve('../../api/src/live-websocket/definitions')
+const GENERATED_WEBSOCKET_DEFINITIONS_PATH = path.join(GENERATED_FOLDER_PATH, 'websocket-definitions')
 
 export function generate(){
     const start = Date.now()
@@ -98,6 +99,25 @@ export function generate(){
 
         return ctx
     }
+
+    if(!fs.existsSync(WEBSOCKET_API_DEFINITIONS_PATH)){
+        throw new Error('could not find ' + WEBSOCKET_API_DEFINITIONS_PATH + '. Did you forget to checkout the "api" repository?')
+    }
+
+    if(fs.existsSync(GENERATED_WEBSOCKET_DEFINITIONS_PATH)){
+        fs.rmSync(GENERATED_WEBSOCKET_DEFINITIONS_PATH, {
+            recursive: true,
+            force: true
+        })
+    }
+
+    fs.mkdirSync(GENERATED_WEBSOCKET_DEFINITIONS_PATH)
+    for(const file of fs.readdirSync(WEBSOCKET_API_DEFINITIONS_PATH, 'utf-8')){
+        if(file !== '.' && file !== '..'){
+            fs.copyFileSync(path.join(WEBSOCKET_API_DEFINITIONS_PATH, file), path.join(GENERATED_WEBSOCKET_DEFINITIONS_PATH, file))
+        }
+    }
+
 
     if(!fs.existsSync(LOG_FOLDER_PATH)){
         fs.mkdirSync(LOG_FOLDER_PATH)
