@@ -38,6 +38,10 @@ console.log('API Version', api.rest.API_VERSION)
 console.log('Client SDK Version', api.rest.CLIENT_SDK_VERSION)
 ```
 
+## Changelog
+
+see [CHANGELOG.md](CHANGELOG.md)
+
 # For Developers
 
 see [dev/README.md](dev/README.md)
