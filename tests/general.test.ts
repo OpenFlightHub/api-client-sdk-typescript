@@ -1,5 +1,5 @@
-import OpenFlightHubApi from "../src";
+import {OpenFlightHubApi} from "../src";
 
 test('init api client sdk', ()=>{
-    const api = OpenFlightHubApi()
+    const api = new OpenFlightHubApi()
 })
