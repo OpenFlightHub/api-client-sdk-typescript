@@ -1,3 +1,6 @@
+# Protocol Documentation
+
+see [LIVE_WEBSOCKET.md](LIVE_WEBSOCKET.md)
 
 # How to generate the sdk
 
