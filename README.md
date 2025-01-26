@@ -1,5 +1,6 @@
 # OpenFlightHub API Client SDK
 This is a typescript sdk made to talk to the [OpenFlightHub Api](https://hub.openflighthub.org/api).
+**It must be run in the browser!**
 
 ## Features
 * typescript typings (for parameters, request bodies and returned data)
@@ -17,25 +18,63 @@ npm i --save openflighthub-api-client-sdk
 
 
 ```typescript
-import OpenFlightHubApi from "openflighthub-api-client-sdk"
+import {OpenFlightHubApi} from 'openflighthub-api-client-sdk'
 
-const api = OpenFlightHubApi()
+const api = new OpenFlightHubApi({
+    restApiBaseUrl: '/'
+})
 
-api.apiStatus.addListener('connected', () => {
+// Version
+
+console.log('API Version', api.rest.API_VERSION)
+console.log('Client SDK Version', api.VERSION)
+
+
+// Login
+
+api.rest.auth.login.post({
+    username: 'test@openflighthub.org',
+    password: '1234'
+}).then(response => {
+    const myUserId = response.id
+})
+
+// Get information for a drone
+
+const FAKE_DRONE_ID = 1
+
+api.rest.drone.get({
+    droneId: FAKE_DRONE_ID
+}).then(drone => {
+    console.log(drone.serial_number)
+})
+
+// Get last position of drone
+
+api.rest.drone.lastPosition.get({
+    droneId: FAKE_DRONE_ID
+}).then(lastPosition => {
+    console.log(lastPosition.latitude, lastPosition.latitude)
+})
+
+// Get live positions of drone via websocket
+
+api.live.subscribeToDrone(FAKE_DRONE_ID, (event, filter, data)=>{
+    console.log('new position of drone', data.id, data.position.latitude, data.position.longitude)
+})
+
+
+
+// Live connection status
+
+api.live.status.addListener('connected', () => {
     console.log('api is connected')
 })
 
-api.apiStatus.addListener('disconnected', reason => {
-
-    if(reason === 'logout'){
-        console.log('we have been forcefully logged out by the server (probably some other machine has logged in using the same user account')
-    }
-
+api.live.status.addListener('disconnected', reason => {
     console.log('api is disconnected')
 })
 
-console.log('API Version', api.rest.API_VERSION)
-console.log('Client SDK Version', api.rest.CLIENT_SDK_VERSION)
 ```
 
 ## Changelog
