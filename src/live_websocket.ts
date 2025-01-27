@@ -47,7 +47,7 @@ export default class LiveWebSocket{
             for (const filterEntry of filters) {
                 const filter = filterEntry[0]
 
-                this.subscribeToEvent(event, filter)
+                this.subscribeToEvent_AtServer(event, filter)
             }
         }
     }
@@ -175,19 +175,19 @@ export default class LiveWebSocket{
         this.answerServerMessage(originalMessage, false, result)
     }
 
-    private async subscribeToEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
+    private async subscribeToEvent_AtServer<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
         await this.sendToServer('subscribe', {
             event,
             filter
         })
     }
 
-    private async unsubscribeFromEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
+    private async unsubscribeFromEvent_AtServer<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter){
         // currently not implemented
     }
 
     //TODO implement typing for specific answers
-    async addEventListener<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
+    async subscribeToEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
         let filters = this.subscribedEvents.get(event)
 
         if(!filters){
@@ -207,10 +207,10 @@ export default class LiveWebSocket{
             callbacks.push(callback)
         }
 
-        await this.subscribeToEvent(event, filter)
+        await this.subscribeToEvent_AtServer(event, filter)
     }
 
-    async removeEventListener<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
+    async unsubscribeFromEvent<E extends server_to_client.Message_Type_Event_Type>(event: E, filter: EventFilter, callback: EventCallback<E>){
         let filters = this.subscribedEvents.get(event)
 
         if(filters){
@@ -225,7 +225,7 @@ export default class LiveWebSocket{
                 }
 
                 if(callbacks.length === 0){
-                    this.unsubscribeFromEvent(event, filter)
+                    this.unsubscribeFromEvent_AtServer(event, filter)
                 }
             }
         }

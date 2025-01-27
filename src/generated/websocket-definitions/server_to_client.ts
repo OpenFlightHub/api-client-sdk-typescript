@@ -14,7 +14,7 @@ export type Message_Type_Answer_Data<R extends any> = {
     result: R
 }
 
-export type Message_Type_Event_Type = 'db_row_update' | 'drone'
+export type Message_Type_Event_Type = 'db_row_update' | 'drone' | 'traffic'
 
 export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
     event: T
@@ -22,7 +22,8 @@ export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
     eventData: Message_Type_Event_Object_Data<T>
 }
 
-export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'drone' ? Message_Type_Event_Object_Data_Drone : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : unknown
+//TODO this result into an OR and not a fixed typing...
+export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'drone' ? Message_Type_Event_Object_Data_Drone : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'traffic' ? Message_Type_Event_Object_Data_Traffic : unknown
 
 export type Message_Type_Event_Object_Data_Drone = {
     id: number
@@ -37,4 +38,14 @@ export type Message_Type_Event_Object_Data_Drone = {
 export type Message_Type_Event_Object_Data_DbRowUpdate = {
     table: string
     id: string
+}
+
+export type Message_Type_Event_Object_Data_Traffic = {
+    id: string
+    position: {
+        latitude: number
+        longitude: number
+        height?: number
+        reported_at: string
+    }
 }
