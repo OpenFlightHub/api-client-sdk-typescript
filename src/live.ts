@@ -16,8 +16,16 @@ export default class Live {
         this.status = new ApiStatus(this.liveWebSocket.getSocket())
     }
 
-    subscribeToDrone(droneId: number, callback: (event: 'drone', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void){//TODO implement unsubscribe
-        return this.liveWebSocket.subscribeToEvent('drone', '' + droneId, callback)
+    subscribeToRemoteController(remoteControllerId: number, callback: (event: 'remote_controller', filter: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('remote_controller', '' + remoteControllerId + (filter ? '.' + filter : '') , (evt, _, data)=>{
+            callback(evt, filter, data)
+        })
+    }
+
+    subscribeToDrone(droneId: number, callback: (event: 'drone', filter: server_to_client.Message_Type_Event_Object_Data_Drone_FilterType, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_Drone_FilterType){
+        return this.liveWebSocket.subscribeToEvent('drone', '' + droneId + (filter ? '.' + filter : '') , (evt, _, data)=>{
+            callback(evt, filter, data)
+        })
     }
 
     subscribeToDbRowUpdate(table: string, rowId: number, callback: (event: 'db_row_update', filter: string, data: server_to_client.Message_Type_Event_Object_Data_DbRowUpdate)=>void){

@@ -14,7 +14,7 @@ export type Message_Type_Answer_Data<R extends any> = {
     result: R
 }
 
-export type Message_Type_Event_Type = 'db_row_update' | 'drone' | 'traffic'
+export type Message_Type_Event_Type = 'db_row_update' | 'drone' | 'traffic' | 'remote_controller'
 
 export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
     event: T
@@ -23,9 +23,11 @@ export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
 }
 
 //TODO this result into an OR and not a fixed typing...
-export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'drone' ? Message_Type_Event_Object_Data_Drone : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'traffic' ? Message_Type_Event_Object_Data_Traffic : unknown
+export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'remote_controller' ? Message_Type_Event_Object_Data_RemoteController :T extends 'drone' ? Message_Type_Event_Object_Data_Drone : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'traffic' ? Message_Type_Event_Object_Data_Traffic : unknown
 
-export type Message_Type_Event_Object_Data_Drone = {
+export type Message_Type_Event_Object_Data_RemoteController = Message_Type_Event_Object_Data_RemoteController_Position
+
+export type Message_Type_Event_Object_Data_RemoteController_Position = {
     id: number
     position: {
         latitude: number
@@ -34,6 +36,33 @@ export type Message_Type_Event_Object_Data_Drone = {
         reported_at: string
     }
 }
+
+export type Message_Type_Event_Object_Data_RemoteController_FilterType = 'position'
+
+export type Message_Type_Event_Object_Data_Drone = Message_Type_Event_Object_Data_Drone_Position | Message_Type_Event_Object_Data_Drone_Telemetry
+
+
+export type Message_Type_Event_Object_Data_Drone_Position = {
+    id: number
+    position: {
+        latitude: number
+        longitude: number
+        height: number
+        reported_at: string
+    }
+}
+
+export type Message_Type_Event_Object_Data_Drone_Telemetry = {
+    id: number
+    position: {
+        latitude: number
+        longitude: number
+        height: number
+        reported_at: string
+    }
+}
+
+export type Message_Type_Event_Object_Data_Drone_FilterType = 'position' | 'telemetry'
 
 export type Message_Type_Event_Object_Data_DbRowUpdate = {
     table: string
