@@ -155,7 +155,7 @@ export function generate(){
     }
 
 
-    const allReturnTypeDefinitions: {name: string, typeString: string}[] = []
+    const allReturnTypeDefinitions: {name: string, typeString: string}[] = [{name: 'integer', typeString: 'number'}]
 
 
     for(const path of Object.keys(doc.paths)){
