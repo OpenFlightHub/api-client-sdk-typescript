@@ -115,7 +115,7 @@ The client can receive following additional messages:
 
 Following events are supported
 
-##### `drone`
+##### `drone_position`
 
 live positions of a drone
 
@@ -123,8 +123,8 @@ live positions of a drone
 {
     "type": "event",
     "data": {
-        "event": "drone",
-        "filter": "1%position", // droneId: 1
+        "event": "drone_position",
+        "filter": "1", // droneId: 1
         "eventData": {
             "id": 1,
             "position": {
@@ -139,18 +139,20 @@ live positions of a drone
 }
 ```
 
+##### `drone_telemetry`
+
 live telemetry of a drone
 
 ```javascript
 {
     "type": "event",
     "data": {
-        "event": "drone",
-        "filter": "1%telemetry", // droneId: 1
+        "event": "drone_telemetry",
+        "filter": "1", // droneId: 1
         "eventData": {
             "id": 1,
             "telemetry": {
-                "battery_percent": 42.0,//percentage
+                "capacity_percent_left": 42.0,
                 "reported_at": "string" // ISO 8601 encoded timestamp
             }
         }
@@ -158,6 +160,30 @@ live telemetry of a drone
     "messageId": 42
 }
 ```
+##### `remote_controller_position`
+
+live positions of a remote controller
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "remote_controller_position",
+        "filter": "1", // remoteControllerId: 1
+        "eventData": {
+            "id": 1,
+            "position": {
+                "latitude": 42.0,
+                "longitude": 10.0,
+                "height": 1234.0, // height above WGS 84 ellipsoid
+                "reported_at": "string" // ISO 8601 encoded timestamp
+            }
+        }
+    }
+    "messageId": 42
+}
+```
+
 
 ##### `db_row_update`
 

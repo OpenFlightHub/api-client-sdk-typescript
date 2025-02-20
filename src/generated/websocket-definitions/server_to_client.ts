@@ -48,7 +48,7 @@ export type Message_Type_Event_Object_Data_Drone_Position = {
 export type Message_Type_Event_Object_Data_Drone_Telemetry = {
     id: number
     telemetry: {
-        battery_percent: number
+        capacity_percent_left: number
         reported_at: string
     }
 }
