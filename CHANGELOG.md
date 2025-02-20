@@ -1,3 +1,7 @@
+# [1.4.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.4.0...1.4.1) (20. Feb 2025)
+
+* fix ts type Message_Type_Event_Object_Data_Drone_Telemetry
+
 # [1.4.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.3.1...1.4.0) (20. Feb 2025)
 
 * implement filter separators

@@ -54,10 +54,8 @@ export type Message_Type_Event_Object_Data_Drone_Position = {
 
 export type Message_Type_Event_Object_Data_Drone_Telemetry = {
     id: number
-    position: {
-        latitude: number
-        longitude: number
-        height: number
+    telemetry: {
+        battery_percent: number
         reported_at: string
     }
 }
