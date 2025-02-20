@@ -38,6 +38,9 @@ export default class Live {
         return this.liveWebSocket.subscribeToEvent('db_row_update', joinEventFilters(table, '' + rowId), callback)
     }
 
+    /**
+     * @param radius in meters
+     */
     subscribeToTraffic(latitude: number, longitude: number, radius: number, callback: (event: 'traffic', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Traffic)=>void){
         return this.liveWebSocket.subscribeToEvent('traffic', joinEventFilters([latitude, longitude, radius].join('$')), callback)
     }

@@ -84,6 +84,22 @@ Subscribe to position events of a remote controller
 }
 ```
 
+
+##### `traffic`
+
+Subscribe to position events of a remote controller
+
+```javascript
+{
+    "type": "subscribe",
+    "data": {
+        "event": "traffic",
+        "filter": "42.0$10.0$200" // latitude $ longitude $ radius     Note: radius unit is meters
+    }
+    "messageId": ++messageIdCounter
+}
+```
+
 ##### `db_row_update`
 
 Subscribe to changes of existing database records.
@@ -175,6 +191,31 @@ live positions of a remote controller
         "filter": "1", // remoteControllerId: 1
         "eventData": {
             "id": 1,
+            "position": {
+                "latitude": 42.0,
+                "longitude": 10.0,
+                "height": 1234.0, // height above WGS 84 ellipsoid
+                "reported_at": "string" // ISO 8601 encoded timestamp
+            }
+        }
+    }
+    "messageId": 42
+}
+```
+
+
+##### `traffic`
+
+live positions of traffic (other aircraft)
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "traffic",
+        "filter": "1", // droneId: 1
+        "eventData": {
+            "id": "someid", //any string (format subject to change)
             "position": {
                 "latitude": 42.0,
                 "longitude": 10.0,
