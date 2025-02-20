@@ -16,7 +16,7 @@ export default class Live {
         this.status = new ApiStatus(this.liveWebSocket.getSocket())
     }
 
-    subscribeToRemoteController(remoteControllerId: number, callback: (event: 'remote_controller', filter: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType){//TODO implement unsubscribe
+    subscribeToRemoteController(remoteControllerId: number, callback: (event: 'remote_controller', filter: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType, data: server_to_client.Message_Type_Event_Object_Data_RemoteController)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType){//TODO implement unsubscribe
         return this.liveWebSocket.subscribeToEvent('remote_controller', '' + remoteControllerId + (filter ? '.' + filter : '') , (evt, _, data)=>{
             callback(evt, filter, data)
         })

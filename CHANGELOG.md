@@ -1,3 +1,7 @@
+# [1.3.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.3.0...1.3.1) (20. Feb 2025)
+
+* fix ts type in subscribeToRemoteController()
+
 # [1.3.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.2.0...1.3.0) (20. Feb 2025)
 
 * add live remote_controller and drone telemetry and position
