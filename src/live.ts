@@ -16,14 +16,21 @@ export default class Live {
         this.status = new ApiStatus(this.liveWebSocket.getSocket())
     }
 
-    subscribeToDrone(droneId: number, callback: (event: 'drone', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void){//TODO implement unsubscribe
-        return this.liveWebSocket.subscribeToEvent('drone', '' + droneId, callback)
+    subscribeToDronePosition(droneId: number, callback: (event: 'drone_position', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Drone_Position)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('drone_position', '' + droneId, callback)
+    }
+
+    subscribeToDroneTelemetry(droneId: number, callback: (event: 'drone_telemetry', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Drone_Telemetry)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('drone_telemetry', '' + droneId, callback)
+    }
+
+    subscribeToRemoteControllerPosition(remoteControllerId: number, callback: (event: 'remote_controller_position', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Remote_Controller_Position)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('remote_controller_position', '' + remoteControllerId, callback)
     }
 
     subscribeToDbRowUpdate(table: string, rowId: number, callback: (event: 'db_row_update', filter: string, data: server_to_client.Message_Type_Event_Object_Data_DbRowUpdate)=>void){
         return this.liveWebSocket.subscribeToEvent('db_row_update', table + '.' + rowId, callback)
     }
-
 
     subscribeToTraffic(latitude: number, longitude: number, radius: number, callback: (event: 'traffic', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Traffic)=>void){
         return this.liveWebSocket.subscribeToEvent('traffic', [latitude, longitude, radius].join('$'), callback)
