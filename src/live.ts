@@ -4,6 +4,12 @@ import * as server_to_client from './generated/websocket-definitions/server_to_c
 import EventManager from "./util/event_manager"
 import { ReconnectingWebSocket } from "./util/reconnecting_websocket"
 
+const EVENT_FILTER_SEPARATOR = '%'
+
+function joinEventFilters(...filters: string[]){//TODO escaping on client and server
+    return filters.filter(f => typeof f !== 'undefined').join(EVENT_FILTER_SEPARATOR)
+}
+
 export default class Live {
 
     private readonly liveWebSocket: LiveWebSocket
@@ -17,24 +23,24 @@ export default class Live {
     }
 
     subscribeToRemoteController(remoteControllerId: number, callback: (event: 'remote_controller', filter: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType, data: server_to_client.Message_Type_Event_Object_Data_RemoteController)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_RemoteController_FilterType){//TODO implement unsubscribe
-        return this.liveWebSocket.subscribeToEvent('remote_controller', '' + remoteControllerId + (filter ? '.' + filter : '') , (evt, _, data)=>{
+        return this.liveWebSocket.subscribeToEvent('remote_controller', joinEventFilters('' + remoteControllerId, filter) , (evt, _, data)=>{
             callback(evt, filter, data)
         })
     }
 
     subscribeToDrone(droneId: number, callback: (event: 'drone', filter: server_to_client.Message_Type_Event_Object_Data_Drone_FilterType, data: server_to_client.Message_Type_Event_Object_Data_Drone)=>void, filter?: server_to_client.Message_Type_Event_Object_Data_Drone_FilterType){
-        return this.liveWebSocket.subscribeToEvent('drone', '' + droneId + (filter ? '.' + filter : '') , (evt, _, data)=>{
+        return this.liveWebSocket.subscribeToEvent('drone', joinEventFilters('' + droneId, filter) , (evt, _, data)=>{
             callback(evt, filter, data)
         })
     }
 
     subscribeToDbRowUpdate(table: string, rowId: number, callback: (event: 'db_row_update', filter: string, data: server_to_client.Message_Type_Event_Object_Data_DbRowUpdate)=>void){
-        return this.liveWebSocket.subscribeToEvent('db_row_update', table + '.' + rowId, callback)
+        return this.liveWebSocket.subscribeToEvent('db_row_update', joinEventFilters(table, '' + rowId), callback)
     }
 
 
     subscribeToTraffic(latitude: number, longitude: number, radius: number, callback: (event: 'traffic', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Traffic)=>void){
-        return this.liveWebSocket.subscribeToEvent('traffic', [latitude, longitude, radius].join('$'), callback)
+        return this.liveWebSocket.subscribeToEvent('traffic', joinEventFilters([latitude, longitude, radius].join('$')), callback)
     }
 
 }

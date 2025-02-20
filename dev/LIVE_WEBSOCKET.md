@@ -41,7 +41,7 @@ Following events are supported
 
 ##### `drone`
 
-Subscribe to live positions of a drone
+Subscribe to all events of a drone
 
 ```javascript
 {
@@ -49,6 +49,33 @@ Subscribe to live positions of a drone
     "data": {
         "event": "drone",
         "filter": "1" // droneId: 1
+    }
+    "messageId": ++messageIdCounter
+}
+```
+
+
+Subscribe to only position events of a drone
+
+```javascript
+{
+    "type": "subscribe",
+    "data": {
+        "event": "drone",
+        "filter": "1%position" // droneId: 1
+    }
+    "messageId": ++messageIdCounter
+}
+```
+
+Subscribe to only telemetry events of a drone
+
+```javascript
+{
+    "type": "subscribe",
+    "data": {
+        "event": "drone",
+        "filter": "1%telemetry" // droneId: 1
     }
     "messageId": ++messageIdCounter
 }
@@ -63,7 +90,7 @@ Subscribe to changes of existing database records.
     "type": "subscribe",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable.1" // table: "mytable", rowId: 1
+        "filter": "mytable%1" // table: "mytable", rowId: 1
     }
     "messageId": ++messageIdCounter
 }
@@ -97,13 +124,33 @@ live positions of a drone
     "type": "event",
     "data": {
         "event": "drone",
-        "filter": "1", // droneId: 1
+        "filter": "1%position", // droneId: 1
         "eventData": {
             "id": 1,
             "position": {
                 "latitude": 42.0,
                 "longitude": 10.0,
                 "height": 1234.0, // height above WGS 84 ellipsoid
+                "reported_at": "string" // ISO 8601 encoded timestamp
+            }
+        }
+    }
+    "messageId": 42
+}
+```
+
+live telemetry of a drone
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "drone",
+        "filter": "1%telemetry", // droneId: 1
+        "eventData": {
+            "id": 1,
+            "telemetry": {
+                "battery_percent": 42.0,//percentage
                 "reported_at": "string" // ISO 8601 encoded timestamp
             }
         }
@@ -121,7 +168,7 @@ Subscribe to changes of existing database records.
     "type": "subscribe",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable.1" // table: "mytable", rowId: 1
+        "filter": "mytable%1" // table: "mytable", rowId: 1
         "eventData": {
             "table": "mytable",
             "id": "1"
