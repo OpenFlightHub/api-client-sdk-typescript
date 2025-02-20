@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.1.0'
+        API_VERSION: '0.2.0'
         ,
         auth: {
             login: {
@@ -86,6 +86,12 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     },
             },
         },
+        file: {
+            get:
+                function(params: { fileId: number }) {
+                    return makeRequest<ApiResponse_FileGet>('/file/{fileId}', 'get', false, params, undefined)
+                },
+        },
         workspace: {
             myWorkspaces: {
                 get:
@@ -109,6 +115,26 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 function(params: { workspaceId: number }) {
                     return makeRequest<void>('/workspace/{workspaceId}', 'delete', false, params, undefined)
                 },
+            file: {
+                post:
+                    function(params: { workspaceId: number }, data: { file: File, filename: string }) {
+                        return makeRequest<ApiResponse_WorkspaceFilePost>('/workspace/{workspaceId}/file', 'post', true, params, data)
+                    },
+                patch:
+                    function(params: { workspaceId: number, fileId: number }, data: { filename?: string }) {
+                        return makeRequest<void>('/workspace/{workspaceId}/file/{fileId}', 'patch', false, params, data)
+                    },
+                delete:
+                    function(params: { workspaceId: number, fileId: number }) {
+                        return makeRequest<void>('/workspace/{workspaceId}/file/{fileId}', 'delete', false, params, undefined)
+                    },
+            },
+            files: {
+                get:
+                    function(params: { workspaceId: number }) {
+                        return makeRequest<ApiResponse_WorkspaceFilesGet>('/workspace/{workspaceId}/files', 'get', false, params, undefined)
+                    },
+            },
             connections: {
                 get:
                     function(params: { workspaceId: number }) {
@@ -157,6 +183,12 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 get:
                     function(params: { droneId: number }) {
                         return makeRequest<ApiResponse_DroneLastbatteryGet>('/drone/{droneId}/last-battery', 'get', false, params, undefined)
+                    },
+            },
+            media: {
+                get:
+                    function(params: { droneId: number }) {
+                        return makeRequest<ApiResponse_DroneMediaGet>('/drone/{droneId}/media', 'get', false, params, undefined)
                     },
             },
         },
