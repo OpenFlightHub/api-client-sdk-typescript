@@ -39,43 +39,46 @@ The client can send following additional messages:
 
 Following events are supported
 
-##### `drone`
+##### `drone_position`
 
-Subscribe to all events of a drone
+Subscribe to position events of a drone
 
 ```javascript
 {
     "type": "subscribe",
     "data": {
-        "event": "drone",
+        "event": "drone_position",
         "filter": "1" // droneId: 1
     }
     "messageId": ++messageIdCounter
 }
 ```
 
+##### `drone_telemetry`
 
-Subscribe to only position events of a drone
+Subscribe to telemetry events of a drone
 
 ```javascript
 {
     "type": "subscribe",
     "data": {
-        "event": "drone",
-        "filter": "1%position" // droneId: 1
+        "event": "drone_telemetry",
+        "filter": "1" // droneId: 1
     }
     "messageId": ++messageIdCounter
 }
 ```
 
-Subscribe to only telemetry events of a drone
+##### `remote_controller_position`
+
+Subscribe to position events of a remote controller
 
 ```javascript
 {
     "type": "subscribe",
     "data": {
-        "event": "drone",
-        "filter": "1%telemetry" // droneId: 1
+        "event": "remote_controller_position",
+        "filter": "1" // remoteControllerId: 1
     }
     "messageId": ++messageIdCounter
 }
@@ -90,7 +93,7 @@ Subscribe to changes of existing database records.
     "type": "subscribe",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable%1" // table: "mytable", rowId: 1
+        "filter": "mytable.1" // table: "mytable", rowId: 1
     }
     "messageId": ++messageIdCounter
 }
@@ -187,14 +190,14 @@ live positions of a remote controller
 
 ##### `db_row_update`
 
-Subscribe to changes of existing database records.
+changes of existing database records.
 
 ```javascript
 {
     "type": "subscribe",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable%1" // table: "mytable", rowId: 1
+        "filter": "mytable.1" // table: "mytable", rowId: 1
         "eventData": {
             "table": "mytable",
             "id": "1"
