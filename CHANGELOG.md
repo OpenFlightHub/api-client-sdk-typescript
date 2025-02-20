@@ -1,3 +1,7 @@
+# [1.4.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.3.1...1.4.0) (20. Feb 2025)
+
+* implement filter separators
+
 # [1.3.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.3.0...1.3.1) (20. Feb 2025)
 
 * fix ts type in subscribeToRemoteController()
