@@ -1,4 +1,4 @@
-# [2.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.0.1...2.1.1) (27. Feb 2025)
+# [2.2.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.1.0...2.2.0) (27. Feb 2025)
 
 * add property workspace_uuid for /connection-link/config response data
 
