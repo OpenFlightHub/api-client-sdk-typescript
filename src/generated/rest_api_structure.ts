@@ -213,6 +213,12 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_ConnectionlinkConfigGet>('/connection-link/config', 'get', false, undefined, undefined)
                     },
             },
+            resetWorkspaceUuid: {
+                post:
+                    function() {
+                        return makeRequest<void>('/connection-link/reset-workspace-uuid', 'post', false, undefined, undefined)
+                    },
+            },
             djiPilot2: {
                 sdkConfig: {
                     get:

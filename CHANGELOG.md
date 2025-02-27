@@ -1,3 +1,7 @@
+# [2.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.0.0...2.1.0) (27. Feb 2025)
+
+* add /connection-link/reset-workspace-uuid endpoint
+
 # [2.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/1.2.0...2.0.0) (20. Feb 2025)
 
 * revert the live part of the sdk to version 1.2.0 (which removes the changes to the filter system) and implement new braking changes for events. Also marked version 1.3.0 and 1.4.0 as BREAKING (they should have been a major version).
