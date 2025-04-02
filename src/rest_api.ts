@@ -22,6 +22,7 @@ function RestApi(baseURL?: string){
 export default RestApi
 
 
+const REST_API_TIMEOUT = 1000 * 10
 
 let apiAuth: String
 
@@ -110,7 +111,7 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
             reject('Fatal: timeout when trying to make api call')
 
-        }, 1000 * 3)
+        }, REST_API_TIMEOUT)
 
         fetch(request).then(response => {
             fetchIsDone = true

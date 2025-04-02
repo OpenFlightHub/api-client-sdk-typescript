@@ -1,3 +1,8 @@
+# [2.2.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.2.0...2.2.1) (02. Apr 2025)
+
+* change rest api timeout
+* add ws_url for for dji pilot sdk config
+
 # [2.2.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.1.0...2.2.0) (27. Feb 2025)
 
 * add property workspace_uuid for /connection-link/config response data
