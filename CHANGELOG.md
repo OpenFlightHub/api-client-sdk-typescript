@@ -1,3 +1,9 @@
+# [2.3.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.2.1...2.3.0) (04. Apr 2025)
+
+* add workspace_drone_positions event
+* add serial_number property to drone position
+
+
 # [2.2.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.2.0...2.2.1) (02. Apr 2025)
 
 * change rest api timeout

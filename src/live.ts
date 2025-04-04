@@ -34,6 +34,10 @@ export default class Live {
         return this.liveWebSocket.subscribeToEvent('remote_controller_position', '' + remoteControllerId, callback)
     }
 
+    subscribeToWorkspaceDronesPosition(workspaceId: number, callback: (event: 'workspace_drones_position', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Workspace_Drone_Position)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('workspace_drones_position', '' + workspaceId, callback)
+    }
+
     subscribeToDbRowUpdate(table: string, rowId: number, callback: (event: 'db_row_update', filter: string, data: server_to_client.Message_Type_Event_Object_Data_DbRowUpdate)=>void){
         return this.liveWebSocket.subscribeToEvent('db_row_update', joinEventFilters(table, '' + rowId), callback)
     }
