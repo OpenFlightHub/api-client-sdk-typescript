@@ -1,3 +1,9 @@
+# [2.4.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.3.0...2.4.0) (11. Apr 2025)
+
+* add property name to workspace connection
+* change reference system for connections and drones (drones have a last_connection_id property)
+
+
 # [2.3.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.2.1...2.3.0) (04. Apr 2025)
 
 * add workspace_drone_positions event
