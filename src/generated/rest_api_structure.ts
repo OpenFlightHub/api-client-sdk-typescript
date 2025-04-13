@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_MediaGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.5.0'
+        API_VERSION: '0.6.0'
         ,
         auth: {
             login: {
@@ -191,6 +191,12 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_DroneMediaGet>('/drone/{droneId}/media', 'get', false, params, undefined)
                     },
             },
+        },
+        media: {
+            get:
+                function(params: { mediaId: number }) {
+                    return makeRequest<ApiResponse_MediaGet>('/media/{mediaId}', 'get', false, params, undefined)
+                },
         },
         connectionLink: {
             auth: {
