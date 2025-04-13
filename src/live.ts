@@ -49,6 +49,15 @@ export default class Live {
         return this.liveWebSocket.subscribeToEvent('traffic', joinEventFilters([latitude, longitude, radius].join('$')), callback)
     }
 
+
+    subscribeToDroneMedia(droneId: number, callback: (event: 'drone_media', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Drone_Media)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('drone_media', '' + droneId, callback)
+    }
+
+
+    subscribeToWorkspaceDronesMedia(workspaceId: number, callback: (event: 'workspace_drones_media', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Workspace_Drone_Media)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('workspace_drones_media', '' + workspaceId, callback)
+    }
 }
 
 
