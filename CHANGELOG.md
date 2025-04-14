@@ -1,3 +1,9 @@
+# [2.8.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.7.0...2.8.0) (14. Apr 2025)
+
+* add has_thumbail to file
+* add helpers for file and thumbnail url
+
+
 # [2.7.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.6.0...2.7.0) (13. Apr 2025)
 
 * add file_name and drone_id to media object

@@ -21,4 +21,12 @@ export class OpenFlightHubApi{
         this.rest = RestApi(options?.restApiBaseUrl)
         this.live = new Live(options?.liveWebsocketBaseUrl)
     }
+
+    getFileDataUrl(fileId: number){
+        return '/api/file/data/' + fileId
+    }
+
+    getFileThumbnailUrl(fileId: number){
+        return '/api/file/thumbnail/' + fileId
+    }
 }

@@ -19,7 +19,7 @@ export type ApiResponse_UserPatch = { id: number, name: string, email: string, c
 
 export type ApiResponse_UserSelfGet = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean }
 
-export type ApiResponse_FileGet = { id: number, name: string, created_at: string }
+export type ApiResponse_FileGet = { id: number, name: string, created_at: string, has_thumbnail: boolean }
 
 export type ApiResponse_WorkspaceMyworkspacesGet = { id: number, name: string }[]
 
