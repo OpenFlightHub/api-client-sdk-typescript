@@ -1,3 +1,7 @@
+# [2.9.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.8.0...2.9.0) (15. Apr 2025)
+
+* add file_id and drone_serial_number to drone media events
+
 # [2.8.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.7.0...2.8.0) (14. Apr 2025)
 
 * add has_thumbail to file

@@ -76,6 +76,8 @@ export type Message_Type_Event_Object_Data_Drone_Media = {
     id: number
     workspace_id: number
     drone_id: number
+    file_id: number
+    drone_serial_number: string
 }
 
 export type Message_Type_Event_Object_Data_Workspace_Drone_Media = Message_Type_Event_Object_Data_Drone_Media
