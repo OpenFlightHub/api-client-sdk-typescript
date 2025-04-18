@@ -55,7 +55,7 @@ export type ApiResponse_DroneMediaGet = { id: number, drone_id: number, type: nu
 
 export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }[]
 
-export type ApiResponse_DroneCurrentflightGet = { id: number }
+export type ApiResponse_DroneCurrentflightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }
 
 export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }
 
