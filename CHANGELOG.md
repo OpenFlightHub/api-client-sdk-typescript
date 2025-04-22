@@ -1,3 +1,8 @@
+# [2.11.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.10.1...2.11.0) (22. Apr 2025)
+
+* add /flight/media endpoint
+* change /workspace/files endpoint so it returns full file data (like /file)
+
 # [2.10.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.10.0...2.10.1) (18. Apr 2025)
 
 * fix return type of /drone/current-flight
