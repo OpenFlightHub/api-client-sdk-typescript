@@ -1,3 +1,7 @@
+# [2.13.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.12.0...2.13.0) (22. Apr 2025)
+
+* add flight_id to media events
+
 # [2.12.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.11.0...2.12.0) (22. Apr 2025)
 
 * add flight_id to media objects
