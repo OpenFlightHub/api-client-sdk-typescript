@@ -51,7 +51,7 @@ export type ApiResponse_DroneLastpositionGet = { longitude: number, latitude: nu
 
 export type ApiResponse_DroneLastbatteryGet = { capacity_percent_left: number, reported_at: string }
 
-export type ApiResponse_DroneMediaGet = { id: number, drone_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }[]
+export type ApiResponse_DroneMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }[]
 
 export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }[]
 
@@ -59,9 +59,9 @@ export type ApiResponse_DroneCurrentflightGet = { id: number, drone_id: number, 
 
 export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }
 
-export type ApiResponse_FlightMediaGet = { id: number, drone_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }[]
+export type ApiResponse_FlightMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }[]
 
-export type ApiResponse_MediaGet = { id: number, drone_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }
+export type ApiResponse_MediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, created_at: string, meta?: string }
 
 export type ApiResponse_MediaGroundcoverageGet = { coverage: { all: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[], outer: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[], holes: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[][] } }
 
