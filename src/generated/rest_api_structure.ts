@@ -3,7 +3,7 @@ import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost,
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.11.0'
+        API_VERSION: '0.12.0'
         ,
         auth: {
             login: {
@@ -106,7 +106,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     },
             },
             post:
-                function(data: { name: string }) {
+                function(data: { name: string, longitude: number, latitude: number }) {
                     return makeRequest<ApiResponse_WorkspacePost>('/workspace', 'post', false, undefined, data)
                 },
             get:
