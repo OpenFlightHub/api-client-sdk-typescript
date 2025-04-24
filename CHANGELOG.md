@@ -1,3 +1,9 @@
+# [2.14.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.13.0...2.14.0) (25. Apr 2025)
+
+* BREAKING: refactor media created_at to received_at and captured_at
+* add workspace location
+* add media camera meta
+
 # [2.13.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.12.0...2.13.0) (22. Apr 2025)
 
 * add flight_id to media events
