@@ -90,7 +90,7 @@ export type Message_Type_Event_Object_Data_Map_Element<MapElementEventType = 'cr
     data: MapElementEventType extends 'delete' ? undefined : {
         created_at: string
         updated_at: string
-        name: number
+        name: string
         type: number
         content: {
             type: string

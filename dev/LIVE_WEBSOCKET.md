@@ -109,7 +109,7 @@ Subscribe to changes of existing database records.
     "type": "subscribe",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable.1" // table: "mytable", rowId: 1
+        "filter": "mytable%1" // table: "mytable", rowId: 1
     }
     "messageId": ++messageIdCounter
 }
@@ -227,7 +227,52 @@ live positions of traffic (other aircraft)
     "messageId": 42
 }
 ```
+##### `workspace_drones_position`
 
+live positions of all drones in a workspace
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "workspace_drones_position",
+        "filter": "1", // workspaceId: 1
+        "eventData": {
+            "id": 1,
+            "serial_number": "string"
+            "position": {
+                "latitude": 42.0,
+                "longitude": 10.0,
+                "height": 1234.0, // height above WGS 84 ellipsoid
+                "reported_at": "string" // ISO 8601 encoded timestamp
+            }
+        }
+    }
+    "messageId": 42
+}
+```
+##### `workspace_drones_media`
+
+Get notified if any drone in the workspace has uploaded new media
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "workspace_drones_media",
+        "filter": "1", // workspaceId: 1
+        "eventData": {
+            "id": 1,
+            "workspace_id": 2,
+            "drone_id": 3,
+            "flight_id": 4,
+            "file_id": 5,
+            "drone_serial_number": "string"
+        }
+    }
+    "messageId": 42
+}
+```
 
 ##### `db_row_update`
 
@@ -235,15 +280,51 @@ changes of existing database records.
 
 ```javascript
 {
-    "type": "subscribe",
+    "type": "event",
     "data": {
         "event": "db_row_update",
-        "filter": "mytable.1" // table: "mytable", rowId: 1
+        "filter": "mytable%1", // table: mytable, row id: 1
         "eventData": {
-            "table": "mytable",
-            "id": "1"
+            "id": 1,
+            "table": "mytable"
         }
     }
     "messageId": 42
+}
+```
+
+##### `map_element`
+
+Changes of map elements
+
+```javascript
+{
+    "type": "event",
+    "data": {
+        "event": "db_row_update",
+        "filter": "mytable%1", // table: mytable, row id: 1
+        "eventData": {
+            "event_type": "create" // or "update" or "delete"
+            "uuid": "string"
+            "data": { // undefined if event_type is "delete"
+                "created_at": "string" //iso 8601
+                "updated_at": "string" //iso 8601
+                "name": "string"
+                "type": 0 // 0 = point, 1 = line, 2 = polygon
+                "content": {
+                    type: "Feature"
+                    geometry: {
+                        type: "Point" // or "LineString" or "Polygon"
+                        coordinates: [12.111, 76.222] // see GeoJSON format depending on the geometry "type"
+                    },
+                    properties: {
+                        clampToGround: true
+                        is3d?: true // TODO: explain
+                        color: "#2D8CF0" //hex but only specific colors: BLUE: #2D8CF0, GREEN: #19BE6B, YELLOW: #FFBB00, RED: #E23C39, PURPLE: #B620E0
+                    }
+                }
+            }
+        }
+    }
 }
 ```

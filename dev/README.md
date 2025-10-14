@@ -35,7 +35,7 @@ The api version is automatically fetched from the openapi spec file in the api r
 * Make sure your version in the package.json has been changed
 * commit
 * Make sure you pushed git changes to github (so npmjs can cache the latest version of readme etc)
-* create a new tag (version number)
+* create a new relase/tag (version number)
 
 ## Publish to npm
 
