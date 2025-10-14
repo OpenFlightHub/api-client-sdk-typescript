@@ -1,3 +1,7 @@
+# [2.15.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.14.0...2.15.0) (14. Oct 2025)
+
+* add map_element event
+
 # [2.14.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.13.0...2.14.0) (25. Apr 2025)
 
 * BREAKING: refactor media created_at to received_at and captured_at

@@ -58,6 +58,11 @@ export default class Live {
     subscribeToWorkspaceDronesMedia(workspaceId: number, callback: (event: 'workspace_drones_media', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Workspace_Drone_Media)=>void){//TODO implement unsubscribe
         return this.liveWebSocket.subscribeToEvent('workspace_drones_media', '' + workspaceId, callback)
     }
+
+    subscribeToMapElements(workspaceId: number, callback: (event: 'map_element', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Map_Element)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('map_element', '' + workspaceId, callback)
+    }
+
 }
 
 
