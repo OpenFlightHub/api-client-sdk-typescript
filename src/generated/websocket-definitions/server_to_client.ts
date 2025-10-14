@@ -64,6 +64,7 @@ export type Message_Type_Event_Object_Data_DbRowUpdate = {
 
 export type Message_Type_Event_Object_Data_Traffic = {
     id: string
+    name: string
     position: {
         latitude: number
         longitude: number

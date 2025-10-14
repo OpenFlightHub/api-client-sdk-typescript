@@ -1,3 +1,7 @@
+# [2.15.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.15.0...2.15.1) (15. Oct 2025)
+
+* add field "name" to traffic event data
+
 # [2.15.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.14.0...2.15.0) (14. Oct 2025)
 
 * add map_element event
