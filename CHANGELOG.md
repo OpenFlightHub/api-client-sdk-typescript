@@ -1,3 +1,7 @@
+# [2.16.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.16.0...2.16.1) (15. Oct 2025)
+
+* fix api return types for map elements
+
 # [2.16.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.15.1...2.16.0) (15. Oct 2025)
 
 * add map-element api
