@@ -88,22 +88,43 @@ export type Message_Type_Event_Object_Data_Workspace_Drone_Media = Message_Type_
 export type Message_Type_Event_Object_Data_Map_Element<MapElementEventType = 'create' | 'update' | 'delete'> = {
     event_type: MapElementEventType
     uuid: string
-    data: MapElementEventType extends 'delete' ? undefined : {
-        created_at: string
-        updated_at: string
-        name: string
-        type: number
-        content: {
-            type: string
-            geometry: {
-                type: string
-                coordinates: number[] | [number, number][] | [number, number][][]
-            },
-            properties: {
-                clampToGround: boolean
-                is3d?: boolean
-                color: string //hex but only specific colors: BLUE: #2D8CF0, GREEN: #19BE6B, YELLOW: #FFBB00, RED: #E23C39, PURPLE: #B620E0
-            }
-        }
-    }
+    data: MapElementEventType extends 'delete' ? undefined : (Message_Type_Event_Object_Data_Map_Element_Point | Message_Type_Event_Object_Data_Map_Element_Line | Message_Type_Event_Object_Data_Map_Element_Polygon | Message_Type_Event_Object_Data_Map_Element_Circle)
+}
+
+export type Message_Type_Event_Object_Data_Map_Element_Base<T extends number> = {
+    id: number
+    uuid: string
+    name: string
+    type: T
+    color: string
+    created_at: string
+    updated_at: string
+}
+
+export interface Message_Type_Event_Object_Data_Map_Element_Point extends Message_Type_Event_Object_Data_Map_Element_Base<0> {
+    longitude: number
+    latitude: number
+    elevation?: number
+}
+
+export interface Message_Type_Event_Object_Data_Map_Element_Line extends Message_Type_Event_Object_Data_Map_Element_Base<1> {
+    coordinates: {
+        longitude: number
+        latitude: number
+        elevation?: number
+    }[]
+}
+
+export interface Message_Type_Event_Object_Data_Map_Element_Polygon extends Message_Type_Event_Object_Data_Map_Element_Base<2> {
+    coordinates: {
+        longitude: number
+        latitude: number
+        elevation?: number
+    }[][]
+}
+
+export interface Message_Type_Event_Object_Data_Map_Element_Circle extends Message_Type_Event_Object_Data_Map_Element_Base<7> {
+    longitude: number
+    latitude: number
+    radius: number
 }

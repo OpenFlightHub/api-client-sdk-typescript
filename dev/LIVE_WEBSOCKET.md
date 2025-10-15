@@ -310,19 +310,12 @@ Changes of map elements
                 "created_at": "string" //iso 8601
                 "updated_at": "string" //iso 8601
                 "name": "string"
-                "type": 0 // 0 = point, 1 = line, 2 = polygon
-                "content": {
-                    type: "Feature"
-                    geometry: {
-                        type: "Point" // or "LineString" or "Polygon"
-                        coordinates: [12.111, 76.222] // see GeoJSON format depending on the geometry "type"
-                    },
-                    properties: {
-                        clampToGround: true
-                        is3d?: true // TODO: explain
-                        color: "#2D8CF0" //hex but only specific colors: BLUE: #2D8CF0, GREEN: #19BE6B, YELLOW: #FFBB00, RED: #E23C39, PURPLE: #B620E0
-                    }
-                }
+                "type": 0 // 0 = point, 1 = line, 2 = polygon, 7 = circle
+                "coordinates": []// depends on type
+                "longitude": 0 // depends on type
+                "latitude": 0 // depends on type
+                "elevation": 0 // depends on type
+                "radius": 0 // depends on type
             }
         }
     }

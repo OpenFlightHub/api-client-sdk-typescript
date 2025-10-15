@@ -1,3 +1,7 @@
+# [2.18.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.17.1...2.18.0) (15. Oct 2025)
+
+* BREAKING: adjust format for map_elements event
+
 # [2.17.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.17.0...2.17.1) (15. Oct 2025)
 
 * fix typescript types for map_elements field "type"
