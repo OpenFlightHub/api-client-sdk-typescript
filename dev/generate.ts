@@ -333,10 +333,41 @@ function schemaToTypescriptType(schema: any){
     if(schema['allOf']){//TODO
         let obj = {}
 
+        Object.assign(obj, schema)
+        delete obj['allOf']
+
         while(schema['allOf'].length > 0){
             const sc = schema['allOf'].splice(0, 1)[0]
-            Object.assign(obj, sc)
+
+            for(const key of Object.keys(sc)){
+                if(typeof obj[key] === 'undefined'){
+                    obj[key] = sc[key]
+                }
+            }
+
+            if(sc.type !== 'object'){//only supported for objects
+                console.error(schema)
+                throw new Error('allOf is only supported for object!')
+            }
+
+            if(sc.properties){
+                if(!obj['properties']){
+                    obj['properties'] = {}
+                }
+
+                Object.assign(obj['properties'], sc.properties)
+            }
+
+            if(sc.required){
+                if(!obj['required']){
+                    obj['required'] = []
+                }
+
+                obj['required'].push(...sc.required)
+            }
         }
+
+        console.log('allOf combined', schema, 'into', obj)
 
         schema = obj
     } else if(schema['oneOf'] || schema['anyOf']){
