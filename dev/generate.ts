@@ -373,7 +373,7 @@ function schemaToTypescriptType(schema: any){
     } else if(schema['oneOf'] || schema['anyOf']){
         const cf = schema['oneOf'] || schema['anyOf']
 
-        return cf.map(val => schemaToTypescriptType(val)).join('|')
+        return '(' + cf.map(val => schemaToTypescriptType(val)).join('|') + ')'
     }
 
     switch(schema.type){
