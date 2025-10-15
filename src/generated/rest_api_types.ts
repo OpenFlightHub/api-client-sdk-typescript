@@ -41,6 +41,16 @@ export type ApiResponse_WorkspaceConnectionsPost = { connection_id: string, secr
 
 export type ApiResponse_ConnectionGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number }
 
+export type ApiResponse_WorkspaceMapelementsGet = { latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string }[]
+
+export type ApiResponse_WorkspaceMapelementsCreatePointPost = { id: number }
+
+export type ApiResponse_WorkspaceMapelementsCreateLinePost = { id: number }
+
+export type ApiResponse_WorkspaceMapelementsCreatePolygonPost = { id: number }
+
+export type ApiResponse_WorkspaceMapelementPatch = { latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string }
+
 export type ApiResponse_RemotecontrollerGet = { id: number, serial_number: string, type: integer }
 
 export type ApiResponse_RemotecontrollerLastpositionGet = { longitude: number, latitude: number, height: number, reported_at: string }
@@ -63,7 +73,7 @@ export type ApiResponse_FlightMediaGet = { id: number, drone_id: number, flight_
 
 export type ApiResponse_MediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }
 
-export type ApiResponse_MediaGroundcoverageGet = { coverage: { all: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[], outer: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[], holes: { position: { longitude: number, latitude: number }, elevation: number, debug?: string }[][] } }
+export type ApiResponse_MediaGroundcoverageGet = { coverage: { all: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[], outer: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[], holes: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[][] } }
 
 export type ApiResponse_ConnectionlinkConfigGet = { connection_id: string, platform_name: string, platform_url: string, workspace_id: string, workspace_uuid: string, workspace_name: string, secret: string }
 

@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_FileGetmultiplePost, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentflightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundcoverageGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_FileGetmultiplePost, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceMapelementsGet, ApiResponse_WorkspaceMapelementsCreatePointPost, ApiResponse_WorkspaceMapelementsCreateLinePost, ApiResponse_WorkspaceMapelementsCreatePolygonPost, ApiResponse_WorkspaceMapelementPatch, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentflightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundcoverageGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.13.0'
+        API_VERSION: '0.14.0'
         ,
         auth: {
             login: {
@@ -149,6 +149,42 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 post:
                     function(params: { workspaceId: number }, data: { name: string }) {
                         return makeRequest<ApiResponse_WorkspaceConnectionsPost>('/workspace/{workspaceId}/connections', 'post', false, params, data)
+                    },
+            },
+            mapElements: {
+                get:
+                    function(params: { workspaceId: number }) {
+                        return makeRequest<ApiResponse_WorkspaceMapelementsGet>('/workspace/{workspaceId}/map-elements', 'get', false, params, undefined)
+                    },
+                create: {
+                    point: {
+                        post:
+                            function(params: { workspaceId: number }, data: { longitude: number, latitude: number, elevation?: number, uuid?: string, name: string, color: string }) {
+                                return makeRequest<ApiResponse_WorkspaceMapelementsCreatePointPost>('/workspace/{workspaceId}/map-elements/create/point', 'post', false, params, data)
+                            },
+                    },
+                    line: {
+                        post:
+                            function(params: { workspaceId: number }, data: { coordinates: { longitude: number, latitude: number, elevation?: number }[], uuid?: string, name: string, color: string }) {
+                                return makeRequest<ApiResponse_WorkspaceMapelementsCreateLinePost>('/workspace/{workspaceId}/map-elements/create/line', 'post', false, params, data)
+                            },
+                    },
+                    polygon: {
+                        post:
+                            function(params: { workspaceId: number }, data: { coordinates: { longitude: number, latitude: number, elevation?: number }[][], uuid?: string, name: string, color: string }) {
+                                return makeRequest<ApiResponse_WorkspaceMapelementsCreatePolygonPost>('/workspace/{workspaceId}/map-elements/create/polygon', 'post', false, params, data)
+                            },
+                    },
+                },
+            },
+            mapElement: {
+                patch:
+                    function(params: { workspaceId: number, mapElementId: number }, data: { latitude?: number, longitude?: number, elevation?: number, name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[], name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[][], name?: string, color?: string }) {
+                        return makeRequest<ApiResponse_WorkspaceMapelementPatch>('/workspace/{workspaceId}/map-element/{mapElementId}', 'patch', false, params, data)
+                    },
+                delete:
+                    function(params: { workspaceId: number, mapElementId: number }) {
+                        return makeRequest<void>('/workspace/{workspaceId}/map-element/{mapElementId}', 'delete', false, params, undefined)
                     },
             },
         },
