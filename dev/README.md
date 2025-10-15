@@ -41,3 +41,18 @@ The api version is automatically fetched from the openapi spec file in the api r
 
 next step requires successfull login via `npm login`
 * run `npm publish` (might require `--otp`)
+
+## update in your project
+
+```
+npm install openflighthub-api-client-sdk@2.16.2
+```
+
+if you are too fast, sometimes npm backend did dont update yet, and your npm cache is now broken (yes, LOL).
+clear cache:
+
+````
+npm cache clean --force
+```
+
+then run the npm install command again
