@@ -41,7 +41,7 @@ export type ApiResponse_WorkspaceConnectionsPost = { connection_id: string, secr
 
 export type ApiResponse_ConnectionGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number }
 
-export type ApiResponse_WorkspaceMapelementsGet = { latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string }[]
+export type ApiResponse_WorkspaceMapelementsGet = ({ latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string })[]
 
 export type ApiResponse_WorkspaceMapelementsCreatePointPost = { id: number }
 
@@ -49,7 +49,7 @@ export type ApiResponse_WorkspaceMapelementsCreateLinePost = { id: number }
 
 export type ApiResponse_WorkspaceMapelementsCreatePolygonPost = { id: number }
 
-export type ApiResponse_WorkspaceMapelementPatch = { latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string }
+export type ApiResponse_WorkspaceMapelementPatch = ({ latitude: number, longitude: number, elevation?: number, id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string } | { coordinates: { latitude: number, longitude: number, elevation?: number }[][], id: number, uuid: string, name: string, created_at: string, updated_at: string, type: integer, color: string })
 
 export type ApiResponse_RemotecontrollerGet = { id: number, serial_number: string, type: integer }
 

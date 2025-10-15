@@ -8,13 +8,13 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         auth: {
             login: {
                 post:
-                    function(data: { username: string, password: string }) {
+                    function(data: ({ username: string, password: string })) {
                         return makeRequest<ApiResponse_AuthLoginPost>('/auth/login', 'post', false, undefined, data)
                     },
             },
             loginWithToken: {
                 post:
-                    function(data: { token: string }) {
+                    function(data: ({ token: string })) {
                         return makeRequest<ApiResponse_AuthLoginwithtokenPost>('/auth/login-with-token', 'post', false, undefined, data)
                     },
             },
@@ -26,25 +26,25 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
             passwordChange: {
                 post:
-                    function(data: { current_password: string, new_password: string }) {
+                    function(data: ({ current_password: string, new_password: string })) {
                         return makeRequest<void>('/auth/password-change', 'post', false, undefined, data)
                     },
             },
             passwordReset: {
                 post:
-                    function(data: { username: string }) {
+                    function(data: ({ username: string })) {
                         return makeRequest<void>('/auth/password-reset', 'post', false, undefined, data)
                     },
             },
             passwordSetInitial: {
                 post:
-                    function(data: { new_password: string }) {
+                    function(data: ({ new_password: string })) {
                         return makeRequest<void>('/auth/password-set-initial', 'post', false, undefined, data)
                     },
             },
             passwordSetNew: {
                 post:
-                    function(data: { new_password: string, code: string }) {
+                    function(data: ({ new_password: string, code: string })) {
                         return makeRequest<void>('/auth/password-set-new', 'post', false, undefined, data)
                     },
             },
@@ -53,7 +53,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     /**
                     * @deprecated
                     */
-                    function(data: { email: string, password?: string }) {
+                    function(data: ({ email: string, password?: string })) {
                         return makeRequest<ApiResponse_AuthRegisterPost>('/auth/register', 'post', false, undefined, data)
                     },
             },
@@ -76,7 +76,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     return makeRequest<ApiResponse_UserGet>('/user/{userId}', 'get', false, params, undefined)
                 },
             patch:
-                function(params: { userId: number }, data: { name?: string, email?: string, locale?: string }) {
+                function(params: { userId: number }, data: ({ name?: string, email?: string, locale?: string })) {
                     return makeRequest<ApiResponse_UserPatch>('/user/{userId}', 'patch', false, params, data)
                 },
             self: {
@@ -93,7 +93,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 },
             getMultiple: {
                 post:
-                    function(data: { ids: number[] }) {
+                    function(data: ({ ids: number[] })) {
                         return makeRequest<ApiResponse_FileGetmultiplePost>('/file/get-multiple', 'post', false, undefined, data)
                     },
             },
@@ -106,7 +106,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     },
             },
             post:
-                function(data: { name: string, longitude: number, latitude: number }) {
+                function(data: ({ name: string, longitude: number, latitude: number })) {
                     return makeRequest<ApiResponse_WorkspacePost>('/workspace', 'post', false, undefined, data)
                 },
             get:
@@ -114,7 +114,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     return makeRequest<ApiResponse_WorkspaceGet>('/workspace/{workspaceId}', 'get', false, params, undefined)
                 },
             patch:
-                function(params: { workspaceId: number }, data: { name?: string }) {
+                function(params: { workspaceId: number }, data: ({ name?: string })) {
                     return makeRequest<ApiResponse_WorkspacePatch>('/workspace/{workspaceId}', 'patch', false, params, data)
                 },
             delete:
@@ -123,11 +123,11 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 },
             file: {
                 post:
-                    function(params: { workspaceId: number }, data: { file: File, filename: string }) {
+                    function(params: { workspaceId: number }, data: ({ file: File, filename: string })) {
                         return makeRequest<ApiResponse_WorkspaceFilePost>('/workspace/{workspaceId}/file', 'post', true, params, data)
                     },
                 patch:
-                    function(params: { workspaceId: number, fileId: number }, data: { filename?: string }) {
+                    function(params: { workspaceId: number, fileId: number }, data: ({ filename?: string })) {
                         return makeRequest<void>('/workspace/{workspaceId}/file/{fileId}', 'patch', false, params, data)
                     },
                 delete:
@@ -147,7 +147,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_WorkspaceConnectionsGet>('/workspace/{workspaceId}/connections', 'get', false, params, undefined)
                     },
                 post:
-                    function(params: { workspaceId: number }, data: { name: string }) {
+                    function(params: { workspaceId: number }, data: ({ name: string })) {
                         return makeRequest<ApiResponse_WorkspaceConnectionsPost>('/workspace/{workspaceId}/connections', 'post', false, params, data)
                     },
             },
@@ -159,19 +159,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 create: {
                     point: {
                         post:
-                            function(params: { workspaceId: number }, data: { longitude: number, latitude: number, elevation?: number, uuid?: string, name: string, color: string }) {
+                            function(params: { workspaceId: number }, data: ({ longitude: number, latitude: number, elevation?: number, uuid?: string, name: string, color: string })) {
                                 return makeRequest<ApiResponse_WorkspaceMapelementsCreatePointPost>('/workspace/{workspaceId}/map-elements/create/point', 'post', false, params, data)
                             },
                     },
                     line: {
                         post:
-                            function(params: { workspaceId: number }, data: { coordinates: { longitude: number, latitude: number, elevation?: number }[], uuid?: string, name: string, color: string }) {
+                            function(params: { workspaceId: number }, data: ({ coordinates: { longitude: number, latitude: number, elevation?: number }[], uuid?: string, name: string, color: string })) {
                                 return makeRequest<ApiResponse_WorkspaceMapelementsCreateLinePost>('/workspace/{workspaceId}/map-elements/create/line', 'post', false, params, data)
                             },
                     },
                     polygon: {
                         post:
-                            function(params: { workspaceId: number }, data: { coordinates: { longitude: number, latitude: number, elevation?: number }[][], uuid?: string, name: string, color: string }) {
+                            function(params: { workspaceId: number }, data: ({ coordinates: { longitude: number, latitude: number, elevation?: number }[][], uuid?: string, name: string, color: string })) {
                                 return makeRequest<ApiResponse_WorkspaceMapelementsCreatePolygonPost>('/workspace/{workspaceId}/map-elements/create/polygon', 'post', false, params, data)
                             },
                     },
@@ -179,7 +179,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
             mapElement: {
                 patch:
-                    function(params: { workspaceId: number, mapElementId: number }, data: { latitude?: number, longitude?: number, elevation?: number, name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[], name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[][], name?: string, color?: string }) {
+                    function(params: { workspaceId: number, mapElementId: number }, data: (({ latitude?: number, longitude?: number, elevation?: number, name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[], name?: string, color?: string } | { coordinates?: { latitude: number, longitude: number, elevation?: number }[][], name?: string, color?: string }))) {
                         return makeRequest<ApiResponse_WorkspaceMapelementPatch>('/workspace/{workspaceId}/map-element/{mapElementId}', 'patch', false, params, data)
                     },
                 delete:
@@ -280,7 +280,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 },
                 login: {
                     post:
-                        function(data: { connection_id: string, secret: string }) {
+                        function(data: ({ connection_id: string, secret: string })) {
                             return makeRequest<void>('/connection-link/auth/login', 'post', false, undefined, data)
                         },
                 },
