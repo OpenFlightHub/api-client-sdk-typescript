@@ -360,7 +360,7 @@ function schemaToTypescriptType(schema: any){
                 }
 
                 for(const key of Object.keys(sc.properties)){
-                    if(typeof obj['properties'][key] === 'undefined'){
+                    if(typeof obj['properties'][key] === 'undefined' || typeof sc.properties[key]['x-const'] !== undefined){
                         obj['properties'][key] = sc.properties[key]
                     }
                 }
