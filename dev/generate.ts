@@ -355,7 +355,11 @@ function schemaToTypescriptType(schema: any){
                     obj['properties'] = {}
                 }
 
-                Object.assign(obj['properties'], sc.properties)
+                for(const key of Object.keys(sc.properties)){
+                    if(typeof obj['properties'][key] === 'undefined'){
+                        obj['properties'][key] = sc.properties[key]
+                    }
+                }
             }
 
             if(sc.required){
@@ -363,7 +367,11 @@ function schemaToTypescriptType(schema: any){
                     obj['required'] = []
                 }
 
-                obj['required'].push(...sc.required)
+                for(const k of sc.required){
+                    if(!obj['required'].includes(k)){
+                        obj['required'].push(k)
+                    }
+                }
             }
         }
 
@@ -374,6 +382,10 @@ function schemaToTypescriptType(schema: any){
         const cf = schema['oneOf'] || schema['anyOf']
 
         return '(' + cf.map(val => schemaToTypescriptType(val)).join('|') + ')'
+    }
+
+    if(typeof schema['x-const'] !== 'undefined'){
+        return schema['x-const']
     }
 
     switch(schema.type){
