@@ -330,7 +330,7 @@ function camelcasify(val){
 
 function schemaToTypescriptType(schema: any){
 
-    if(schema['allOf']){//TODO
+    if(schema['allOf']){
         let obj = {}
 
         Object.assign(obj, schema)
