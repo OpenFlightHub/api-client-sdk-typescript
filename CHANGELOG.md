@@ -1,3 +1,7 @@
+# [2.17.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.16.2...2.17.0) (15. Oct 2025)
+
+* add circle map element
+
 # [2.16.2](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.16.1...2.16.2) (15. Oct 2025)
 
 * improve types for map elements

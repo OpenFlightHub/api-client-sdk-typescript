@@ -333,6 +333,10 @@ function schemaToTypescriptType(schema: any){
     if(schema['allOf']){
         let obj = {}
 
+        if(Object.keys(schema).length > 1){
+            throw new Error('schemas that use "allOf" are not allowed to have any other entrys!')
+        }
+
         Object.assign(obj, schema)
         delete obj['allOf']
 
