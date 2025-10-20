@@ -4,6 +4,7 @@ import RestApi from './rest_api';
 import {CLIENT_SDK_VERSION} from './generated/client_sdk_version'
 
 export type * from './generated/rest_api_types';
+export type * from './generated/websocket-definitions/server_to_client';
 export type {ApiStatusEvents} from './live'
 export type {makeStructure} from './generated/rest_api_structure'
 export type {Live}
