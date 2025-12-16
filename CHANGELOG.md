@@ -1,3 +1,8 @@
+# [3.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.18.0...3.0.0) (16. Dez 2025)
+
+* BREAKING: use new geo objects endpoint and events (old: map elements)
+* adjust some type names
+
 # [2.18.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/2.17.1...2.18.0) (15. Oct 2025)
 
 * BREAKING: adjust format for map_elements event

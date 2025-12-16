@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginwithtokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamtokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_FileGetmultiplePost, ApiResponse_WorkspaceMyworkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceMapelementsGet, ApiResponse_WorkspaceMapelementsCreatePointPost, ApiResponse_WorkspaceMapelementsCreateLinePost, ApiResponse_WorkspaceMapelementsCreatePolygonPost, ApiResponse_WorkspaceMapelementsCreateCirclePost, ApiResponse_WorkspaceMapelementPatch, ApiResponse_RemotecontrollerGet, ApiResponse_RemotecontrollerLastpositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastpositionGet, ApiResponse_DroneLastbatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentflightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundcoverageGet, ApiResponse_ConnectionlinkConfigGet, ApiResponse_ConnectionlinkDjipilot2SdkconfigGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.15.0'
+        API_VERSION: '0.16.0'
         ,
         auth: {
             login: {
@@ -15,7 +15,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             loginWithToken: {
                 post:
                     function(data: ({ token: string })) {
-                        return makeRequest<ApiResponse_AuthLoginwithtokenPost>('/auth/login-with-token', 'post', false, undefined, data)
+                        return makeRequest<ApiResponse_AuthLoginWithTokenPost>('/auth/login-with-token', 'post', false, undefined, data)
                     },
             },
             check: {
@@ -66,7 +66,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             streamToken: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_AuthStreamtokenGet>('/auth/stream-token', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_AuthStreamTokenGet>('/auth/stream-token', 'get', false, undefined, undefined)
                     },
             },
         },
@@ -94,7 +94,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             getMultiple: {
                 post:
                     function(data: ({ ids: number[] })) {
-                        return makeRequest<ApiResponse_FileGetmultiplePost>('/file/get-multiple', 'post', false, undefined, data)
+                        return makeRequest<ApiResponse_FileGetMultiplePost>('/file/get-multiple', 'post', false, undefined, data)
                     },
             },
         },
@@ -102,7 +102,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             myWorkspaces: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_WorkspaceMyworkspacesGet>('/workspace/my-workspaces', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_WorkspaceMyWorkspacesGet>('/workspace/my-workspaces', 'get', false, undefined, undefined)
                     },
             },
             post:
@@ -151,46 +151,26 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_WorkspaceConnectionsPost>('/workspace/{workspaceId}/connections', 'post', false, params, data)
                     },
             },
-            mapElements: {
+            geoObjects: {
                 get:
                     function(params: { workspaceId: number }) {
-                        return makeRequest<ApiResponse_WorkspaceMapelementsGet>('/workspace/{workspaceId}/map-elements', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_WorkspaceGeoObjectsGet>('/workspace/{workspaceId}/geo-objects', 'get', false, params, undefined)
                     },
                 create: {
-                    point: {
-                        post:
-                            function(params: { workspaceId: number }, data: ({ uuid?: string, name: string, color: string, longitude: number, latitude: number, elevation?: number })) {
-                                return makeRequest<ApiResponse_WorkspaceMapelementsCreatePointPost>('/workspace/{workspaceId}/map-elements/create/point', 'post', false, params, data)
-                            },
-                    },
-                    line: {
-                        post:
-                            function(params: { workspaceId: number }, data: ({ uuid?: string, name: string, color: string, coordinates: { longitude: number, latitude: number, elevation?: number }[] })) {
-                                return makeRequest<ApiResponse_WorkspaceMapelementsCreateLinePost>('/workspace/{workspaceId}/map-elements/create/line', 'post', false, params, data)
-                            },
-                    },
-                    polygon: {
-                        post:
-                            function(params: { workspaceId: number }, data: ({ uuid?: string, name: string, color: string, coordinates: { longitude: number, latitude: number, elevation?: number }[][] })) {
-                                return makeRequest<ApiResponse_WorkspaceMapelementsCreatePolygonPost>('/workspace/{workspaceId}/map-elements/create/polygon', 'post', false, params, data)
-                            },
-                    },
-                    circle: {
-                        post:
-                            function(params: { workspaceId: number }, data: ({ uuid?: string, name: string, color: string, longitude: number, latitude: number, radius: number })) {
-                                return makeRequest<ApiResponse_WorkspaceMapelementsCreateCirclePost>('/workspace/{workspaceId}/map-elements/create/circle', 'post', false, params, data)
-                            },
-                    },
+                    post:
+                        function(params: { workspaceId: number }, data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: number[], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: number[][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: number[][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: number[], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: number, config: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: number, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))) {
+                            return makeRequest<ApiResponse_WorkspaceGeoObjectsCreatePost>('/workspace/{workspaceId}/geo-objects/create', 'post', false, params, data)
+                        },
                 },
             },
-            mapElement: {
+            geoObject: {
                 patch:
-                    function(params: { workspaceId: number, mapElementId: number }, data: (({ name?: string, color?: string, latitude?: number, longitude?: number, elevation?: number } | { name?: string, color?: string, coordinates?: { latitude: number, longitude: number, elevation?: number }[] } | { name?: string, color?: string, coordinates?: { latitude: number, longitude: number, elevation?: number }[][] } | { name?: string, color?: string, latitude?: number, longitude?: number, radius?: number }))) {
-                        return makeRequest<ApiResponse_WorkspaceMapelementPatch>('/workspace/{workspaceId}/map-element/{mapElementId}', 'patch', false, params, data)
+                    function(params: { workspaceId: number, geoObjectId: number }, data: ((({ name?: string, config?: { point: number[], color: string } } | { name?: string, config?: { line: number[][], color: string } } | { name?: string, config?: { polygon: number[][], color: string } } | { name?: string, config?: { center: number[], radius: number, color: string } }) | { name?: string, config?: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { name?: string, config?: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))) {
+                        return makeRequest<ApiResponse_WorkspaceGeoObjectPatch>('/workspace/{workspaceId}/geo-object/{geoObjectId}', 'patch', false, params, data)
                     },
                 delete:
-                    function(params: { workspaceId: number, mapElementId: number }) {
-                        return makeRequest<void>('/workspace/{workspaceId}/map-element/{mapElementId}', 'delete', false, params, undefined)
+                    function(params: { workspaceId: number, geoObjectId: number }) {
+                        return makeRequest<void>('/workspace/{workspaceId}/geo-object/{geoObjectId}', 'delete', false, params, undefined)
                     },
             },
         },
@@ -207,12 +187,12 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         remoteController: {
             get:
                 function(params: { remoteControllerId: number }) {
-                    return makeRequest<ApiResponse_RemotecontrollerGet>('/remote-controller/{remoteControllerId}', 'get', false, params, undefined)
+                    return makeRequest<ApiResponse_RemoteControllerGet>('/remote-controller/{remoteControllerId}', 'get', false, params, undefined)
                 },
             lastPosition: {
                 get:
                     function(params: { remoteControllerId: number }) {
-                        return makeRequest<ApiResponse_RemotecontrollerLastpositionGet>('/remote-controller/{remoteControllerId}/last-position', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_RemoteControllerLastPositionGet>('/remote-controller/{remoteControllerId}/last-position', 'get', false, params, undefined)
                     },
             },
         },
@@ -224,13 +204,13 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             lastPosition: {
                 get:
                     function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneLastpositionGet>('/drone/{droneId}/last-position', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_DroneLastPositionGet>('/drone/{droneId}/last-position', 'get', false, params, undefined)
                     },
             },
             lastBattery: {
                 get:
                     function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneLastbatteryGet>('/drone/{droneId}/last-battery', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_DroneLastBatteryGet>('/drone/{droneId}/last-battery', 'get', false, params, undefined)
                     },
             },
             media: {
@@ -248,7 +228,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             currentFlight: {
                 get:
                     function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneCurrentflightGet>('/drone/{droneId}/current-flight', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_DroneCurrentFlightGet>('/drone/{droneId}/current-flight', 'get', false, params, undefined)
                     },
             },
         },
@@ -272,7 +252,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             groundCoverage: {
                 get:
                     function(params: { mediaId: number }) {
-                        return makeRequest<ApiResponse_MediaGroundcoverageGet>('/media/ground-coverage/{mediaId}', 'get', false, params, undefined)
+                        return makeRequest<ApiResponse_MediaGroundCoverageGet>('/media/ground-coverage/{mediaId}', 'get', false, params, undefined)
                     },
             },
         },
@@ -294,7 +274,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             config: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_ConnectionlinkConfigGet>('/connection-link/config', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_ConnectionLinkConfigGet>('/connection-link/config', 'get', false, undefined, undefined)
                     },
             },
             resetWorkspaceUuid: {
@@ -307,7 +287,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 sdkConfig: {
                     get:
                         function() {
-                            return makeRequest<ApiResponse_ConnectionlinkDjipilot2SdkconfigGet>('/connection-link/dji-pilot-2/sdk-config', 'get', false, undefined, undefined)
+                            return makeRequest<ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet>('/connection-link/dji-pilot-2/sdk-config', 'get', false, undefined, undefined)
                         },
                 },
             },

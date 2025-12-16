@@ -14,7 +14,7 @@ export type Message_Type_Answer_Data<R extends any> = {
     result: R
 }
 
-export type Message_Type_Event_Type = 'db_row_update' | 'drone_position' | 'drone_telemetry' | 'traffic' | 'remote_controller_position' | 'workspace_drones_position' | 'drone_media' | 'workspace_drones_media' | 'map_element'
+export type Message_Type_Event_Type = 'db_row_update' | 'drone_position' | 'drone_telemetry' | 'traffic' | 'remote_controller_position' | 'workspace_drones_position' | 'drone_media' | 'workspace_drones_media' | 'geo_object'
 
 export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
     event: T
@@ -23,7 +23,7 @@ export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
 }
 
 //TODO this result into an OR and not a fixed typing...
-export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'remote_controller_position' ? Message_Type_Event_Object_Data_Remote_Controller_Position : T extends 'drone_position' ? Message_Type_Event_Object_Data_Drone_Position : T extends 'drone_telemetry' ? Message_Type_Event_Object_Data_Drone_Telemetry : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'traffic' ? Message_Type_Event_Object_Data_Traffic : T extends 'workspace_drones_position' ? Message_Type_Event_Object_Data_Workspace_Drone_Position : T extends 'drone_media' ? Message_Type_Event_Object_Data_Drone_Media : T extends 'workspace_drones_media' ? Message_Type_Event_Object_Data_Workspace_Drone_Media : T extends 'map_element' ? Message_Type_Event_Object_Data_Map_Element : unknown
+export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'remote_controller_position' ? Message_Type_Event_Object_Data_Remote_Controller_Position : T extends 'drone_position' ? Message_Type_Event_Object_Data_Drone_Position : T extends 'drone_telemetry' ? Message_Type_Event_Object_Data_Drone_Telemetry : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'traffic' ? Message_Type_Event_Object_Data_Traffic : T extends 'workspace_drones_position' ? Message_Type_Event_Object_Data_Workspace_Drone_Position : T extends 'drone_media' ? Message_Type_Event_Object_Data_Drone_Media : T extends 'workspace_drones_media' ? Message_Type_Event_Object_Data_Workspace_Drone_Media : T extends 'geo_object' ? Message_Type_Event_Object_Data_Geo_Object : unknown
 
 export type Message_Type_Event_Object_Data_Remote_Controller_Position = {
     id: number
@@ -85,46 +85,77 @@ export type Message_Type_Event_Object_Data_Drone_Media = {
 export type Message_Type_Event_Object_Data_Workspace_Drone_Media = Message_Type_Event_Object_Data_Drone_Media
 
 
-export type Message_Type_Event_Object_Data_Map_Element<MapElementEventType = 'create' | 'update' | 'delete'> = {
-    event_type: MapElementEventType
+export type Message_Type_Event_Object_Data_Geo_Object<GeoObjectEventType = 'create' | 'update' | 'delete'> = {
+    event_type: GeoObjectEventType
     uuid: string
-    data: MapElementEventType extends 'delete' ? undefined : (Message_Type_Event_Object_Data_Map_Element_Point | Message_Type_Event_Object_Data_Map_Element_Line | Message_Type_Event_Object_Data_Map_Element_Polygon | Message_Type_Event_Object_Data_Map_Element_Circle)
+    data: GeoObjectEventType extends 'delete' ? undefined : Message_Type_Event_Object_Data_Geo_Object_Type
 }
 
-export type Message_Type_Event_Object_Data_Map_Element_Base<T extends number> = {
-    id: number
-    uuid: string
-    name: string
-    type: T
-    color: string
-    created_at: string
-    updated_at: string
+// following code is copied from /generated-definitions/db/DBTypes.ts
+
+export type Message_Type_Event_Object_Data_Geo_Object_Type = Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 3> |
+Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 4> |
+Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 4> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 5> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 6>
+
+export type Message_Type_Event_Object_Data_Geo_Object_Type_Base<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType, sub_type extends Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type>> = {
+    id: number;
+    uuid: string;
+    workspace_id: number;
+    name: string;
+    type: type;
+    sub_type: sub_type;
+    config: Message_Type_Event_Object_Data_Geo_Object_Type_ConfigType<type, sub_type>;
+    created_at: string;
+    updated_at: string;
 }
 
-export interface Message_Type_Event_Object_Data_Map_Element_Point extends Message_Type_Event_Object_Data_Map_Element_Base<0> {
-    longitude: number
-    latitude: number
-    elevation?: number
-}
 
-export interface Message_Type_Event_Object_Data_Map_Element_Line extends Message_Type_Event_Object_Data_Map_Element_Base<1> {
-    coordinates: {
-        longitude: number
-        latitude: number
-        elevation?: number
-    }[]
-}
+export type Message_Type_Event_Object_Data_Geo_Object_Type_TypeType = 0|1|2
 
-export interface Message_Type_Event_Object_Data_Map_Element_Polygon extends Message_Type_Event_Object_Data_Map_Element_Base<2> {
-    coordinates: {
-        longitude: number
-        latitude: number
-        elevation?: number
-    }[][]
-}
+export const Message_Type_Event_Object_Data_Geo_Object_Type_Type_TYPES = {
+  marking: 0,
+  traffic: 1,
+  unit: 2
+} as const
 
-export interface Message_Type_Event_Object_Data_Map_Element_Circle extends Message_Type_Event_Object_Data_Map_Element_Base<7> {
-    longitude: number
-    latitude: number
-    radius: number
-}
+export type Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType> =
+    type extends 0 ? (0|1|2|3) :
+    type extends 1 ? (0|1|2|3|4|5) :
+    type extends 2 ? (0|1|2|3|4|5|6) : unknown
+
+
+export const Message_Type_Event_Object_Data_Geo_Object_Type_SubType_TYPES = {
+  marking: {
+    point: 0,
+    line: 1,
+    polygon: 2,
+    circle: 3
+  },
+  traffic: {
+    airplane: 0,
+    helicopter: 1,
+    uav: 2,
+    gliding: 3,
+    other: 4
+  },
+  unit: {
+    airplane: 0,
+    helicopter: 1,
+    uav: 2,
+    pilot: 3,
+    ground_vehicle: 4,
+    ground_staff: 5,
+    other: 6
+  }
+} as const
+
+export type Message_Type_Event_Object_Data_Geo_Object_Type_ConfigType<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType, sub_type extends Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type>> = type extends 0 ? (
+    sub_type extends 0 ? {point: [number, number, number], color: string} :
+    sub_type extends 1 ? {line: [number, number, number][], color: string} :
+    sub_type extends 2 ? {polygon: [number, number, number][], color: string} :
+    sub_type extends 3 ? {center: [number, number, number], radius: number, color: string} : unknown
+) : type extends 1 ? (
+    {longitude: number, latitude: number, height: number, heading?: number, speed?: number}
+) : type extends 2 ? (
+    {longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number}
+) : unknown
