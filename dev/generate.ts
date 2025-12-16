@@ -224,8 +224,8 @@ export function generate(){
 
 
             let returnTypeName = 'ApiResponse_' + pathParts.filter(p => !p.startsWith('{')).map(p => {
-                p = p.replace(/[^\w]/g, '')
-                return p.substring(0,1).toUpperCase() + p.substring(1).toLowerCase()
+                p = p.replace(/[^\w-]/g, '')
+                return p.split('-').map(part => part.substring(0,1).toUpperCase() + part.substring(1).toLowerCase()).join('')
             }).join('')
 
             if(methodObject.responses['200'].content){
