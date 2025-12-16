@@ -55,7 +55,7 @@ export default class Live {
         latitude: number,
         radius: number
     }){//TODO implement unsubscribe
-        return this.liveWebSocket.subscribeToEvent('geo_object', '' + workspaceId + (trafficSensingArea ? '&options=' + JSON.stringify(trafficSensingArea) : ''), callback)
+        return this.liveWebSocket.subscribeToEvent('geo_object', '' + workspaceId + (trafficSensingArea ? '&area=' + JSON.stringify(trafficSensingArea) : ''), callback)
     }
 
 }

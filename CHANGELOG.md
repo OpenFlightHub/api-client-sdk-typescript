@@ -1,3 +1,7 @@
+# [3.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.0...3.1.1) (16. Dez 2025)
+
+* adjust under the hood geo object events sensing area
+
 # [3.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.0.0...3.1.0) (16. Dez 2025)
 
 * remove traffic apis
