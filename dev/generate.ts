@@ -379,8 +379,6 @@ function schemaToTypescriptType(schema: any){
             }
         }
 
-        console.log('allOf combined', schema, 'into', obj)
-
         schema = obj
     } else if(schema['oneOf'] || schema['anyOf']){
         const cf = schema['oneOf'] || schema['anyOf']

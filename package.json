@@ -1,6 +1,6 @@
 {
   "name": "openflighthub-api-client-sdk",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "author": "OpenFlightHub <mail@openflighthub.org> (https://openflighthub.org)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
