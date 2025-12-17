@@ -403,7 +403,14 @@ function schemaToTypescriptType(schema: any){
         case 'string':
             return schema.format == 'binary' ? 'File' : 'string'
 
-        case 'array': return schemaToTypescriptType(schema.items) + '[]'
+        case 'array': {
+
+            if(typeof schema.maxLength === 'number' && schema.maxLength === schema.minLength){
+                return '[' + (new Array(schema.maxLength).fill(schemaToTypescriptType(schema.items)).join(', ')) + ']'
+            } else {
+                return schemaToTypescriptType(schema.items) + '[]'
+            }
+        }
 
         case 'object': return (schema.properties ? ('{' + Object.entries(schema.properties).map(prop => '' + prop[0] + (schema.required && schema.required.includes(prop[0]) ? '' : '?') + ': ' + schemaToTypescriptType(prop[1])).join(',') + '}') : '{}')
 

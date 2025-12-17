@@ -1,3 +1,7 @@
+# [3.1.2](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.1...3.1.2) (17. Dez 2025)
+
+* improve api types and schemas for arrays with specific size and for geoobject types
+
 # [3.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.0...3.1.1) (16. Dez 2025)
 
 * adjust under the hood geo object events sensing area
