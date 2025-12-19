@@ -1,3 +1,7 @@
+# [3.1.4](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.3...3.1.4) (19. Dez 2025)
+
+* add workspace_id field to connection endpoint
+
 # [3.1.3](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.2...3.1.3) (17. Dez 2025)
 
 * improve api types and schemas for arrays with specific size
