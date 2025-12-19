@@ -35,11 +35,11 @@ export type ApiResponse_WorkspaceFilePost = { id: number }
 
 export type ApiResponse_WorkspaceFilesGet = { id: number, name: string, created_at: string, has_thumbnail: boolean }[]
 
-export type ApiResponse_WorkspaceConnectionsGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number }[]
+export type ApiResponse_WorkspaceConnectionsGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number, stream_is_alive: boolean }[]
 
 export type ApiResponse_WorkspaceConnectionsPost = { connection_id: string, secret: string }
 
-export type ApiResponse_ConnectionGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number }
+export type ApiResponse_ConnectionGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number, stream_is_alive: boolean }
 
 export type ApiResponse_WorkspaceGeoObjectsGet = (({ id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { id: number, uuid: string, workspace_id: number, name: string, created_at: string, updated_at: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } })[]
 

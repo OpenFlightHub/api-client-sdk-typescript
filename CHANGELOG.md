@@ -1,3 +1,7 @@
+# [3.1.5](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.4...3.1.5) (19. Dez 2025)
+
+* add stream_is_alive on connection
+
 # [3.1.4](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.3...3.1.4) (19. Dez 2025)
 
 * add workspace_id field to connection endpoint
