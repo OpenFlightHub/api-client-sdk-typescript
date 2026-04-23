@@ -13,15 +13,43 @@ export type ApiResponse_AuthRegisterPost = { id: number }
 
 export type ApiResponse_AuthStreamTokenGet = { token: string }
 
-export type ApiResponse_UserGet = { id: number, name: string }
+export type ApiResponse_UserGet = { id: number, name: string, team_id?: number }
 
-export type ApiResponse_UserPatch = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean }
+export type ApiResponse_UserPatch = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean, team_id?: number }
 
-export type ApiResponse_UserSelfGet = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean }
+export type ApiResponse_UserSelfGet = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean, team_id?: number }
 
-export type ApiResponse_FileGet = { id: number, name: string, created_at: string, has_thumbnail: boolean }
+export type ApiResponse_UserMyOrganisationsGet = { id: number, access_type: integer }[]
 
-export type ApiResponse_FileGetMultiplePost = { id: number, name: string, created_at: string, has_thumbnail: boolean }[]
+export type ApiResponse_UserMyTeamsGet = { id: number, access_type: integer }[]
+
+export type ApiResponse_TeamPost = { id: number }
+
+export type ApiResponse_TeamGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, organisation_id?: number, logo_file_id?: number }
+
+export type ApiResponse_TeamPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, organisation_id?: number, logo_file_id?: number }
+
+export type ApiResponse_TeamMembersGet = { id: number, name: string }[]
+
+export type ApiResponse_OrganisationPost = { id: number }
+
+export type ApiResponse_OrganisationGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
+
+export type ApiResponse_OrganisationPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
+
+export type ApiResponse_OrganisationTeamsGet = { id: number, name: string }[]
+
+export type ApiResponse_AdminUserPost = { id: number }
+
+export type ApiResponse_AdminSystemPerformanceOsGet = { os: string, cpu: string, uptime: number, ram_total: number, ram_free: number, load_avg: { avg_1: number, avg_5: number, avg_15: number } }
+
+export type ApiResponse_AdminSystemPerformanceApiEndpointsGet = { endpoint: string, http_method: string, total_calls: number, max_run_time: number, max_work_time: number, avg_run_time: number, avg_work_time: number, pop_standard_dev_run_time: number, pop_standard_dev_work_time: number, pop_standard_dev_run_time_fractional: number, pop_standard_dev_work_time_fractional: number }[]
+
+export type ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet = { url: string, http_method: string, total_calls: number, max_run_time: number, max_work_time: number, avg_run_time: number, avg_work_time: number, pop_standard_dev_run_time: number, pop_standard_dev_work_time: number, pop_standard_dev_run_time_fractional: number, pop_standard_dev_work_time_fractional: number }[]
+
+export type ApiResponse_FileGet = { id: number, name: string, created_at: string, thumbnail_format?: string }
+
+export type ApiResponse_FileGetMultiplePost = { id: number, name: string, created_at: string, thumbnail_format?: string }[]
 
 export type ApiResponse_WorkspaceMyWorkspacesGet = { id: number, name: string, longitude: number, latitude: number }[]
 
@@ -33,7 +61,7 @@ export type ApiResponse_WorkspacePatch = { id: number, name: string, longitude: 
 
 export type ApiResponse_WorkspaceFilePost = { id: number }
 
-export type ApiResponse_WorkspaceFilesGet = { id: number, name: string, created_at: string, has_thumbnail: boolean }[]
+export type ApiResponse_WorkspaceFilesGet = { id: number, name: string, created_at: string, thumbnail_format?: string }[]
 
 export type ApiResponse_WorkspaceConnectionsGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number, stream_is_alive: boolean }[]
 

@@ -1,3 +1,8 @@
+# [4.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.5...4.0.0) (23. Apr 2026)
+
+* Rework the parameters of endpoint functions (this is breaking existing code, but can be migrated fairly simple)
+* supports API version 0.17.0
+
 # [3.1.5](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.4...3.1.5) (19. Dez 2025)
 
 * add stream_is_alive on connection

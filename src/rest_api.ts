@@ -28,50 +28,57 @@ let apiAuth: String
 
 export type makeRequestFunctionType = typeof makeRequest
 
-async function makeRequest<T>(url: string, method: method, isFormData: boolean, params?: object, data?: object): Promise<T> {
+async function makeRequest<T>(config: {
+    url: string
+    method: method
+    isFormData: boolean
+    params?: object
+    queryParams?: object
+    data?: object
+}): Promise<T> {
     return new Promise((resolve, reject)=>{
 
-        if (url.startsWith('/')) {
-            url = url.substring(1)
+        if (config.url.startsWith('/')) {
+            config.url = config.url.substring(1)
         }
 
-        const urlWithParams = url.replace(/\{([^\}]+)\}/g, (match, p1) => {
-            if (!params) {
+        const urlWithParamsAndQuery = config.url.replace(/\{([^\}]+)\}/g, (match, p1) => {
+            if (!config.params) {
                 reject('url contains param "' + p1 + '" but no params are defined')
                 return ''
             }
 
-            if (typeof params[p1] !== 'string' && typeof params[p1] !== 'number') {
+            if (typeof config.params[p1] !== 'string' && typeof config.params[p1] !== 'number') {
                 reject('url contains param "' + p1 + '" but no valid value for this param was provided (string or number)')
                 return ''
             }
 
-            return '' + params[p1]
-        })
+            return '' + config.params[p1]
+        }) + (config.queryParams ? '?' + Object.keys(config.queryParams).map(key => key + '=' + encodeURIComponent(config.queryParams[key])).join('&') : '')
 
-        if (method === 'patch' && data instanceof Object && Object.keys(data).length === 0) {
+        if (config.method === 'patch' && config.data instanceof Object && Object.keys(config.data).length === 0) {
             reject('you can not perform a patch operation with empty data')
             return ''
         }
 
 
-        if (isFormData && data instanceof Object) {//convert data object to form data
+        if (config.isFormData && config.data instanceof Object) {//convert data object to form data
             const form = new FormData()
-            for (const key of Object.keys(data)) {
-                if (data[key] === undefined) {
+            for (const key of Object.keys(config.data)) {
+                if (config.data[key] === undefined) {
                     continue
                 }
 
-                if (data[key] instanceof Array) {
-                    for (const entry of data[key]) {
+                if (config.data[key] instanceof Array) {
+                    for (const entry of config.data[key]) {
                         form.append(key, entry)
                     }
                 } else {
-                    form.set(key, data[key])
+                    form.set(key, config.data[key])
                 }
             }
 
-            data = form
+            config.data = form
         }
 
         const headers: {[key: string]: string}= {
@@ -88,10 +95,10 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
         const abortController = new AbortController()
 
-        const request = new Request(apiBaseUrl + urlWithParams, {
+        const request = new Request(apiBaseUrl + urlWithParamsAndQuery, {
             signal: abortController.signal,
-            body: data === undefined ? undefined : JSON.stringify(data),
-            method,
+            body: config.data === undefined ? undefined : JSON.stringify(config.data),
+            method: config.method,
             cache: 'no-store',
             headers,
             credentials: 'same-origin'
@@ -157,15 +164,15 @@ async function makeRequest<T>(url: string, method: method, isFormData: boolean, 
 
                     if (response.body) {
                         response.text().then(body => {
-                            reject(`Fatal OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.statusText} ${body}`)
+                            reject(`Fatal OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText} ${body}`)
                         }).catch(reject)
                     } else {
-                        reject(`Fatal OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.statusText}`)
+                        reject(`Fatal OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText}`)
                     }
 
 
                 } else {
-                    reject(`OpenFlightHub API Error @ ${method.toUpperCase()} ${urlWithParams} : ${response.status} ${response.statusText}`)
+                    reject(`OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.status} ${response.statusText}`)
                 }
             }
         }).catch(reason => {

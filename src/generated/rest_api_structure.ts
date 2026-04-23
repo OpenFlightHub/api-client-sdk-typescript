@@ -1,51 +1,98 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationPost, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUserPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.16.3'
+        API_VERSION: '0.17.0'
         ,
         auth: {
             login: {
                 post:
-                    function(data: ({ username: string, password: string })) {
-                        return makeRequest<ApiResponse_AuthLoginPost>('/auth/login', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ username: string, password: string })
+                    }) {
+                        return makeRequest<ApiResponse_AuthLoginPost>({
+                            url: '/auth/login',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             loginWithToken: {
                 post:
-                    function(data: ({ token: string })) {
-                        return makeRequest<ApiResponse_AuthLoginWithTokenPost>('/auth/login-with-token', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ token: string })
+                    }) {
+                        return makeRequest<ApiResponse_AuthLoginWithTokenPost>({
+                            url: '/auth/login-with-token',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             check: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_AuthCheckGet>('/auth/check', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_AuthCheckGet>({
+                            url: '/auth/check',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
                     },
             },
             passwordChange: {
                 post:
-                    function(data: ({ current_password: string, new_password: string })) {
-                        return makeRequest<void>('/auth/password-change', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ current_password: string, new_password: string })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/auth/password-change',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             passwordReset: {
                 post:
-                    function(data: ({ username: string })) {
-                        return makeRequest<void>('/auth/password-reset', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ username: string })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/auth/password-reset',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             passwordSetInitial: {
                 post:
-                    function(data: ({ new_password: string })) {
-                        return makeRequest<void>('/auth/password-set-initial', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ new_password: string })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/auth/password-set-initial',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             passwordSetNew: {
                 post:
-                    function(data: ({ new_password: string, code: string })) {
-                        return makeRequest<void>('/auth/password-set-new', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ new_password: string, code: string })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/auth/password-set-new',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             register: {
@@ -53,48 +100,278 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     /**
                     * @deprecated
                     */
-                    function(data: ({ email: string, password?: string })) {
-                        return makeRequest<ApiResponse_AuthRegisterPost>('/auth/register', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ email: string, password?: string })
+                    }) {
+                        return makeRequest<ApiResponse_AuthRegisterPost>({
+                            url: '/auth/register',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
             logout: {
                 post:
                     function() {
-                        return makeRequest<void>('/auth/logout', 'post', false, undefined, undefined)
+                        return makeRequest<void>({
+                            url: '/auth/logout',
+                            method: 'post',
+                            isFormData: false,
+
+                        })
                     },
             },
             streamToken: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_AuthStreamTokenGet>('/auth/stream-token', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_AuthStreamTokenGet>({
+                            url: '/auth/stream-token',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
                     },
             },
         },
         user: {
             get:
-                function(params: { userId: number }) {
-                    return makeRequest<ApiResponse_UserGet>('/user/{userId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { userId: number }
+                }) {
+                    return makeRequest<ApiResponse_UserGet>({
+                        url: '/user/{userId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             patch:
-                function(params: { userId: number }, data: ({ name?: string, email?: string, locale?: string })) {
-                    return makeRequest<ApiResponse_UserPatch>('/user/{userId}', 'patch', false, params, data)
+                function(config: {
+                    params: { userId: number },
+                    data: ({ name?: string, email?: string, locale?: string })
+                }) {
+                    return makeRequest<ApiResponse_UserPatch>({
+                        url: '/user/{userId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
                 },
             self: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_UserSelfGet>('/user/self', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_UserSelfGet>({
+                            url: '/user/self',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
                     },
+            },
+            myOrganisations: {
+                get:
+                    function() {
+                        return makeRequest<ApiResponse_UserMyOrganisationsGet>({
+                            url: '/user/my-organisations',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
+                    },
+            },
+            myTeams: {
+                get:
+                    function() {
+                        return makeRequest<ApiResponse_UserMyTeamsGet>({
+                            url: '/user/my-teams',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
+                    },
+            },
+        },
+        team: {
+            post:
+                function(config: {
+                    data: ({ name: string, organisation_id: number, logo_file_id?: number })
+                }) {
+                    return makeRequest<ApiResponse_TeamPost>({
+                        url: '/team',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
+                },
+            get:
+                function(config: {
+                    params: { teamId: number }
+                }) {
+                    return makeRequest<ApiResponse_TeamGet>({
+                        url: '/team/{teamId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
+                },
+            patch:
+                function(config: {
+                    params: { teamId: number },
+                    data: ({ name?: string, logo_file_id?: number })
+                }) {
+                    return makeRequest<ApiResponse_TeamPatch>({
+                        url: '/team/{teamId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
+                },
+            members: {
+                get:
+                    function(config: {
+                        params: { teamId: number }
+                    }) {
+                        return makeRequest<ApiResponse_TeamMembersGet>({
+                            url: '/team/{teamId}/members',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+        },
+        organisation: {
+            post:
+                function(config: {
+                    data: ({ name: string, logo_file_id?: number })
+                }) {
+                    return makeRequest<ApiResponse_OrganisationPost>({
+                        url: '/organisation',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
+                },
+            get:
+                function(config: {
+                    params: { organisationId: number }
+                }) {
+                    return makeRequest<ApiResponse_OrganisationGet>({
+                        url: '/organisation/{organisationId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
+                },
+            patch:
+                function(config: {
+                    params: { organisationId: number },
+                    data: ({ name?: string, logo_file_id?: number })
+                }) {
+                    return makeRequest<ApiResponse_OrganisationPatch>({
+                        url: '/organisation/{organisationId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
+                },
+            teams: {
+                get:
+                    function(config: {
+                        params: { organisationId: number }
+                    }) {
+                        return makeRequest<ApiResponse_OrganisationTeamsGet>({
+                            url: '/organisation/{organisationId}/teams',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+        },
+        admin: {
+            user: {
+                post:
+                    function(config: {
+                        data: ({ name?: string, email: string })
+                    }) {
+                        return makeRequest<ApiResponse_AdminUserPost>({
+                            url: '/admin/user',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
+                    },
+            },
+            system: {
+                performance: {
+                    os: {
+                        get:
+                            function() {
+                                return makeRequest<ApiResponse_AdminSystemPerformanceOsGet>({
+                                    url: '/admin/system/performance/os',
+                                    method: 'get',
+                                    isFormData: false,
+
+                                })
+                            },
+                    },
+                    apiEndpoints: {
+                        get:
+                            function() {
+                                return makeRequest<ApiResponse_AdminSystemPerformanceApiEndpointsGet>({
+                                    url: '/admin/system/performance/api-endpoints',
+                                    method: 'get',
+                                    isFormData: false,
+
+                                })
+                            },
+                    },
+                    apiEndpoint: {
+                        details: {
+                            get:
+                                function(config: {
+                                    queryParams: { endpoint: string }
+                                }) {
+                                    return makeRequest<ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet>({
+                                        url: '/admin/system/performance/api-endpoint/details',
+                                        method: 'get',
+                                        isFormData: false,
+                                        queryParams: config.queryParams
+                                    })
+                                },
+                        },
+                    },
+                },
             },
         },
         file: {
             get:
-                function(params: { fileId: number }) {
-                    return makeRequest<ApiResponse_FileGet>('/file/{fileId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { fileId: number }
+                }) {
+                    return makeRequest<ApiResponse_FileGet>({
+                        url: '/file/{fileId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             getMultiple: {
                 post:
-                    function(data: ({ ids: number[] })) {
-                        return makeRequest<ApiResponse_FileGetMultiplePost>('/file/get-multiple', 'post', false, undefined, data)
+                    function(config: {
+                        data: ({ ids: number[] })
+                    }) {
+                        return makeRequest<ApiResponse_FileGetMultiplePost>({
+                            url: '/file/get-multiple',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
                     },
             },
         },
@@ -102,157 +379,370 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             myWorkspaces: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_WorkspaceMyWorkspacesGet>('/workspace/my-workspaces', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_WorkspaceMyWorkspacesGet>({
+                            url: '/workspace/my-workspaces',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
                     },
             },
             post:
-                function(data: ({ name: string, longitude: number, latitude: number })) {
-                    return makeRequest<ApiResponse_WorkspacePost>('/workspace', 'post', false, undefined, data)
+                function(config: {
+                    data: ({ name: string, longitude: number, latitude: number })
+                }) {
+                    return makeRequest<ApiResponse_WorkspacePost>({
+                        url: '/workspace',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
                 },
             get:
-                function(params: { workspaceId: number }) {
-                    return makeRequest<ApiResponse_WorkspaceGet>('/workspace/{workspaceId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { workspaceId: number }
+                }) {
+                    return makeRequest<ApiResponse_WorkspaceGet>({
+                        url: '/workspace/{workspaceId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             patch:
-                function(params: { workspaceId: number }, data: ({ name?: string })) {
-                    return makeRequest<ApiResponse_WorkspacePatch>('/workspace/{workspaceId}', 'patch', false, params, data)
+                function(config: {
+                    params: { workspaceId: number },
+                    data: ({ name?: string })
+                }) {
+                    return makeRequest<ApiResponse_WorkspacePatch>({
+                        url: '/workspace/{workspaceId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
                 },
             delete:
-                function(params: { workspaceId: number }) {
-                    return makeRequest<void>('/workspace/{workspaceId}', 'delete', false, params, undefined)
+                function(config: {
+                    params: { workspaceId: number }
+                }) {
+                    return makeRequest<void>({
+                        url: '/workspace/{workspaceId}',
+                        method: 'delete',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             file: {
                 post:
-                    function(params: { workspaceId: number }, data: ({ file: File, filename: string })) {
-                        return makeRequest<ApiResponse_WorkspaceFilePost>('/workspace/{workspaceId}/file', 'post', true, params, data)
+                    function(config: {
+                        params: { workspaceId: number },
+                        data: ({ file: File, filename: string })
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceFilePost>({
+                            url: '/workspace/{workspaceId}/file',
+                            method: 'post',
+                            isFormData: true,
+                            params: config.params,
+                            data: config.data
+                        })
                     },
                 patch:
-                    function(params: { workspaceId: number, fileId: number }, data: ({ filename?: string })) {
-                        return makeRequest<void>('/workspace/{workspaceId}/file/{fileId}', 'patch', false, params, data)
+                    function(config: {
+                        params: { workspaceId: number, fileId: number },
+                        data: ({ filename?: string })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/workspace/{workspaceId}/file/{fileId}',
+                            method: 'patch',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
                     },
                 delete:
-                    function(params: { workspaceId: number, fileId: number }) {
-                        return makeRequest<void>('/workspace/{workspaceId}/file/{fileId}', 'delete', false, params, undefined)
+                    function(config: {
+                        params: { workspaceId: number, fileId: number }
+                    }) {
+                        return makeRequest<void>({
+                            url: '/workspace/{workspaceId}/file/{fileId}',
+                            method: 'delete',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             files: {
                 get:
-                    function(params: { workspaceId: number }) {
-                        return makeRequest<ApiResponse_WorkspaceFilesGet>('/workspace/{workspaceId}/files', 'get', false, params, undefined)
+                    function(config: {
+                        params: { workspaceId: number }
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceFilesGet>({
+                            url: '/workspace/{workspaceId}/files',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             connections: {
                 get:
-                    function(params: { workspaceId: number }) {
-                        return makeRequest<ApiResponse_WorkspaceConnectionsGet>('/workspace/{workspaceId}/connections', 'get', false, params, undefined)
+                    function(config: {
+                        params: { workspaceId: number }
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceConnectionsGet>({
+                            url: '/workspace/{workspaceId}/connections',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
                 post:
-                    function(params: { workspaceId: number }, data: ({ name: string })) {
-                        return makeRequest<ApiResponse_WorkspaceConnectionsPost>('/workspace/{workspaceId}/connections', 'post', false, params, data)
+                    function(config: {
+                        params: { workspaceId: number },
+                        data: ({ name: string })
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceConnectionsPost>({
+                            url: '/workspace/{workspaceId}/connections',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
                     },
             },
             geoObjects: {
                 get:
-                    function(params: { workspaceId: number }) {
-                        return makeRequest<ApiResponse_WorkspaceGeoObjectsGet>('/workspace/{workspaceId}/geo-objects', 'get', false, params, undefined)
+                    function(config: {
+                        params: { workspaceId: number }
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceGeoObjectsGet>({
+                            url: '/workspace/{workspaceId}/geo-objects',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
                 create: {
                     post:
-                        function(params: { workspaceId: number }, data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))) {
-                            return makeRequest<ApiResponse_WorkspaceGeoObjectsCreatePost>('/workspace/{workspaceId}/geo-objects/create', 'post', false, params, data)
+                        function(config: {
+                            params: { workspaceId: number },
+                            data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
+                        }) {
+                            return makeRequest<ApiResponse_WorkspaceGeoObjectsCreatePost>({
+                                url: '/workspace/{workspaceId}/geo-objects/create',
+                                method: 'post',
+                                isFormData: false,
+                                params: config.params,
+                                data: config.data
+                            })
                         },
                 },
             },
             geoObject: {
                 patch:
-                    function(params: { workspaceId: number, geoObjectId: number }, data: ((({ name?: string, config?: { point: [number, number, number], color: string } } | { name?: string, config?: { line: [number, number, number][], color: string } } | { name?: string, config?: { polygon: [number, number, number][], color: string } } | { name?: string, config?: { center: [number, number, number], radius: number, color: string } }) | { name?: string, config?: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { name?: string, config?: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))) {
-                        return makeRequest<ApiResponse_WorkspaceGeoObjectPatch>('/workspace/{workspaceId}/geo-object/{geoObjectId}', 'patch', false, params, data)
+                    function(config: {
+                        params: { workspaceId: number, geoObjectId: number },
+                        data: ((({ name?: string, config?: { point: [number, number, number], color: string } } | { name?: string, config?: { line: [number, number, number][], color: string } } | { name?: string, config?: { polygon: [number, number, number][], color: string } } | { name?: string, config?: { center: [number, number, number], radius: number, color: string } }) | { name?: string, config?: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { name?: string, config?: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceGeoObjectPatch>({
+                            url: '/workspace/{workspaceId}/geo-object/{geoObjectId}',
+                            method: 'patch',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
                     },
                 delete:
-                    function(params: { workspaceId: number, geoObjectId: number }) {
-                        return makeRequest<void>('/workspace/{workspaceId}/geo-object/{geoObjectId}', 'delete', false, params, undefined)
+                    function(config: {
+                        params: { workspaceId: number, geoObjectId: number }
+                    }) {
+                        return makeRequest<void>({
+                            url: '/workspace/{workspaceId}/geo-object/{geoObjectId}',
+                            method: 'delete',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
         },
         connection: {
             get:
-                function(params: { connectionId: number }) {
-                    return makeRequest<ApiResponse_ConnectionGet>('/connection/{connectionId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { connectionId: number }
+                }) {
+                    return makeRequest<ApiResponse_ConnectionGet>({
+                        url: '/connection/{connectionId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             delete:
-                function(params: { connectionId: number }) {
-                    return makeRequest<void>('/connection/{connectionId}', 'delete', false, params, undefined)
+                function(config: {
+                    params: { connectionId: number }
+                }) {
+                    return makeRequest<void>({
+                        url: '/connection/{connectionId}',
+                        method: 'delete',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
         },
         remoteController: {
             get:
-                function(params: { remoteControllerId: number }) {
-                    return makeRequest<ApiResponse_RemoteControllerGet>('/remote-controller/{remoteControllerId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { remoteControllerId: number }
+                }) {
+                    return makeRequest<ApiResponse_RemoteControllerGet>({
+                        url: '/remote-controller/{remoteControllerId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             lastPosition: {
                 get:
-                    function(params: { remoteControllerId: number }) {
-                        return makeRequest<ApiResponse_RemoteControllerLastPositionGet>('/remote-controller/{remoteControllerId}/last-position', 'get', false, params, undefined)
+                    function(config: {
+                        params: { remoteControllerId: number }
+                    }) {
+                        return makeRequest<ApiResponse_RemoteControllerLastPositionGet>({
+                            url: '/remote-controller/{remoteControllerId}/last-position',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
         },
         drone: {
             get:
-                function(params: { droneId: number }) {
-                    return makeRequest<ApiResponse_DroneGet>('/drone/{droneId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { droneId: number }
+                }) {
+                    return makeRequest<ApiResponse_DroneGet>({
+                        url: '/drone/{droneId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             lastPosition: {
                 get:
-                    function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneLastPositionGet>('/drone/{droneId}/last-position', 'get', false, params, undefined)
+                    function(config: {
+                        params: { droneId: number }
+                    }) {
+                        return makeRequest<ApiResponse_DroneLastPositionGet>({
+                            url: '/drone/{droneId}/last-position',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             lastBattery: {
                 get:
-                    function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneLastBatteryGet>('/drone/{droneId}/last-battery', 'get', false, params, undefined)
+                    function(config: {
+                        params: { droneId: number }
+                    }) {
+                        return makeRequest<ApiResponse_DroneLastBatteryGet>({
+                            url: '/drone/{droneId}/last-battery',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             media: {
                 get:
-                    function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneMediaGet>('/drone/{droneId}/media', 'get', false, params, undefined)
+                    function(config: {
+                        params: { droneId: number }
+                    }) {
+                        return makeRequest<ApiResponse_DroneMediaGet>({
+                            url: '/drone/{droneId}/media',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             flights: {
                 get:
-                    function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneFlightsGet>('/drone/{droneId}/flights', 'get', false, params, undefined)
+                    function(config: {
+                        params: { droneId: number }
+                    }) {
+                        return makeRequest<ApiResponse_DroneFlightsGet>({
+                            url: '/drone/{droneId}/flights',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
             currentFlight: {
                 get:
-                    function(params: { droneId: number }) {
-                        return makeRequest<ApiResponse_DroneCurrentFlightGet>('/drone/{droneId}/current-flight', 'get', false, params, undefined)
+                    function(config: {
+                        params: { droneId: number }
+                    }) {
+                        return makeRequest<ApiResponse_DroneCurrentFlightGet>({
+                            url: '/drone/{droneId}/current-flight',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
         },
         flight: {
             get:
-                function(params: { flightId: number }) {
-                    return makeRequest<ApiResponse_FlightGet>('/flight/{flightId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { flightId: number }
+                }) {
+                    return makeRequest<ApiResponse_FlightGet>({
+                        url: '/flight/{flightId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             media: {
                 get:
-                    function(params: { flightId: number }) {
-                        return makeRequest<ApiResponse_FlightMediaGet>('/flight/{flightId}/media', 'get', false, params, undefined)
+                    function(config: {
+                        params: { flightId: number }
+                    }) {
+                        return makeRequest<ApiResponse_FlightMediaGet>({
+                            url: '/flight/{flightId}/media',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
         },
         media: {
             get:
-                function(params: { mediaId: number }) {
-                    return makeRequest<ApiResponse_MediaGet>('/media/{mediaId}', 'get', false, params, undefined)
+                function(config: {
+                    params: { mediaId: number }
+                }) {
+                    return makeRequest<ApiResponse_MediaGet>({
+                        url: '/media/{mediaId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
                 },
             groundCoverage: {
                 get:
-                    function(params: { mediaId: number }) {
-                        return makeRequest<ApiResponse_MediaGroundCoverageGet>('/media/ground-coverage/{mediaId}', 'get', false, params, undefined)
+                    function(config: {
+                        params: { mediaId: number }
+                    }) {
+                        return makeRequest<ApiResponse_MediaGroundCoverageGet>({
+                            url: '/media/ground-coverage/{mediaId}',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
                     },
             },
         },
@@ -261,33 +751,60 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 check: {
                     get:
                         function() {
-                            return makeRequest<void>('/connection-link/auth/check', 'get', false, undefined, undefined)
+                            return makeRequest<void>({
+                                url: '/connection-link/auth/check',
+                                method: 'get',
+                                isFormData: false,
+
+                            })
                         },
                 },
                 login: {
                     post:
-                        function(data: ({ connection_id: string, secret: string })) {
-                            return makeRequest<void>('/connection-link/auth/login', 'post', false, undefined, data)
+                        function(config: {
+                            data: ({ connection_id: string, secret: string })
+                        }) {
+                            return makeRequest<void>({
+                                url: '/connection-link/auth/login',
+                                method: 'post',
+                                isFormData: false,
+                                data: config.data
+                            })
                         },
                 },
             },
             config: {
                 get:
                     function() {
-                        return makeRequest<ApiResponse_ConnectionLinkConfigGet>('/connection-link/config', 'get', false, undefined, undefined)
+                        return makeRequest<ApiResponse_ConnectionLinkConfigGet>({
+                            url: '/connection-link/config',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
                     },
             },
             resetWorkspaceUuid: {
                 post:
                     function() {
-                        return makeRequest<void>('/connection-link/reset-workspace-uuid', 'post', false, undefined, undefined)
+                        return makeRequest<void>({
+                            url: '/connection-link/reset-workspace-uuid',
+                            method: 'post',
+                            isFormData: false,
+
+                        })
                     },
             },
             djiPilot2: {
                 sdkConfig: {
                     get:
                         function() {
-                            return makeRequest<ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet>('/connection-link/dji-pilot-2/sdk-config', 'get', false, undefined, undefined)
+                            return makeRequest<ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet>({
+                                url: '/connection-link/dji-pilot-2/sdk-config',
+                                method: 'get',
+                                isFormData: false,
+
+                            })
                         },
                 },
             },

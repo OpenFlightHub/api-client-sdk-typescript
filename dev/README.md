@@ -51,8 +51,26 @@ npm install openflighthub-api-client-sdk@2.16.2
 if you are too fast, sometimes npm backend did dont update yet, and your npm cache is now broken (yes, LOL).
 clear cache:
 
-````
+```
 npm cache clean --force
 ```
 
 then run the npm install command again
+
+# Using local link to develop without having to publish to npm
+
+1. in the `api-client-sdk-typescript` repo run `npm link`
+2. in the `web-app` repo run `npm link openflighthub-api-client-sdk`
+
+Now you build the sdk like normal:
+* in dev hit `F5`
+* in root folder run `npm run build`
+
+**Important note:**
+Step `2.` has to be repeated after everytime you do a `npm install` or `npm remove` in the `web-app` repo!
+You probably have to reload vs code too
+
+## Undo link
+in the `web-app` repo run
+* `npm unlink --no-save openflighthub-api-client-sdk`
+* `npm install`

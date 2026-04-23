@@ -3,6 +3,6 @@
 * @deprecated
 */
 {{/if}}
-function ({{functionParams}}){
-    return makeRequest<{{returnType}}>({{{requestParams}}})
+function ({{{functionConfig}}}){
+    return makeRequest<{{returnType}}>({{{requestConfig}}})
 }

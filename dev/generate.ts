@@ -1,5 +1,4 @@
 
-
 //TODO: validate structure of response, if doesnt match, throw an error, so we dont get weird unexpected stuff in the frontend
 /* BEGIN TEMPLATING STUFF */
 
@@ -174,21 +173,23 @@ export function generate(){
                 continue
             }
 
-            if(methodObject.tags instanceof Array === false || methodObject.tags.length !== 1){
-                throw new Error('method does not hava a single tag set: ' + path + ': ' + method)
-            }
-
-
             const functionParams : any[] = []
 
             if(methodObject.parameters){
-                const t = '{' + methodObject.parameters.filter(param => param.in === 'path')
+                const tUrlParam = '{' + methodObject.parameters.filter(param => param.in === 'path')
                     .map(param => camelcasify(param.name) + ': ' + schemaToTypescriptType(param.schema)).join(',') + '}'
-
 
                 functionParams.push({
                     name: 'params',
-                    type: t === '{}' ? undefined : t
+                    type: tUrlParam === '{}' ? undefined : tUrlParam
+                })
+
+                const tQueryParam = '{' + methodObject.parameters.filter(param => param.in === 'query')
+                    .map(param => camelcasify(param.name) + ': ' + schemaToTypescriptType(param.schema)).join(',') + '}'
+
+                functionParams.push({
+                    name: 'queryParams',
+                    type: tQueryParam === '{}' ? undefined : tQueryParam
                 })
             }
 
@@ -237,15 +238,36 @@ export function generate(){
                 returnTypeName = 'void'
             }
 
+
+            function configParamOrEmpty(name: string){
+                const fP = functionParams.find(param => param.name === name)
+                return fP && typeof fP.type !== 'undefined' ? `${name}: config.${name}` : ''
+            }
+
+
+            const functionConfigs = [
+                functionParams.filter(fp => typeof fp.type !== 'undefined' && fp.name === 'params').length === 0 ? '' : functionParams.filter(fp => fp.name === 'params').map(fp => fp.name + ': ' + fp.type).join(', '),
+                functionParams.filter(fp => typeof fp.type !== 'undefined' && fp.name === 'queryParams').length === 0 ? '' : functionParams.filter(fp => fp.name === 'queryParams').map(fp => fp.name + ': ' + fp.type).join(', '),
+                functionParams.filter(fp => typeof fp.type !== 'undefined' && fp.name === 'data').length === 0 ? '' : functionParams.filter(fp => fp.name === 'data').map(fp => fp.name + ': ' + fp.type).join(', '),
+            ].filter(val => val !== '')
+
             const apiFunction = {
-                functionParams: (functionParams.filter(param => param.type !== undefined)).length === 0 ? undefined : functionParams.map(param => param.name + ': ' + param.type).join(', '),
+                functionConfig: functionConfigs.length === 0 ? '' : `config: {
+                    ${functionConfigs.join(',\n')}
+                }`,
                 returnType: returnTypeName,
-                requestParams: ['\'' + path.replace(/\{([^\}]+)\}/g, (match, p1) => {
-                    return '{' + camelcasify(p1) + '}'
-                }) + '\'', '\'' + method.toLowerCase() + '\'', theContentType === 'multipart/form-data' ? true : false].concat(['params', 'data'].map(name => {
-                    const fP = functionParams.find(param => param.name === name)
-                    return fP && fP.type !== undefined ? name : 'undefined'
-                })).join(', '),
+                requestConfig: `{
+                    url: '${path.replace(/\{([^\}]+)\}/g, (match, p1) => {
+                        return '{' + camelcasify(p1) + '}'
+                    })}',
+                    method: '${method.toLowerCase()}',
+                    isFormData: ${theContentType === 'multipart/form-data' ? 'true' : 'false'},
+                    ${[
+                        configParamOrEmpty('params'),
+                        configParamOrEmpty('data'),
+                        configParamOrEmpty('queryParams')
+                    ].filter(val => val !== '').join(',\n')}
+                }`,
                 deprecated: methodObject.deprecated
             }
 
