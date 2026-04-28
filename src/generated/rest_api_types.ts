@@ -87,11 +87,11 @@ export type ApiResponse_DroneLastBatteryGet = { capacity_percent_left: number, r
 
 export type ApiResponse_DroneMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }[]
 
-export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }[]
+export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }[]
 
-export type ApiResponse_DroneCurrentFlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }
+export type ApiResponse_DroneCurrentFlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }
 
-export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time?: string }[] }
+export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }
 
 export type ApiResponse_FlightMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }[]
 
@@ -102,4 +102,6 @@ export type ApiResponse_MediaGroundCoverageGet = { coverage: { all: { position: 
 export type ApiResponse_ConnectionLinkConfigGet = { connection_id: string, platform_name: string, platform_url: string, workspace_id: string, workspace_uuid: string, workspace_name: string, secret: string }
 
 export type ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet = { app_id: string, app_key: string, app_license: string, mqtt_url: string, rtmp_url: string, api_url: string, ws_url: string }
+
+export type ApiResponse_InfoCollisionObjectsGet = { type: integer, name: string, marking: ({ type: 0, longitude: number, latitude: number, height_above_ground: number } | { type: 1, points: { longitude: number, latitude: number, height_above_ground: number }[] } | { type: 2, points: { longitude: number, latitude: number, height_above_ground: number }[] }) }[]
 
