@@ -103,5 +103,5 @@ export type ApiResponse_ConnectionLinkConfigGet = { connection_id: string, platf
 
 export type ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet = { app_id: string, app_key: string, app_license: string, mqtt_url: string, rtmp_url: string, api_url: string, ws_url: string }
 
-export type ApiResponse_InfoCollisionObjectsGet = { type: integer, name: string, marking: ({ type: 0, longitude: number, latitude: number, height_above_ground: number } | { type: 1, points: { longitude: number, latitude: number, height_above_ground: number }[] } | { type: 2, points: { longitude: number, latitude: number, height_above_ground: number }[] }) }[]
+export type ApiResponse_InfoCollisionObjectsGet = { type: integer, id: number, name: string, marking: ({ type: 0, longitude: number, latitude: number, height_above_ground: number } | { type: 1, points: { longitude: number, latitude: number, height_above_ground: number }[] } | { type: 2, points: { longitude: number, latitude: number, height_above_ground: number }[] }) }[]
 
