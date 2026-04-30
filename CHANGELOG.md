@@ -1,3 +1,8 @@
+# [4.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.0.0...4.1.0) (30. Apr 2026)
+
+* geo objects include id
+* time property in flights data is now required
+
 # [4.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/3.1.5...4.0.0) (23. Apr 2026)
 
 * Rework the parameters of endpoint functions (this is breaking existing code, but can be migrated fairly simple)
