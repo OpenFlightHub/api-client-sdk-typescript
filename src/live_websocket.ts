@@ -93,14 +93,14 @@ export default class LiveWebSocket{
                 const filters = this.subscribedEvents.get(event)
                 if(filters){
 
-                    const callbacks = filters.get(filter)
-
-                    if(callbacks){
-                        for(const callback of callbacks){
-                            try {
-                                callback(event, filter, message.data.eventData)
-                            } catch(err){
-                                console.error('unhandled error when executing LiveWebSocket listener callback:', err)
+                    for(const [key, callbacks] of filters){
+                        if(key === filter || key.split('&')[0] === filter){
+                            for(const callback of callbacks){
+                                try {
+                                    callback(event, filter, message.data.eventData)
+                                } catch(err){
+                                    console.error('unhandled error when executing LiveWebSocket listener callback:', err)
+                                }
                             }
                         }
                     }

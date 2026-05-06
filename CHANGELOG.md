@@ -1,3 +1,7 @@
+# [4.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.0...4.1.1) (06. Mai 2026)
+* fix filtering live events default filter
+* fix some types
+
 # [4.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.0.0...4.1.0) (30. Apr 2026)
 
 * geo objects include id

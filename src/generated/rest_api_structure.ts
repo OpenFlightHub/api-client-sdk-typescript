@@ -3,7 +3,7 @@ import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost,
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.18.0'
+        API_VERSION: '0.19.0'
         ,
         auth: {
             login: {
@@ -527,7 +527,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     post:
                         function(config: {
                             params: { workspaceId: number },
-                            data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
+                            data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height?: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
                         }) {
                             return makeRequest<ApiResponse_WorkspaceGeoObjectsCreatePost>({
                                 url: '/workspace/{workspaceId}/geo-objects/create',
@@ -543,7 +543,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                 patch:
                     function(config: {
                         params: { workspaceId: number, geoObjectId: number },
-                        data: ((({ name?: string, config?: { point: [number, number, number], color: string } } | { name?: string, config?: { line: [number, number, number][], color: string } } | { name?: string, config?: { polygon: [number, number, number][], color: string } } | { name?: string, config?: { center: [number, number, number], radius: number, color: string } }) | { name?: string, config?: { longitude: number, latitude: number, height: number, heading?: number, speed?: number } } | { name?: string, config?: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
+                        data: ((({ name?: string, config?: { point: [number, number, number], color: string } } | { name?: string, config?: { line: [number, number, number][], color: string } } | { name?: string, config?: { polygon: [number, number, number][], color: string } } | { name?: string, config?: { center: [number, number, number], radius: number, color: string } }) | { name?: string, config?: { longitude: number, latitude: number, height?: number, heading?: number, speed?: number } } | { name?: string, config?: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
                     }) {
                         return makeRequest<ApiResponse_WorkspaceGeoObjectPatch>({
                             url: '/workspace/{workspaceId}/geo-object/{geoObjectId}',
