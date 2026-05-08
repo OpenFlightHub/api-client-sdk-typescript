@@ -31,15 +31,15 @@ export type ApiResponse_TeamPatch = { id: number, name: string, owner_user_id: n
 
 export type ApiResponse_TeamMembersGet = { id: number, name: string }[]
 
-export type ApiResponse_OrganisationPost = { id: number }
-
 export type ApiResponse_OrganisationGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
 
 export type ApiResponse_OrganisationPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
 
 export type ApiResponse_OrganisationTeamsGet = { id: number, name: string }[]
 
-export type ApiResponse_AdminUserPost = { id: number }
+export type ApiResponse_AdminCreateUserPost = { id: number }
+
+export type ApiResponse_AdminCreateOrganisationPost = { id: number }
 
 export type ApiResponse_AdminSystemPerformanceOsGet = { os: string, cpu: string, uptime: number, ram_total: number, ram_free: number, load_avg: { avg_1: number, avg_5: number, avg_15: number } }
 
@@ -51,13 +51,13 @@ export type ApiResponse_FileGet = { id: number, name: string, created_at: string
 
 export type ApiResponse_FileGetMultiplePost = { id: number, name: string, created_at: string, thumbnail_format?: string }[]
 
-export type ApiResponse_WorkspaceMyWorkspacesGet = { id: number, name: string, longitude: number, latitude: number }[]
+export type ApiResponse_WorkspaceMyWorkspacesGet = ({ id: number, name: string, longitude: number, latitude: number, owner_team_id: number } | { id: number, name: string, longitude: number, latitude: number, owner_organisation_id: number })[]
 
 export type ApiResponse_WorkspacePost = { id: number }
 
-export type ApiResponse_WorkspaceGet = { id: number, name: string, longitude: number, latitude: number }
+export type ApiResponse_WorkspaceGet = ({ id: number, name: string, longitude: number, latitude: number, owner_team_id: number } | { id: number, name: string, longitude: number, latitude: number, owner_organisation_id: number })
 
-export type ApiResponse_WorkspacePatch = { id: number, name: string, longitude: number, latitude: number }
+export type ApiResponse_WorkspacePatch = ({ id: number, name: string, longitude: number, latitude: number, owner_team_id: number } | { id: number, name: string, longitude: number, latitude: number, owner_organisation_id: number })
 
 export type ApiResponse_WorkspaceFilePost = { id: number }
 
@@ -87,21 +87,41 @@ export type ApiResponse_DroneLastBatteryGet = { capacity_percent_left: number, r
 
 export type ApiResponse_DroneMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }[]
 
-export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }[]
+export type ApiResponse_DroneFlightsGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[], is_created_manually: boolean, is_changed_manually: boolean, updated_by?: number }[]
 
-export type ApiResponse_DroneCurrentFlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }
+export type ApiResponse_DroneCurrentFlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[], is_created_manually: boolean, is_changed_manually: boolean, updated_by?: number }
 
-export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[] }
+export type ApiResponse_FlightPost = { id: number }
+
+export type ApiResponse_FlightGet = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[], is_created_manually: boolean, is_changed_manually: boolean, updated_by?: number }
+
+export type ApiResponse_FlightPatch = { id: number, drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track: { height: number, longitude: number, latitude: number, time: string }[], is_created_manually: boolean, is_changed_manually: boolean, updated_by?: number }
 
 export type ApiResponse_FlightMediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }[]
+
+export type ApiResponse_FlightUsersGet = { flight_id: number, user_id: number, created_by: number, type: integer }[]
 
 export type ApiResponse_MediaGet = { id: number, drone_id: number, flight_id: number, type: number, file_id: number, file_name: string, received_at: string, meta?: string, captured_at?: string, camera_location?: { position?: { longitude: number, latitude: number }, height?: number }, camera_angles?: { heading?: number, pitch?: number, roll?: number } }
 
 export type ApiResponse_MediaGroundCoverageGet = { coverage: { all: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[], outer: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[], holes: { position: { longitude: number, latitude: number }, elevation: number, debug?: string, ray?: { bearing: number, pitch: number, imagePosition: { x: number, y: number } }, directDistance?: number, meterSize?: { vertical: number, horizontal: number } }[][] } }
 
+export type ApiResponse_MissionPost = { id: number }
+
+export type ApiResponse_MissionGet = { id: number, workspace_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, assigned_to_team_id?: number, state: integer }
+
+export type ApiResponse_MissionPatch = { id: number, workspace_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, assigned_to_team_id?: number, state: integer }
+
+export type ApiResponse_MissionTasksGet = { id: number, mission_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, state: integer }[]
+
+export type ApiResponse_TaskPost = { id: number }
+
+export type ApiResponse_TaskGet = { id: number, mission_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, state: integer }
+
+export type ApiResponse_TaskPatch = { id: number, mission_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, state: integer }
+
 export type ApiResponse_ConnectionLinkConfigGet = { connection_id: string, platform_name: string, platform_url: string, workspace_id: string, workspace_uuid: string, workspace_name: string, secret: string }
 
 export type ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet = { app_id: string, app_key: string, app_license: string, mqtt_url: string, rtmp_url: string, api_url: string, ws_url: string }
 
-export type ApiResponse_InfoCollisionObjectsGet = { type: integer, id: integer, name: string, marking: ({ type: 0, longitude: number, latitude: number, height_above_ground: number } | { type: 1, points: { longitude: number, latitude: number, height_above_ground: number }[] } | { type: 2, points: { longitude: number, latitude: number, height_above_ground: number }[] }) }[]
+export type ApiResponse_InfoCollisionObjectsGet = { type: integer, id: number, name: string, marking: ({ type: 0, longitude: number, latitude: number, height_above_ground: number } | { type: 1, points: { longitude: number, latitude: number, height_above_ground: number }[] } | { type: 2, points: { longitude: number, latitude: number, height_above_ground: number }[] }) }[]
 

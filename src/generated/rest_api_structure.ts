@@ -1,5 +1,5 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationPost, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUserPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightGet, ApiResponse_FlightMediaGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminCreateUserPost, ApiResponse_AdminCreateOrganisationPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_WorkspaceConnectionsPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
@@ -196,7 +196,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         team: {
             post:
                 function(config: {
-                    data: ({ name: string, organisation_id: number, logo_file_id?: number })
+                    data: ({ name: string, organisation_id: number, owner_user_id: number, logo_file_id?: number })
                 }) {
                     return makeRequest<ApiResponse_TeamPost>({
                         url: '/team',
@@ -244,17 +244,6 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
         },
         organisation: {
-            post:
-                function(config: {
-                    data: ({ name: string, logo_file_id?: number })
-                }) {
-                    return makeRequest<ApiResponse_OrganisationPost>({
-                        url: '/organisation',
-                        method: 'post',
-                        isFormData: false,
-                        data: config.data
-                    })
-                },
             get:
                 function(config: {
                     params: { organisationId: number }
@@ -294,13 +283,26 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
         },
         admin: {
-            user: {
+            createUser: {
                 post:
                     function(config: {
                         data: ({ name?: string, email: string })
                     }) {
-                        return makeRequest<ApiResponse_AdminUserPost>({
-                            url: '/admin/user',
+                        return makeRequest<ApiResponse_AdminCreateUserPost>({
+                            url: '/admin/create-user',
+                            method: 'post',
+                            isFormData: false,
+                            data: config.data
+                        })
+                    },
+            },
+            createOrganisation: {
+                post:
+                    function(config: {
+                        data: ({ name: string, owner_user_id: number, logo_file_id?: number })
+                    }) {
+                        return makeRequest<ApiResponse_AdminCreateOrganisationPost>({
+                            url: '/admin/create-organisation',
                             method: 'post',
                             isFormData: false,
                             data: config.data
@@ -389,7 +391,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
             post:
                 function(config: {
-                    data: ({ name: string, longitude: number, latitude: number })
+                    data: (({ name: string, longitude: number, latitude: number, team_id: number } | { name: string, longitude: number, latitude: number, organisation_id: number }))
                 }) {
                     return makeRequest<ApiResponse_WorkspacePost>({
                         url: '/workspace',
@@ -412,7 +414,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             patch:
                 function(config: {
                     params: { workspaceId: number },
-                    data: ({ name?: string })
+                    data: ({ name?: string, longitude?: number, latitude?: number })
                 }) {
                     return makeRequest<ApiResponse_WorkspacePatch>({
                         url: '/workspace/{workspaceId}',
@@ -469,6 +471,21 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                             method: 'delete',
                             isFormData: false,
                             params: config.params
+                        })
+                    },
+            },
+            inviteTeam: {
+                post:
+                    function(config: {
+                        params: { workspaceId: number },
+                        data: ({ team_id: number })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/workspace/{workspaceId}/invite-team',
+                            method: 'post',
+                            isFormData: true,
+                            params: config.params,
+                            data: config.data
                         })
                     },
             },
@@ -695,6 +712,17 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
         },
         flight: {
+            post:
+                function(config: {
+                    data: ({ id: number, drone_id: number, started_at: string, landed_at: string, ended_at: string, track: { height: number, longitude: number, latitude: number, time: string }[] })
+                }) {
+                    return makeRequest<ApiResponse_FlightPost>({
+                        url: '/flight',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
+                },
             get:
                 function(config: {
                     params: { flightId: number }
@@ -706,6 +734,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         params: config.params
                     })
                 },
+            patch:
+                function(config: {
+                    params: { flightId: number },
+                    data: ({ started_at?: string, landed_at?: string, ended_at?: string, track?: { height: number, longitude: number, latitude: number, time: string }[] })
+                }) {
+                    return makeRequest<ApiResponse_FlightPatch>({
+                        url: '/flight/{flightId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
+                },
             media: {
                 get:
                     function(config: {
@@ -714,6 +755,45 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_FlightMediaGet>({
                             url: '/flight/{flightId}/media',
                             method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+            users: {
+                get:
+                    function(config: {
+                        params: { flightId: number }
+                    }) {
+                        return makeRequest<ApiResponse_FlightUsersGet>({
+                            url: '/flight/{flightId}/users',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+                post:
+                    function(config: {
+                        params: { flightId: number },
+                        data: ({ user_id: number, type: integer })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/flight/{flightId}/users',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
+                    },
+            },
+            user: {
+                delete:
+                    function(config: {
+                        params: { flightId: number, userId: number }
+                    }) {
+                        return makeRequest<void>({
+                            url: '/flight/{flightId}/user/{userId}',
+                            method: 'delete',
                             isFormData: false,
                             params: config.params
                         })
@@ -745,6 +825,104 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         })
                     },
             },
+        },
+        mission: {
+            post:
+                function(config: {
+                    data: ({ workspace_id: number, name: string, description?: string, assigned_to_team_id?: number, state?: integer })
+                }) {
+                    return makeRequest<ApiResponse_MissionPost>({
+                        url: '/mission',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
+                },
+            get:
+                function(config: {
+                    params: { missionId: number }
+                }) {
+                    return makeRequest<ApiResponse_MissionGet>({
+                        url: '/mission/{missionId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
+                },
+            patch:
+                function(config: {
+                    params: { missionId: number },
+                    data: ({ name?: string, description?: string, assigned_to_team_id?: number, state?: integer })
+                }) {
+                    return makeRequest<ApiResponse_MissionPatch>({
+                        url: '/mission/{missionId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
+                },
+            tasks: {
+                get:
+                    function(config: {
+                        params: { missionId: number }
+                    }) {
+                        return makeRequest<ApiResponse_MissionTasksGet>({
+                            url: '/mission/{missionId}/tasks',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+        },
+        task: {
+            post:
+                function(config: {
+                    data: ({ mission_id: number, name: string, description?: string, state?: integer })
+                }) {
+                    return makeRequest<ApiResponse_TaskPost>({
+                        url: '/task',
+                        method: 'post',
+                        isFormData: false,
+                        data: config.data
+                    })
+                },
+            get:
+                function(config: {
+                    params: { taskId: number }
+                }) {
+                    return makeRequest<ApiResponse_TaskGet>({
+                        url: '/task/{taskId}',
+                        method: 'get',
+                        isFormData: false,
+                        params: config.params
+                    })
+                },
+            patch:
+                function(config: {
+                    params: { taskId: number },
+                    data: ({ name?: string, description?: string, state?: integer })
+                }) {
+                    return makeRequest<ApiResponse_TaskPatch>({
+                        url: '/task/{taskId}',
+                        method: 'patch',
+                        isFormData: false,
+                        params: config.params,
+                        data: config.data
+                    })
+                },
+            delete:
+                function(config: {
+                    params: { taskId: number }
+                }) {
+                    return makeRequest<void>({
+                        url: '/task/{taskId}',
+                        method: 'delete',
+                        isFormData: false,
+                        params: config.params
+                    })
+                },
         },
         connectionLink: {
             auth: {

@@ -14,7 +14,7 @@ export type Message_Type_Answer_Data<R extends any> = {
     result: R
 }
 
-export type Message_Type_Event_Type = 'db_row_update' | 'drone_position' | 'drone_telemetry' | 'remote_controller_position' | 'workspace_drones_position' | 'drone_media' | 'workspace_drones_media' | 'geo_object'
+export type Message_Type_Event_Type = 'db_row_update' | 'drone_position' | 'drone_telemetry' | 'remote_controller_position' | 'workspace_drones_position' | 'drone_media' | 'workspace_drones_media' | 'geo_object' | 'mission' | 'task'
 
 export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
     event: T
@@ -23,7 +23,7 @@ export type Message_Type_Event_Object<T extends Message_Type_Event_Type> = {
 }
 
 //TODO this result into an OR and not a fixed typing...
-export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'remote_controller_position' ? Message_Type_Event_Object_Data_Remote_Controller_Position : T extends 'drone_position' ? Message_Type_Event_Object_Data_Drone_Position : T extends 'drone_telemetry' ? Message_Type_Event_Object_Data_Drone_Telemetry : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'workspace_drones_position' ? Message_Type_Event_Object_Data_Workspace_Drone_Position : T extends 'drone_media' ? Message_Type_Event_Object_Data_Drone_Media : T extends 'workspace_drones_media' ? Message_Type_Event_Object_Data_Workspace_Drone_Media : T extends 'geo_object' ? Message_Type_Event_Object_Data_Geo_Object : unknown
+export type Message_Type_Event_Object_Data<T extends Message_Type_Event_Type> = T extends 'remote_controller_position' ? Message_Type_Event_Object_Data_Remote_Controller_Position : T extends 'drone_position' ? Message_Type_Event_Object_Data_Drone_Position : T extends 'drone_telemetry' ? Message_Type_Event_Object_Data_Drone_Telemetry : T extends 'db_row_update' ? Message_Type_Event_Object_Data_DbRowUpdate : T extends 'workspace_drones_position' ? Message_Type_Event_Object_Data_Workspace_Drone_Position : T extends 'drone_media' ? Message_Type_Event_Object_Data_Drone_Media : T extends 'workspace_drones_media' ? Message_Type_Event_Object_Data_Workspace_Drone_Media : T extends 'geo_object' ? Message_Type_Event_Object_Data_Geo_Object : T extends 'mission' ? Message_Type_Event_Object_Data_Mission : T extends 'task' ? Message_Type_Event_Object_Data_Task : unknown
 
 export type Message_Type_Event_Object_Data_Remote_Controller_Position = {
     id: number
@@ -78,6 +78,16 @@ export type Message_Type_Event_Object_Data_Geo_Object<GeoObjectEventType = 'crea
     event_type: GeoObjectEventType
     uuid: string
     data: GeoObjectEventType extends 'delete' ? undefined : Message_Type_Event_Object_Data_Geo_Object_Type
+}
+
+export type Message_Type_Event_Object_Data_Mission<MissionEventType = 'create' | 'update' | 'delete'> = {
+    event_type: MissionEventType
+    data: MissionEventType extends 'delete' ? undefined : Message_Type_Event_Object_Data_Mission_Type
+}
+
+export type Message_Type_Event_Object_Data_Task<TaskEventType = 'create' | 'update' | 'delete'> = {
+    event_type: TaskEventType
+    data: TaskEventType extends 'delete' ? undefined : Message_Type_Event_Object_Data_Task_Type
 }
 
 // following code is copied from /generated-definitions/db/DBTypes.ts
@@ -148,3 +158,52 @@ export type Message_Type_Event_Object_Data_Geo_Object_Type_ConfigType<type exten
 ) : type extends 2 ? (
     {longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number}
 ) : unknown
+
+
+
+export type Message_Type_Event_Object_Data_Mission_Type_StateType = 0|1|2|3|4|5
+
+export const Message_Type_Event_Object_Data_Mission_Type_State_TYPES = {
+    pending: 0,
+    accepted: 1,
+    in_progress: 2,
+    done: 3,
+    rejected: 4,
+    failed: 5
+} as const
+
+export type Message_Type_Event_Object_Data_Mission_Type = {
+    id: number
+    workspace_id: number
+    name: string
+    description?: string
+    created_by: number
+    updated_by: number
+    created_at: string
+    updated_at: string
+    state: Message_Type_Event_Object_Data_Mission_Type_StateType
+}
+
+
+export type Message_Type_Event_Object_Data_Task_Type_StateType = 0|1|2|3|4|5
+
+export const Message_Type_Event_Object_Data_Task_Type_State_TYPES = {
+    pending: 0,
+    accepted: 1,
+    in_progress: 2,
+    done: 3,
+    rejected: 4,
+    failed: 5
+} as const
+
+export type Message_Type_Event_Object_Data_Task_Type = {
+    id: number
+    mission_id: number
+    name: string
+    description?: string
+    created_by: number
+    updated_by: number
+    created_at: string
+    updated_at: string
+    state: Message_Type_Event_Object_Data_Task_Type_StateType
+}
