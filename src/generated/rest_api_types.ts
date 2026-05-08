@@ -65,7 +65,7 @@ export type ApiResponse_WorkspaceFilesGet = { id: number, name: string, created_
 
 export type ApiResponse_WorkspaceConnectionsGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number, stream_is_alive: boolean }[]
 
-export type ApiResponse_WorkspaceConnectionsPost = { connection_id: string, secret: string }
+export type ApiResponse_ConnectionPost = { connection_id: string, secret: string }
 
 export type ApiResponse_ConnectionGet = { id: number, name: string, remote_controller_id?: number, drone_id?: number, workspace_id: number, stream_is_alive: boolean }
 
