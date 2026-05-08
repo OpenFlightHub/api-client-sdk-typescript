@@ -37,9 +37,13 @@ export type ApiResponse_OrganisationPatch = { id: number, name: string, owner_us
 
 export type ApiResponse_OrganisationTeamsGet = { id: number, name: string }[]
 
-export type ApiResponse_AdminCreateUserPost = { id: number }
+export type ApiResponse_AdminUsersGet = { id: number, name: string, email: string, created_at: string, locale: string, registration_incomplete: boolean, team_id?: number }[]
 
-export type ApiResponse_AdminCreateOrganisationPost = { id: number }
+export type ApiResponse_AdminUsersPost = { id: number }
+
+export type ApiResponse_AdminOrganisationsGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }[]
+
+export type ApiResponse_AdminOrganisationsPost = { id: number }
 
 export type ApiResponse_AdminSystemPerformanceOsGet = { os: string, cpu: string, uptime: number, ram_total: number, ram_free: number, load_avg: { avg_1: number, avg_5: number, avg_15: number } }
 

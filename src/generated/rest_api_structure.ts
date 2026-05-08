@@ -1,5 +1,5 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminCreateUserPost, ApiResponse_AdminCreateOrganisationPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
@@ -283,26 +283,44 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             },
         },
         admin: {
-            createUser: {
+            users: {
+                get:
+                    function() {
+                        return makeRequest<ApiResponse_AdminUsersGet>({
+                            url: '/admin/users',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
+                    },
                 post:
                     function(config: {
                         data: ({ name?: string, email: string })
                     }) {
-                        return makeRequest<ApiResponse_AdminCreateUserPost>({
-                            url: '/admin/create-user',
+                        return makeRequest<ApiResponse_AdminUsersPost>({
+                            url: '/admin/users',
                             method: 'post',
                             isFormData: false,
                             data: config.data
                         })
                     },
             },
-            createOrganisation: {
+            organisations: {
+                get:
+                    function() {
+                        return makeRequest<ApiResponse_AdminOrganisationsGet>({
+                            url: '/admin/organisations',
+                            method: 'get',
+                            isFormData: false,
+
+                        })
+                    },
                 post:
                     function(config: {
                         data: ({ name: string, owner_user_id: number, logo_file_id?: number })
                     }) {
-                        return makeRequest<ApiResponse_AdminCreateOrganisationPost>({
-                            url: '/admin/create-organisation',
+                        return makeRequest<ApiResponse_AdminOrganisationsPost>({
+                            url: '/admin/organisations',
                             method: 'post',
                             isFormData: false,
                             data: config.data
