@@ -1,5 +1,5 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamMembersGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamInviteMemberPost, ApiResponse_TeamMembersGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationUsersGet, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
@@ -229,6 +229,21 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         data: config.data
                     })
                 },
+            inviteMember: {
+                post:
+                    function(config: {
+                        params: { teamId: number },
+                        data: ({ email: string })
+                    }) {
+                        return makeRequest<ApiResponse_TeamInviteMemberPost>({
+                            url: '/team/{teamId}/invite-member',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
+                    },
+            },
             members: {
                 get:
                     function(config: {
@@ -237,6 +252,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<ApiResponse_TeamMembersGet>({
                             url: '/team/{teamId}/members',
                             method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+            member: {
+                delete:
+                    function(config: {
+                        params: { teamId: number, userId: number }
+                    }) {
+                        return makeRequest<void>({
+                            url: '/team/{teamId}/member/{userId}',
+                            method: 'delete',
                             isFormData: false,
                             params: config.params
                         })
@@ -268,6 +296,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         data: config.data
                     })
                 },
+            users: {
+                get:
+                    function(config: {
+                        params: { organisationId: number }
+                    }) {
+                        return makeRequest<ApiResponse_OrganisationUsersGet>({
+                            url: '/organisation/{organisationId}/users',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
             teams: {
                 get:
                     function(config: {

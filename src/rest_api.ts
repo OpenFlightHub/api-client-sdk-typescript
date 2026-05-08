@@ -158,21 +158,17 @@ async function makeRequest<T>(config: {
                     return
                 }
             } else {
-                if (('' + response.status).startsWith('5')) {
+                const isFatal = ('' + response.status).startsWith('5') || ('' + response.status) === '404'//404 is fatal because that means the api endpoint does not exists (possible API version mismatch between client and server)
 
-                    //the magic word "Fatal" must be at the begining of the error message, to tell the webapp it is a general unrecoverable server error
+                //the magic word "Fatal" must be at the begining of the error message, to tell the webapp it is a general unrecoverable server error
+                const prefix = `${isFatal ? 'Fatal ' : ''}OpenFlightHub API Error`
 
-                    if (response.body) {
-                        response.text().then(body => {
-                            reject(`Fatal OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText} ${body}`)
-                        }).catch(reject)
-                    } else {
-                        reject(`Fatal OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText}`)
-                    }
-
-
+                if (response.body) {
+                    response.text().then(body => {
+                        reject(`${prefix} @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText} ${body}`)
+                    }).catch(reject)
                 } else {
-                    reject(`OpenFlightHub API Error @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.status} ${response.statusText}`)
+                    reject(`${prefix} @ ${config.method.toUpperCase()} ${urlWithParamsAndQuery} : ${response.statusText}`)
                 }
             }
         }).catch(reason => {

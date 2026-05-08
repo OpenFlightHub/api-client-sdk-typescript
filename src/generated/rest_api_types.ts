@@ -29,11 +29,15 @@ export type ApiResponse_TeamGet = { id: number, name: string, owner_user_id: num
 
 export type ApiResponse_TeamPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, organisation_id?: number, logo_file_id?: number }
 
+export type ApiResponse_TeamInviteMemberPost = { id: number }
+
 export type ApiResponse_TeamMembersGet = { id: number, name: string }[]
 
 export type ApiResponse_OrganisationGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
 
 export type ApiResponse_OrganisationPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
+
+export type ApiResponse_OrganisationUsersGet = { id: number, name: string, team_id?: number }[]
 
 export type ApiResponse_OrganisationTeamsGet = { id: number, name: string }[]
 
