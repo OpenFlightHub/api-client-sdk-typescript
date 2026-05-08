@@ -58,6 +58,14 @@ export default class Live {
         return this.liveWebSocket.subscribeToEvent('geo_object', '' + workspaceId + (trafficSensingArea ? '&area=' + JSON.stringify(trafficSensingArea) : ''), callback)
     }
 
+    subscribeToMission(missionId: number, callback: (event: 'mission', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Mission)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('mission', '' + missionId, callback)
+    }
+
+    subscribeToTask(taskId: number, callback: (event: 'task', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Task)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('task', '' + taskId, callback)
+    }
+
 }
 
 
