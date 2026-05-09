@@ -33,6 +33,8 @@ export type ApiResponse_TeamInviteMemberPost = { id: number }
 
 export type ApiResponse_TeamMembersGet = { id: number, name: string }[]
 
+export type ApiResponse_TeamWorkspacesGet = ({ id: number, name: string, longitude: number, latitude: number, owner_team_id: number } | { id: number, name: string, longitude: number, latitude: number, owner_organisation_id: number })[]
+
 export type ApiResponse_OrganisationGet = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
 
 export type ApiResponse_OrganisationPatch = { id: number, name: string, owner_user_id: number, created_at: string, state: integer, logo_file_id?: number }
