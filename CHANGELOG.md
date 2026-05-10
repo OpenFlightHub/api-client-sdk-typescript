@@ -1,4 +1,12 @@
-# [4.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.0...4.1.1) (06. Mai 2026)
+# [5.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.1...5.0.0) (10. May 2026)
+* add missions and tasks
+* manual flight editing
+* change connection create endpoint location
+* change admin users and organisations endpoint locations
+* add invite and remove team member
+* add team workspaces endpoint
+
+# [4.1.1](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.0...4.1.1) (06. May 2026)
 * fix filtering live events default filter
 * fix some types
 
