@@ -784,7 +784,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         flight: {
             post:
                 function(config: {
-                    data: ({ drone_id: number, started_at: string, landed_at: string, ended_at: string, track: { height: number, longitude: number, latitude: number, time: string }[] })
+                    data: ({ drone_id: number, started_at: string, landed_at?: string, ended_at?: string, track?: { height: number, longitude: number, latitude: number, time: string }[] })
                 }) {
                     return makeRequest<ApiResponse_FlightPost>({
                         url: '/flight',
