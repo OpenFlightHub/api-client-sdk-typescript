@@ -161,7 +161,7 @@ export type Message_Type_Event_Object_Data_Geo_Object_Type_ConfigType<type exten
 
 
 
-export type Message_Type_Event_Object_Data_Mission_Type_StateType = 0|1|2|3|4|5
+export type Message_Type_Event_Object_Data_Mission_Type_StateType = 0|1|2|3|4|5|6
 
 export const Message_Type_Event_Object_Data_Mission_Type_State_TYPES = {
     pending: 0,
@@ -169,7 +169,8 @@ export const Message_Type_Event_Object_Data_Mission_Type_State_TYPES = {
     in_progress: 2,
     done: 3,
     rejected: 4,
-    failed: 5
+    failed: 5,
+    canceled: 6
 } as const
 
 export type Message_Type_Event_Object_Data_Mission_Type = {
@@ -185,7 +186,7 @@ export type Message_Type_Event_Object_Data_Mission_Type = {
 }
 
 
-export type Message_Type_Event_Object_Data_Task_Type_StateType = 0|1|2|3|4|5
+export type Message_Type_Event_Object_Data_Task_Type_StateType = 0|1|2|3|4|5|6
 
 export const Message_Type_Event_Object_Data_Task_Type_State_TYPES = {
     pending: 0,
@@ -193,7 +194,8 @@ export const Message_Type_Event_Object_Data_Task_Type_State_TYPES = {
     in_progress: 2,
     done: 3,
     rejected: 4,
-    failed: 5
+    failed: 5,
+    canceled: 6
 } as const
 
 export type Message_Type_Event_Object_Data_Task_Type = {
