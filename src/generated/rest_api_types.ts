@@ -59,6 +59,8 @@ export type ApiResponse_AdminSystemPerformanceApiEndpointsGet = { endpoint: stri
 
 export type ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet = { url: string, http_method: string, total_calls: number, max_run_time: number, max_work_time: number, avg_run_time: number, avg_work_time: number, pop_standard_dev_run_time: number, pop_standard_dev_work_time: number, pop_standard_dev_run_time_fractional: number, pop_standard_dev_work_time_fractional: number }[]
 
+export type ApiResponse_AdminSystemDatabaseInfoGet = { tables: { name: string, size: integer, row_count: integer }[], database: { size: integer, version: string } }
+
 export type ApiResponse_FileGet = { id: number, name: string, created_at: string, thumbnail_format?: string }
 
 export type ApiResponse_FileGetMultiplePost = { id: number, name: string, created_at: string, thumbnail_format?: string }[]

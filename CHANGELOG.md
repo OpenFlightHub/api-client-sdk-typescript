@@ -1,3 +1,6 @@
+# [5.2.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/5.1.0...5.2.0) (11. May 2026)
+* add admin system database endpoint
+
 # [5.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/5.0.0...5.1.0) (11. May 2026)
 * add workspace missions
 * add all-teams endpoint
