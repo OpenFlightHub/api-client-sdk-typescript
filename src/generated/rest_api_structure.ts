@@ -3,7 +3,7 @@ import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost,
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.19.1'
+        API_VERSION: '0.19.2'
         ,
         auth: {
             login: {
