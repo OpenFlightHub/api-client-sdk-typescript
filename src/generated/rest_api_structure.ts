@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamInviteMemberPost, ApiResponse_TeamMembersGet, ApiResponse_TeamWorkspacesGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationUsersGet, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamInviteMemberPost, ApiResponse_TeamMembersGet, ApiResponse_TeamWorkspacesGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationUsersGet, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceMissionsGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.19.0'
+        API_VERSION: '0.19.1'
         ,
         auth: {
             login: {
@@ -568,6 +568,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                     }) {
                         return makeRequest<ApiResponse_WorkspaceFilesGet>({
                             url: '/workspace/{workspaceId}/files',
+                            method: 'get',
+                            isFormData: false,
+                            params: config.params
+                        })
+                    },
+            },
+            missions: {
+                get:
+                    function(config: {
+                        params: { workspaceId: number }
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceMissionsGet>({
+                            url: '/workspace/{workspaceId}/missions',
                             method: 'get',
                             isFormData: false,
                             params: config.params
