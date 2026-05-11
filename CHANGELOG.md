@@ -1,4 +1,9 @@
 # [5.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.1...5.0.0) (10. May 2026)
+* add workspace missions
+* add all-teams endpoint
+* fix mission and task state types
+
+# [5.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/4.1.1...5.0.0) (10. May 2026)
 * add missions and tasks
 * manual flight editing
 * change connection create endpoint location
