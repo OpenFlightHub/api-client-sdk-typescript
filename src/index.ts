@@ -8,12 +8,14 @@ export type * from './generated/websocket-definitions/server_to_client';
 export type {ApiStatusEvents} from './live'
 export type {makeStructure} from './generated/rest_api_structure'
 export type {Live}
+import * as Constants from './util/constants'
 
 export class OpenFlightHubApi{
 
     readonly rest: ReturnType<typeof RestApi>
     readonly live: Live
     readonly VERSION = CLIENT_SDK_VERSION
+    readonly CONSTANTS = Constants
 
     constructor(options?: {
         restApiBaseUrl?: string
