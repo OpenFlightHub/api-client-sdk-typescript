@@ -1,9 +1,9 @@
 import { makeRequestFunctionType } from "../rest_api"
-import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamAllTeamsGet, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamInviteMemberPost, ApiResponse_TeamMembersGet, ApiResponse_TeamWorkspacesGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationUsersGet, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_AdminSystemDatabaseInfoGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceMissionsGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsCreatePost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
+import { integer, ApiResponse_AuthLoginPost, ApiResponse_AuthLoginWithTokenPost, ApiResponse_AuthCheckGet, ApiResponse_AuthRegisterPost, ApiResponse_AuthStreamTokenGet, ApiResponse_UserGet, ApiResponse_UserPatch, ApiResponse_UserSelfGet, ApiResponse_UserMyOrganisationsGet, ApiResponse_UserMyTeamsGet, ApiResponse_TeamPost, ApiResponse_TeamAllTeamsGet, ApiResponse_TeamGet, ApiResponse_TeamPatch, ApiResponse_TeamInviteMemberPost, ApiResponse_TeamMembersGet, ApiResponse_TeamWorkspacesGet, ApiResponse_OrganisationGet, ApiResponse_OrganisationPatch, ApiResponse_OrganisationUsersGet, ApiResponse_OrganisationTeamsGet, ApiResponse_AdminUsersGet, ApiResponse_AdminUsersPost, ApiResponse_AdminOrganisationsGet, ApiResponse_AdminOrganisationsPost, ApiResponse_AdminSystemPerformanceOsGet, ApiResponse_AdminSystemPerformanceApiEndpointsGet, ApiResponse_AdminSystemPerformanceApiEndpointDetailsGet, ApiResponse_AdminSystemDatabaseInfoGet, ApiResponse_FileGet, ApiResponse_FileGetMultiplePost, ApiResponse_WorkspaceMyWorkspacesGet, ApiResponse_WorkspacePost, ApiResponse_WorkspaceGet, ApiResponse_WorkspacePatch, ApiResponse_WorkspaceFilePost, ApiResponse_WorkspaceFilesGet, ApiResponse_WorkspaceMissionsGet, ApiResponse_WorkspaceConnectionsGet, ApiResponse_ConnectionPost, ApiResponse_ConnectionGet, ApiResponse_WorkspaceGeoObjectsGet, ApiResponse_WorkspaceGeoObjectsPost, ApiResponse_WorkspaceGeoObjectPatch, ApiResponse_RemoteControllerGet, ApiResponse_RemoteControllerLastPositionGet, ApiResponse_DroneGet, ApiResponse_DroneLastPositionGet, ApiResponse_DroneLastBatteryGet, ApiResponse_DroneMediaGet, ApiResponse_DroneFlightsGet, ApiResponse_DroneCurrentFlightGet, ApiResponse_FlightPost, ApiResponse_FlightGet, ApiResponse_FlightPatch, ApiResponse_FlightMediaGet, ApiResponse_FlightUsersGet, ApiResponse_MediaGet, ApiResponse_MediaGroundCoverageGet, ApiResponse_MissionPost, ApiResponse_MissionGet, ApiResponse_MissionPatch, ApiResponse_MissionTasksGet, ApiResponse_TaskPost, ApiResponse_TaskGet, ApiResponse_TaskPatch, ApiResponse_ConnectionLinkConfigGet, ApiResponse_ConnectionLinkDjiPilot2SdkConfigGet, ApiResponse_InfoCollisionObjectsGet } from './rest_api_types'
 
 export function makeStructure(makeRequest: makeRequestFunctionType) {
     return {
-        API_VERSION: '0.19.2'
+        API_VERSION: '0.19.3'
         ,
         auth: {
             login: {
@@ -636,21 +636,19 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                             params: config.params
                         })
                     },
-                create: {
-                    post:
-                        function(config: {
-                            params: { workspaceId: number },
-                            data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height?: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
-                        }) {
-                            return makeRequest<ApiResponse_WorkspaceGeoObjectsCreatePost>({
-                                url: '/workspace/{workspaceId}/geo-objects/create',
-                                method: 'post',
-                                isFormData: false,
-                                params: config.params,
-                                data: config.data
-                            })
-                        },
-                },
+                post:
+                    function(config: {
+                        params: { workspaceId: number },
+                        data: ((({ uuid?: string, name: string, type: 0, sub_type: 0, config: { point: [number, number, number], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 1, config: { line: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 2, config: { polygon: [number, number, number][], color: string } } | { uuid?: string, name: string, type: 0, sub_type: 3, config: { center: [number, number, number], radius: number, color: string } }) | { uuid?: string, name: string, type: 1, sub_type: integer, config: { longitude: number, latitude: number, height?: number, heading?: number, speed?: number } } | { uuid?: string, name: string, type: 2, sub_type: integer, config: { longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number } }))
+                    }) {
+                        return makeRequest<ApiResponse_WorkspaceGeoObjectsPost>({
+                            url: '/workspace/{workspaceId}/geo-objects',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
+                    },
             },
             geoObject: {
                 patch:
@@ -1030,6 +1028,36 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         params: config.params
                     })
                 },
+            linkGeoObject: {
+                post:
+                    function(config: {
+                        params: { taskId: number },
+                        data: ({ geo_object_id: number })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/task/{taskId}/link-geo-object',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
+                    },
+            },
+            unlinkGeoObject: {
+                post:
+                    function(config: {
+                        params: { taskId: number },
+                        data: ({ geo_object_id: number })
+                    }) {
+                        return makeRequest<void>({
+                            url: '/task/{taskId}/unlink-geo-object',
+                            method: 'post',
+                            isFormData: false,
+                            params: config.params,
+                            data: config.data
+                        })
+                    },
+            },
         },
         connectionLink: {
             auth: {

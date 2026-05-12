@@ -1,3 +1,8 @@
+# [6.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/5.2.0...6.0.0) (12. May 2026)
+* change workspace geo-objects endpoints
+* add link/unlink geo-objects
+* change geoobject tasks to be an array of ids
+
 # [5.2.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/5.1.0...5.2.0) (11. May 2026)
 * add admin system database endpoint
 
