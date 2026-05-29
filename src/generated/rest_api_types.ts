@@ -75,6 +75,8 @@ export type ApiResponse_WorkspacePatch = ({ id: number, name: string, longitude:
 
 export type ApiResponse_WorkspaceFilePost = { id: number }
 
+export type ApiResponse_WorkspacePermissionsGet = { team_id: number }[]
+
 export type ApiResponse_WorkspaceFilesGet = { id: number, name: string, created_at: string, thumbnail_format?: string }[]
 
 export type ApiResponse_WorkspaceMissionsGet = { id: number, workspace_id: number, name: string, description?: string, created_by: number, updated_by: number, created_at: string, updated_at: string, assigned_to_team_id?: number, state: integer }[]
