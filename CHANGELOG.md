@@ -1,3 +1,7 @@
+# [6.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/6.0.0...6.1.0) (29. May 2026)
+* add workspace permissions and kick team endpoints
+* fix form posts
+
 # [6.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/5.2.0...6.0.0) (12. May 2026)
 * change workspace geo-objects endpoints
 * add link/unlink geo-objects
