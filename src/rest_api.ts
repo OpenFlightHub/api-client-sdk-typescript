@@ -97,7 +97,8 @@ async function makeRequest<T>(config: {
 
         const request = new Request(apiBaseUrl + urlWithParamsAndQuery, {
             signal: abortController.signal,
-            body: config.data === undefined ? undefined : JSON.stringify(config.data),
+            //@ts-ignore
+            body: config.data === undefined ? undefined : (config.isFormData ? config.data : JSON.stringify(config.data)),
             method: config.method.toUpperCase(),
             cache: 'no-store',
             headers,
