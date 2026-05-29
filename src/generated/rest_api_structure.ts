@@ -592,7 +592,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<void>({
                             url: '/workspace/{workspaceId}/invite-team',
                             method: 'post',
-                            isFormData: true,
+                            isFormData: false,
                             params: config.params,
                             data: config.data
                         })
@@ -607,7 +607,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
                         return makeRequest<void>({
                             url: '/workspace/{workspaceId}/kick-team',
                             method: 'post',
-                            isFormData: true,
+                            isFormData: false,
                             params: config.params,
                             data: config.data
                         })
