@@ -94,7 +94,7 @@ export default class LiveWebSocket{
                 if(filters){
 
                     for(const [key, callbacks] of filters){
-                        if(key === filter || key.split('&')[0] === filter){
+                        if(filter === '' || key === filter || key.split('&')[0] === filter){
                             for(const callback of callbacks){
                                 try {
                                     callback(event, filter, message.data.eventData)

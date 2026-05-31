@@ -99,7 +99,7 @@ Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 0> | Message_Type_Event_O
 export type Message_Type_Event_Object_Data_Geo_Object_Type_Base<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType, sub_type extends Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type>> = {
     id: number;
     uuid: string;
-    workspace_id: number;
+    workspace_id?: number;
     name: string;
     type: type;
     sub_type: sub_type;

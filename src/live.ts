@@ -50,12 +50,11 @@ export default class Live {
         return this.liveWebSocket.subscribeToEvent('workspace_drones_media', '' + workspaceId, callback)
     }
 
-    subscribeToGeoObjects(workspaceId: number, callback: (event: 'geo_object', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Geo_Object)=>void, trafficSensingArea?: {
-        longitude: number,
-        latitude: number,
-        radius: number
-    }){//TODO implement unsubscribe
-        return this.liveWebSocket.subscribeToEvent('geo_object', '' + workspaceId + (trafficSensingArea ? '&area=' + JSON.stringify(trafficSensingArea) : ''), callback)
+    /**
+     * the filter in the callback can either be the workspaceId as string or an empty string indicating that this is a global geoobject
+     */
+    subscribeToGeoObjects(workspaceId: number, callback: (event: 'geo_object', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Geo_Object)=>void){//TODO implement unsubscribe
+        return this.liveWebSocket.subscribeToEvent('geo_object', '' + workspaceId, callback)
     }
 
     subscribeToMission(missionId: number, callback: (event: 'mission', filter: string, data: server_to_client.Message_Type_Event_Object_Data_Mission)=>void){//TODO implement unsubscribe

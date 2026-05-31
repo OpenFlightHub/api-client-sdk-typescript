@@ -1,3 +1,7 @@
+# [7.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/6.1.0...7.0.0) (31. May 2026)
+* change geoobject not requiring workspace_id (for global geoobjects like traffic)
+* adjust geoobject listening (removed coordinates and range, this data now depends on the workspace)
+
 # [6.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/6.0.0...6.1.0) (29. May 2026)
 * add workspace permissions and kick team endpoints
 * fix form posts
