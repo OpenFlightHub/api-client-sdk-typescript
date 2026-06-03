@@ -1,3 +1,6 @@
+# [8.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/7.0.0...8.0.0) (03. Jun 2026)
+* change geo object "traffic" sub types
+
 # [7.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/6.1.0...7.0.0) (31. May 2026)
 * change geoobject not requiring workspace_id (for global geoobjects like traffic)
 * adjust geoobject listening (removed coordinates and range, this data now depends on the workspace)

@@ -119,7 +119,7 @@ export const Message_Type_Event_Object_Data_Geo_Object_Type_Type_TYPES = {
 
 export type Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType> =
     type extends 0 ? (0|1|2|3) :
-    type extends 1 ? (0|1|2|3|4|5) :
+    type extends 1 ? (0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15) :
     type extends 2 ? (0|1|2|3|4|5|6) : unknown
 
 
