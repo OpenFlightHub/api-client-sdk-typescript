@@ -94,7 +94,8 @@ export type Message_Type_Event_Object_Data_Task<TaskEventType = 'create' | 'upda
 
 export type Message_Type_Event_Object_Data_Geo_Object_Type = Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<0, 3> |
 Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<1, 4> |
-Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 4> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 5> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 6>
+Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 4> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 5> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<2, 6> |
+Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 0> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 1> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 2> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 3> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 4> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 5> | Message_Type_Event_Object_Data_Geo_Object_Type_Base<3, 6>
 
 export type Message_Type_Event_Object_Data_Geo_Object_Type_Base<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType, sub_type extends Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type>> = {
     id: number;
@@ -109,18 +110,20 @@ export type Message_Type_Event_Object_Data_Geo_Object_Type_Base<type extends Mes
 }
 
 
-export type Message_Type_Event_Object_Data_Geo_Object_Type_TypeType = 0|1|2
+export type Message_Type_Event_Object_Data_Geo_Object_Type_TypeType = 0|1|2|3
 
 export const Message_Type_Event_Object_Data_Geo_Object_Type_Type_TYPES = {
   marking: 0,
   traffic: 1,
-  unit: 2
+  unit: 2,
+  collision: 3
 } as const
 
 export type Message_Type_Event_Object_Data_Geo_Object_Type_SubTypeType<type extends Message_Type_Event_Object_Data_Geo_Object_Type_TypeType> =
     type extends 0 ? (0|1|2|3) :
     type extends 1 ? (0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15) :
-    type extends 2 ? (0|1|2|3|4|5|6) : unknown
+    type extends 2 ? (0|1|2|3|4|5|6) :
+    type extends 3 ? (0|1|2|3|4|5|6) : unknown
 
 
 export const Message_Type_Event_Object_Data_Geo_Object_Type_SubType_TYPES = {
@@ -145,6 +148,15 @@ export const Message_Type_Event_Object_Data_Geo_Object_Type_SubType_TYPES = {
     ground_vehicle: 4,
     ground_staff: 5,
     other: 6
+  },
+  collision: {
+    power_tower: 0,
+    power_pole: 1,
+    power_line_large: 2,
+    power_line_small_or_catenary: 3,
+    aerialway_pylon: 4,
+    aerialway: 5,
+    building: 6
   }
 } as const
 
@@ -157,6 +169,14 @@ export type Message_Type_Event_Object_Data_Geo_Object_Type_ConfigType<type exten
     {longitude: number, latitude: number, height: number, heading?: number, speed?: number}
 ) : type extends 2 ? (
     {longitude: number, latitude: number, symbol: string, height?: number, heading?: number, speed?: number}
+) : type extends 3 ? (
+    sub_type extends 0 ? {id: number, point: [number, number, number]} :
+    sub_type extends 1 ? {id: number, point: [number, number, number]} :
+    sub_type extends 2 ? {id: number, line: [number, number, number][]} :
+    sub_type extends 3 ? {id: number, line: [number, number, number][]} :
+    sub_type extends 4 ? {id: number, point: [number, number, number]} :
+    sub_type extends 5 ? {id: number, line: [number, number, number][]} :
+    sub_type extends 6 ? {id: number, polygon: [number, number, number][]} : unknown
 ) : unknown
 
 

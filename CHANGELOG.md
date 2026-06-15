@@ -1,3 +1,6 @@
+# [8.1.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/8.0.0...8.1.0) (15. Jun 2026)
+* add geobject type collision
+
 # [8.0.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/7.0.0...8.0.0) (03. Jun 2026)
 * change geo object "traffic" sub types
 
