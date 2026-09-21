@@ -962,7 +962,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         mission: {
             post:
                 function(config: {
-                    data: ({ workspace_id: number, name: string, description?: string, assigned_to_team_id?: number, state?: integer })
+                    data: ({ workspace_id: number, name: string, description?: string, notes?: string, assigned_to_team_id?: number, state?: integer })
                 }) {
                     return makeRequest<ApiResponse_MissionPost>({
                         url: '/mission',
@@ -985,7 +985,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             patch:
                 function(config: {
                     params: { missionId: number },
-                    data: ({ name?: string, description?: string, assigned_to_team_id?: number, state?: integer })
+                    data: ({ name?: string, description?: string, notes?: string, assigned_to_team_id?: number, state?: integer })
                 }) {
                     return makeRequest<ApiResponse_MissionPatch>({
                         url: '/mission/{missionId}',
@@ -1012,7 +1012,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
         task: {
             post:
                 function(config: {
-                    data: ({ mission_id: number, name: string, description?: string, state?: integer })
+                    data: ({ mission_id: number, name: string, description?: string, notes?: string, state?: integer })
                 }) {
                     return makeRequest<ApiResponse_TaskPost>({
                         url: '/task',
@@ -1035,7 +1035,7 @@ export function makeStructure(makeRequest: makeRequestFunctionType) {
             patch:
                 function(config: {
                     params: { taskId: number },
-                    data: ({ name?: string, description?: string, state?: integer })
+                    data: ({ name?: string, description?: string, notes?: string, state?: integer })
                 }) {
                     return makeRequest<ApiResponse_TaskPatch>({
                         url: '/task/{taskId}',
