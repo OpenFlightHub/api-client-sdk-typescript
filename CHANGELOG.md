@@ -1,3 +1,6 @@
+# [8.3.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/8.2.0...8.3.0) (27. Sept 2026)
+* add live share keys endpoint
+
 # [8.2.0](https://github.com/OpenFlightHub/api-client-sdk-typescript/compare/8.1.0...8.2.0) (26. Sept 2026)
 * add note field to mission and task
 
